@@ -1,0 +1,32 @@
+.thumbnail {
+    min-height: 250px;
+}
+
+.thumbnail a > img,
+.thumbnail > img{
+    width: 100%;
+}
+
+.carousel-inner > .item > a > img,
+.carousel-inner > .item > img {
+    width: 100%;
+}
+
+.carousel-caption {
+    right: 48px;
+    bottom: 48px;
+    left: 48px;
+    padding-top: 0;
+    padding-bottom: 0;
+    text-align: left;
+}
+
+.carousel-caption h3{
+    font-size: 30px;
+    line-height: 1.4;
+    text-shadow: 2px 2px 2px rgba(0,0,0, 1);
+}
+
+#videoDownload {
+    margin-left: 24px;
+}

@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  .container
+    .page-header
+      h1= title
+    .row
+      .col-md-12
+        .panel.panel-default
+          .panel-heading
+            h3 Generate Video
+          .panel-body
+            form#generator
+              .form-group
+                button.btn.btn-primary(id="submit-button" type="submit") Submit
