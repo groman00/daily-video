@@ -18,7 +18,8 @@ var project;
 var __dirname = '/Library/WebServer/Documents/alpha/daily-video/';
 var DIR = {
     projects: __dirname + 'resources/aep/',
-    temp: __dirname + 'temp/'
+    temp: __dirname + 'temp/',
+    exports: __dirname + 'public/exports/'
 };
 
 function DailyVideo() {
@@ -47,13 +48,16 @@ function DailyVideo() {
     // Add master comp to render queue
     renderQueue = project.renderQueue;
     renderQueueItem = renderQueue.items.add(this.masterComp);
-    // need to define where the export should go
+    renderQueueItem.outputModule(1).setSettings({
+        'Output File Info': {
+            'Full Flat Path': DIR.exports + 'DailyVideo_' + config.timestamp
+        }
+    });
 
-    // Listen to render queue events
-    // Not working: https://forums.adobe.com/message/9318251#9318251
-    renderQueueItem.onStatusChanged = function () {
-        $.writeln(renderQueueItem.status);
-    };
+    // Listen to render queue events (Not working: https://forums.adobe.com/message/9318251#9318251)
+    // renderQueueItem.onStatusChanged = function () {
+    //     $.writeln(renderQueueItem.status);
+    // };
 
     // Immediately render comp using Adobe Media Encoder (required for mp4 exports)
     renderQueue.queueInAME(true);
@@ -65,8 +69,9 @@ function DailyVideo() {
 DailyVideo.prototype = {
 
     closeProject: function () {
-        // Close project without saving.  Adding sleep to prevent app crashes.
-        $.sleep(2000);
+        // Close project without saving.
+        // Adding sleep to prevent app crashes.
+        //$.sleep(2000);
         project.close(CloseOptions.DO_NOT_SAVE_CHANGES)
     },
 
@@ -152,6 +157,6 @@ DailyVideo.prototype = {
     }
 };
 
-app.open(new File(dir.projects + "DailyVideo.aep"));
+app.open(new File(DIR.projects + "DailyVideo.aep"));
 project = app.project;
 video = new DailyVideo();
