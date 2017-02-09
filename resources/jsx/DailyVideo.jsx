@@ -17,13 +17,14 @@ var video;
 var project;
 var __dirname = '/Library/WebServer/Documents/alpha/daily-video/';
 var DIR = {
-    projects: __dirname + 'resources/aep/',
+    resources: __dirname + 'resources/',
     temp: __dirname + 'temp/',
     exports: __dirname + 'public/exports/'
 };
 
 function DailyVideo() {
-    var config = this.config = this.getJSON('config.json');
+    var jobs = this.getJSON(DIR.resources + 'json/jobs.json');
+    var config = this.config = this.getJSON(DIR.temp + 'json/config' + jobs.activeJobs.pop() + '.json');
     var audio, renderQueue, renderQueueItem;
     if (!this.config) {
         // Config JSON not found, exit job.
@@ -80,8 +81,8 @@ DailyVideo.prototype = {
      * @param  {String} file
      * @return {Object}
      */
-    getJSON: function (file) {
-        var file = File(DIR.temp + '/json/' + file);
+    getJSON: function (path) {
+        var file = File(path);
         var config;
         if (!file) {
             return false;
@@ -157,6 +158,6 @@ DailyVideo.prototype = {
     }
 };
 
-app.open(new File(DIR.projects + "DailyVideo.aep"));
+app.open(new File(DIR.resources + "aep/DailyVideo.aep"));
 project = app.project;
 video = new DailyVideo();
