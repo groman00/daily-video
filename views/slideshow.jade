@@ -35,7 +35,7 @@ block content
               .form-group
                 button.btn.btn-primary(id="submit-button" type="submit") Submit
                 a#videoDownload.hide(href="#" target="_blank") Download Video
-              .form-group.form-progress.hide
-                label#form-progress-label
+              #progressIndicator.form-group.form-progress.hide
+                label.progress-label
                 .progress
-                  #form-progress-bar.progress-bar.progress-bar-striped(style="width: 0%")
+                  .progress-bar.progress-bar-striped(style="width: 0%")

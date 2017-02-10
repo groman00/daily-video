@@ -1,11 +1,13 @@
+/**
+ * Upload Form
+ */
 (function (window, $) {
     var $carousel = $('#slideshow-carousel');
     var $form = $('#generator')
         .on('submit', submit);
     var $submitButton = $('#submit-button');
     var $fileInput = $form.find('input[name="audio"]');
-    var $progressBar = $('#form-progress-bar');
-    var $progressLabel = $('#form-progress-label');
+    var $indicator = $('#progressIndicator').progressIndicator();
     var $videoDownload = $('#videoDownload');
 
     // var VIDEO_TIME = 120 // in seconds
@@ -18,6 +20,22 @@
 
     $carousel.carousel({
         interval: slideDuration * 1000
+    });
+
+    APP.socket.on('progress', function(data){
+        if (!data.progress) {
+            $indicator.trigger('indeterminate', [data.message]);
+        } else {
+            $indicator.trigger('progress', [data])
+        }
+    });
+
+    APP.socket.on('complete', function(){
+        $indicator.trigger('complete', ['Video Completed']);
+    });
+
+    APP.socket.on('error', function(message){
+        $indicator.trigger('error', [message]);
     });
 
 
@@ -49,7 +67,7 @@
         if (file){
             formData.append('audio', file, file.name);
         }
-        // formData.append('socket_id', APP.socket_id);
+        formData.append('socket_id', APP.socket_id);
         formData.append('slides', JSON.stringify(getSlidesData()));
         formData.append('videoDuration', realVideoDuration);
         formData.append('slideDuration', slideDuration);
@@ -61,9 +79,12 @@
             processData: false,
             url: '/generate-video',
             data: formData,
+            beforeSend: function () {
+                $indicator.trigger('indeterminate', ['Uploading...']);
+            },
             success: function(){
                 console.log(arguments)
-                enable(true);
+                // enable(true);
             }
         });
 

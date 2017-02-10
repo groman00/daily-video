@@ -13,6 +13,7 @@
  * Build some logic to wait for any existing project jobs to finish?
  */
 
+#include "../js/json2.js"
 var video;
 var project;
 var __dirname = '/Library/WebServer/Documents/alpha/daily-video/';
@@ -73,12 +74,12 @@ DailyVideo.prototype = {
         // Close project without saving.
         // Adding sleep to prevent app crashes.
         //$.sleep(2000);
-        project.close(CloseOptions.DO_NOT_SAVE_CHANGES)
+        project.close(CloseOptions.DO_NOT_SAVE_CHANGES);
     },
 
     /**
      * Read json file and parse to object;
-     * @param  {String} file
+     * @param  {String} path
      * @return {Object}
      */
     getJSON: function (path) {

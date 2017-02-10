@@ -9,9 +9,10 @@ html(lang="en")
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
     block content
-    // script(src='/socket.io/socket.io.js')
-    script(src='/javascripts/jquery-2.2.4.min.js')
-    script(src='/javascripts/bootstrap.min.js')
+    script(src='/socket.io/socket.io.js')
+    script(src='/javascripts/vendor/jquery-2.2.4.min.js')
+    script(src='/javascripts/vendor/bootstrap.min.js')
     script(src='/javascripts/script.js')
+    script(src='/javascripts/plugins/progressIndicator.js')
     if pageScript
         script(src='/javascripts/pages/#{pageScript}.js')

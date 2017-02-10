@@ -7,6 +7,14 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var app = express();
 
+/* Socket.io */
+app.io = require('socket.io')()
+app.io.on('connection', function(socket){
+    // Send socket id to client
+    socket.emit('register', socket.id);
+});
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');

@@ -24,8 +24,8 @@ router.get('/', function(req, res, next) {
  */
 router.get('/slideshow/:id', function(req, res, next) {
   var options = {
-    url: 'http://localhost:3000/fixtures/slideshow.json'
-    // url: 'http://alpha.aol.com/slideshow-json/' + req.params.id
+    // url: 'http://localhost:3000/fixtures/slideshow.json'
+    url: 'http://alpha.aol.com/slideshow-json/' + req.params.id
   };
   request(options, function (error, response, body) {
     if (error) {
@@ -48,11 +48,12 @@ router.get('/slideshow/:id', function(req, res, next) {
 router.post('/generate-video', upload.single('audio'), function (req, res, next) {
   var slides = req.body.slides;
   var audio = __dirname + '/../public/fixtures/empty.mp3';
+  var socket = req.app.io.sockets.connected[req.body.socket_id];
   if (req.file) {
     audio = __dirname + '/../' + req.file.path
   }
   if (slides) {
-    generator({
+    generator(socket, {
       audio: audio,
       slides: JSON.parse(slides),
       videoDuration: req.body.videoDuration,
