@@ -1,8 +1,4 @@
 /**
- * Save as new file before processing?
- * var myNewFile = new File("~/Desktop/myNewFile.aep");
- * app.project.save(myNewFile);
- *
  * Need a way to handle multiple jobs at one time:
  * Make a jobs json with an array of current job timestamps.  Let this file take the last job timestamp,
  * fetch the timestamped config file and generate a new aep with that time stamp.  That way each job has its
@@ -25,18 +21,24 @@ var DIR = {
 
 function DailyVideo() {
     var jobs = this.getJSON(DIR.resources + 'json/jobs.json');
-    var config = this.config = this.getJSON(DIR.temp + 'json/config' + jobs.activeJobs.pop() + '.json');
-    var audio, renderQueue, renderQueueItem;
-    if (!this.config) {
+    var timestamp = jobs.activeJobs.pop();
+    var config = this.config = this.getJSON(DIR.temp + timestamp + '/json/config.json');
+    var audio, renderQueue, renderQueueItem, timestamp;
+    if (!config) {
         // Config JSON not found, exit job.
         this.closeProject();
     }
+
+    // Clone Project in temp folder
+    project.save(new File(DIR.temp + timestamp + '/aep/DailyVideo.aep'));
+
+    // Assign references for top level items and folders
     this.itemCollection = project.items;
     this.prefabFolder = project.item(1);
-    this.videoFolder = this.itemCollection.addFolder('Video_' + config.timestamp);
+    this.videoFolder = this.itemCollection.addFolder('Video_' + timestamp);
 
     // Create master comp and insert into working folder
-    this.masterComp = this.addComp('Master_' + config.timestamp, config.videoDuration);
+    this.masterComp = this.addComp('Master_' + timestamp, config.videoDuration);
     this.masterComp.parentFolder = this.videoFolder;
 
     // Create child comps and add to master comp as layers
@@ -52,7 +54,7 @@ function DailyVideo() {
     renderQueueItem = renderQueue.items.add(this.masterComp);
     renderQueueItem.outputModule(1).setSettings({
         'Output File Info': {
-            'Full Flat Path': DIR.exports + 'DailyVideo_' + config.timestamp
+            'Full Flat Path': DIR.exports + 'DailyVideo_' + timestamp
         }
     });
 
@@ -74,7 +76,8 @@ DailyVideo.prototype = {
         // Close project without saving.
         // Adding sleep to prevent app crashes.
         //$.sleep(2000);
-        project.close(CloseOptions.DO_NOT_SAVE_CHANGES);
+        //project.close(CloseOptions.DO_NOT_SAVE_CHANGES);
+        project.close(CloseOptions.SAVE_CHANGES);
     },
 
     /**

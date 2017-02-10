@@ -7,7 +7,7 @@ var upload = multer({
   storage: multer.diskStorage({
     destination: './temp/audio/',
     filename: function (req, file, cb) {
-      cb(null, file.fieldname + '_' + Date.now() + '.mp3');
+      cb(null, 'audio' + req.body.timestamp + '.mp3');
     }
   })
 });

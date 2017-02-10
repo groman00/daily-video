@@ -64,14 +64,14 @@
         enable(false);
         // console.log(slides);
         file = $fileInput[0].files[0];
-        if (file){
-            formData.append('audio', file, file.name);
-        }
         formData.append('socket_id', APP.socket_id);
         formData.append('slides', JSON.stringify(getSlidesData()));
         formData.append('videoDuration', realVideoDuration);
         formData.append('slideDuration', slideDuration);
         formData.append('timestamp', '_' + new Date().getTime());
+        if (file){
+            formData.append('audio', file, file.name);
+        }
 
         $.ajax({
             type: 'POST',
