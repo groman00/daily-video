@@ -12,13 +12,15 @@ var upload = multer({
   })
 });
 
-/* GET home page. */
+/**
+ * GET: home page
+ */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
 /**
- * Show slideshow by id
+ * GET: slideshow by id
  */
 router.get('/slideshow/:id', function(req, res, next) {
   var options = {
@@ -41,7 +43,7 @@ router.get('/slideshow/:id', function(req, res, next) {
 });
 
 /**
- * Generate video from slideshow data
+ * POST: Generate video from slideshow data
  */
 router.post('/generate-video', upload.single('audio'), function (req, res, next) {
   var slides = req.body.slides;

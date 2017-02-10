@@ -33,7 +33,7 @@
         // Create array of image objects for POST
         return $carousel.find('.item').map(function () {
             return {
-                path: $(this).children('img').attr('src'),
+                image: $(this).children('img').attr('src'),
                 caption: $(this).children('.carousel-caption').text(),
                 template: 'Template_1'
             }
