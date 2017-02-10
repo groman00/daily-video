@@ -35,10 +35,10 @@ function DailyVideo() {
     // Assign references for top level items and folders
     this.itemCollection = project.items;
     this.prefabFolder = project.item(1);
-    this.videoFolder = this.itemCollection.addFolder('Video_' + timestamp);
+    this.videoFolder = this.itemCollection.addFolder('Video' + timestamp);
 
     // Create master comp and insert into working folder
-    this.masterComp = this.addComp('Master_' + timestamp, config.videoDuration);
+    this.masterComp = this.addComp('Master' + timestamp, config.videoDuration);
     this.masterComp.parentFolder = this.videoFolder;
 
     // Create child comps and add to master comp as layers
@@ -54,7 +54,7 @@ function DailyVideo() {
     renderQueueItem = renderQueue.items.add(this.masterComp);
     renderQueueItem.outputModule(1).setSettings({
         'Output File Info': {
-            'Full Flat Path': DIR.exports + 'DailyVideo_' + timestamp
+            'Full Flat Path': DIR.exports + 'DailyVideo' + timestamp
         }
     });
 
@@ -64,7 +64,8 @@ function DailyVideo() {
     // };
 
     // Immediately render comp using Adobe Media Encoder (required for mp4 exports)
-    renderQueue.queueInAME(true);
+    //renderQueue.queueInAME(true);
+    renderQueue.queueInAME(false);
 
     // Once renderering starts, we don't need the project anymore.
     this.closeProject();
