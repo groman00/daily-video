@@ -5,7 +5,7 @@ var generator = require('../lib/generator');
 var multer  = require('multer');
 var upload = multer({
   storage: multer.diskStorage({
-    destination: './temp/audio/',
+    destination: './uploads/',
     filename: function (req, file, cb) {
       cb(null, 'audio' + req.body.timestamp + '.mp3');
     }

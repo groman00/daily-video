@@ -30,8 +30,17 @@
         }
     });
 
-    APP.socket.on('complete', function(){
+    APP.socket.on('complete', function(data){
         $indicator.trigger('complete', ['Video Completed']);
+        $videoDownload
+            .attr('href', data.file)
+            .removeClass('hide');
+
+        setTimeout(function () {
+            $indicator.trigger('reset');
+            enable(true);
+        }, 1500);
+
     });
 
     APP.socket.on('error', function(message){
