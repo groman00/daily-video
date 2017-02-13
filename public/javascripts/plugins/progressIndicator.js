@@ -29,14 +29,12 @@
         },
         updateBarProgress: function (progress) {
             var value = Math.ceil(progress * 100) + '%';
-            this.updateBarWidth(value);
-            this.updateBarText(value);
+            this.updateBar(value, value);
         },
-        updateBarWidth: function (value) {
-            this.$bar.css({ width: value });
-        },
-        updateBarText: function (text) {
-            this.$bar.text(text);
+        updateBar: function (width, text) {
+          this.$bar
+            .css({ width: width })
+            .text(text);
         },
         updateLabel: function (message) {
             this.$label.text(message);
@@ -53,14 +51,12 @@
             this.$bar.toggleClass('active', bool);
         },
         indeterminate: function (message) {
-            this.updateBarWidth('100%');
-            this.updateBarText('');
+            this.updateBar('100%', '');
             this.updateLabel(message);
             this.show();
         },
         error: function (message) {
-            this.updateBarWidth(0);
-            this.updateBarText('');
+            this.updateBar(0, '');
             this.updateLabel(message);
         },
         progress: function (data) {
@@ -73,8 +69,7 @@
         },
         reset: function () {
             this.hide();
-            this.updateBarWidth(0);
-            this.updateBarText('');
+            this.updateBar(0, '');
             this.updateLabel('');
         }
     });

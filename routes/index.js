@@ -13,10 +13,20 @@ var upload = multer({
 });
 
 /**
- * GET: home page
+ * GET: List available slideshows
  */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  var options = {
+    //url: 'http://localhost:3000/fixtures/slideshows.json'
+    url: 'http://alpha.aol.com/slideshows-json'
+  };
+  request(options, function (error, response, body) {
+    var data = JSON.parse(body);
+    res.render('index', {
+      title: 'Select a Slideshow',
+      slideshows: data.results
+    });
+  });
 });
 
 /**
@@ -24,7 +34,7 @@ router.get('/', function(req, res, next) {
  */
 router.get('/slideshow/:id', function(req, res, next) {
   var options = {
-    // url: 'http://localhost:3000/fixtures/slideshow.json'
+    //url: 'http://localhost:3000/fixtures/slideshow.json'
     url: 'http://alpha.aol.com/slideshow-json/' + req.params.id
   };
   request(options, function (error, response, body) {

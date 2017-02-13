@@ -1,103 +1,111 @@
 /**
- * Upload Form
+ * Video Generator
  */
 (function (window, $) {
-    var $carousel = $('#slideshow-carousel');
-    var $form = $('#generator')
-        .on('submit', submit);
-    var $submitButton = $('#submit-button');
-    var $fileInput = $form.find('input[name="audio"]');
-    var $indicator = $('#progressIndicator').progressIndicator();
-    var $videoDownload = $('#videoDownload');
 
-    // var VIDEO_TIME = 120 // in seconds
-    var VIDEO_TIME = 20 // in seconds
-    var imageCount = $carousel.find('.item').length;
-    var slideDuration = Math.ceil(VIDEO_TIME / imageCount);
-    var realVideoDuration = slideDuration * imageCount;
+    "use strict";
 
-    $('#recommendedAudioLength').text('Note: audio should be less than ' + realVideoDuration + ' seconds in length');
+    function Generator() {
+        this.$carousel = $('#slideshow-carousel');
+        this.$form = $('#generator');
+        this.$submitButton = $('#submit-button');
+        this.$fileInput = this.$form.find('input[name="audio"]');
+        this.$indicator = $('#progressIndicator').progressIndicator();
+        this.$downloadLink = $('#videoDownload');
+        this.$audioLength = $('#recommendedAudioLength');
 
-    $carousel.carousel({
-        interval: slideDuration * 1000
-    });
-
-    APP.socket.on('progress', function(data){
-        if (!data.progress) {
-            $indicator.trigger('indeterminate', [data.message]);
-        } else {
-            $indicator.trigger('progress', [data])
+        this.VIDEO_TIME = 20 // in seconds
+        this.imageCount = this.$carousel.find('.item').length;
+        this.slideDuration = Math.ceil(this.VIDEO_TIME / this.imageCount);
+        this.realVideoDuration = this.slideDuration * this.imageCount;
+        this.init();
+        if (APP.socket) {
+            this.bindSocketEvents(APP.socket);
         }
-    });
-
-    APP.socket.on('complete', function(data){
-        $indicator.trigger('complete', ['Video Completed']);
-        $videoDownload
-            .attr('href', data.file)
-            .removeClass('hide');
-
-        setTimeout(function () {
-            $indicator.trigger('reset');
-            enable(true);
-        }, 1500);
-
-    });
-
-    APP.socket.on('error', function(message){
-        $indicator.trigger('error', [message]);
-    });
-
-
-    function enable(bool) {
-        $submitButton.prop('disabled', !bool);
-        $fileInput.prop('disabled', !bool);
-        // $videoDownload
-        //     .attr('href', '')
-        //     .addClass('hide');
     }
 
-    function getSlidesData() {
-        // Create array of image objects for POST
-        return $carousel.find('.item').map(function () {
-            return {
-                image: $(this).children('img').attr('src'),
-                caption: $(this).children('.carousel-caption').text(),
-                template: 'Template_1'
+    $.extend(Generator.prototype, {
+
+        init: function () {
+            this.$form.on('submit', this.submit.bind(this));
+            this.$audioLength.text('Note: audio should be less than ' + this.realVideoDuration + ' seconds in length');
+            this.$carousel.carousel({
+                interval: this.slideDuration * 1000
+            });
+        },
+
+        bindSocketEvents(socket) {
+            socket.on('progress', function (data) {
+                if (!data.progress) {
+                    this.$indicator.trigger('indeterminate', [data.message]);
+                } else {
+                    this.$indicator.trigger('progress', [data])
+                }
+            }.bind(this));
+            socket.on('complete', function (data) {
+                this.$indicator.trigger('complete', ['Video Completed']);
+                this.$downloadLink
+                    .attr('href', data.file)
+                    .removeClass('hide');
+                setTimeout(function () {
+                    this.$indicator.trigger('reset');
+                    this.toggleFormEnabled(true);
+                }.bind(this), 1500);
+            }.bind(this));
+            socket.on('jobError', function (message) {
+                console.log('error', message);
+                this.$indicator.trigger('error', ['Unexpected Error: Please refresh and try again.']);
+            }.bind(this));
+        },
+
+        toggleFormEnabled: function (bool) {
+            this.$submitButton.prop('disabled', !bool);
+            this.$fileInput.prop('disabled', !bool);
+        },
+
+        getSlidesData: function () {
+            // Create array of image objects for POST
+            return this.$carousel.find('.item').map(function (i, slide) {
+                return {
+                    image: $(slide).children('img').attr('src'),
+                    caption: $(slide).children('.carousel-caption').text(),
+                    template: 'Template_1'
+                }
+            }).toArray();
+        },
+
+        submit: function (e) {
+            var formData = new FormData();
+            var file;
+            this.toggleFormEnabled(false);
+            file = this.$fileInput[0].files[0];
+            formData.append('socket_id', APP.socket_id);
+            formData.append('slides', JSON.stringify(this.getSlidesData()));
+            formData.append('videoDuration', this.realVideoDuration);
+            formData.append('slideDuration', this.slideDuration);
+            formData.append('timestamp', '_' + new Date().getTime());
+            if (file){
+                formData.append('audio', file, file.name);
             }
-        }).toArray();
-    }
+            $.ajax({
+                type: 'POST',
+                contentType: false,
+                processData: false,
+                url: '/generate-video',
+                data: formData,
+                beforeSend: function () {
+                    this.$indicator.trigger('indeterminate', ['Uploading...']);
+                }.bind(this),
+                success: function(){
+                    console.log(arguments)
+                }
+            });
 
-    function submit(e) {
-        var formData = new FormData();
-        var file;
-        enable(false);
-        // console.log(slides);
-        file = $fileInput[0].files[0];
-        formData.append('socket_id', APP.socket_id);
-        formData.append('slides', JSON.stringify(getSlidesData()));
-        formData.append('videoDuration', realVideoDuration);
-        formData.append('slideDuration', slideDuration);
-        formData.append('timestamp', '_' + new Date().getTime());
-        if (file){
-            formData.append('audio', file, file.name);
+            return false;
         }
 
-        $.ajax({
-            type: 'POST',
-            contentType: false,
-            processData: false,
-            url: '/generate-video',
-            data: formData,
-            beforeSend: function () {
-                $indicator.trigger('indeterminate', ['Uploading...']);
-            },
-            success: function(){
-                console.log(arguments)
-                // enable(true);
-            }
-        });
+    });
 
-        return false;
-    }
+    var generator = new Generator();
 
 }(window, jQuery));
