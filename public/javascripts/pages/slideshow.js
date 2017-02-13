@@ -74,7 +74,7 @@
                 return {
                     image: $(slide).children('img').attr('src'),
                     caption: $(slide).children('.carousel-caption').text(),
-                    template: 'Template_1'
+                    template: $(slide).children('select').val().replace(/ /g, '_')
                 }
             }).toArray();
         },

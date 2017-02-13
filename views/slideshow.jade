@@ -14,6 +14,10 @@ block content
             each slide, index in slides
               .item(class=index === 0 ? "active" : "")
                 img(src="#{slide.image_url_large}")
+                select.form-control.template-select
+                  option(selected) Template 1
+                  option Template 2
+                  option Template 3
                 .carousel-caption
                   h3!= slide.caption.toUpperCase()
           a.left.carousel-control(href="#slideshow-carousel" data-slide="prev")
