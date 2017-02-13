@@ -48,14 +48,19 @@
                     .attr('href', data.file)
                     .removeClass('hide');
                 setTimeout(function () {
-                    this.$indicator.trigger('reset');
-                    this.toggleFormEnabled(true);
-                }.bind(this), 1500);
+                    this.reset();
+                }.bind(this), 1000);
             }.bind(this));
             socket.on('jobError', function (message) {
                 console.log('error', message);
                 this.$indicator.trigger('error', ['Unexpected Error: Please refresh and try again.']);
             }.bind(this));
+        },
+
+        reset: function () {
+            this.$indicator.trigger('reset');
+            this.toggleFormEnabled(true);
+            this.$fileInput.val('');
         },
 
         toggleFormEnabled: function (bool) {

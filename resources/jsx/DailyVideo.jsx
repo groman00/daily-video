@@ -65,7 +65,6 @@ function DailyVideo() {
 
     // Immediately render comp using Adobe Media Encoder (required for mp4 exports)
     renderQueue.queueInAME(true);
-    //renderQueue.queueInAME(false);
 
     // Once renderering starts, we don't need the project anymore.
     this.closeProject();
@@ -163,6 +162,11 @@ DailyVideo.prototype = {
     }
 };
 
+// Safeguards to prevent application crashing and error dialog boxes
+app.saveProjectOnCrash = false;
+app.onError = function (errString) {};
+
+// Open project model and kick off automation
 app.open(new File(DIR.resources + "aep/DailyVideo.aep"));
 project = app.project;
 video = new DailyVideo();
