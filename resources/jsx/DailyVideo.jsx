@@ -49,7 +49,14 @@ function DailyVideo() {
     audio.parentFolder = this.videoFolder;
     this.masterComp.layers.add(audio, config.videoDuration);
 
+
+
+    project.close(CloseOptions.SAVE_CHANGES);
+
+
+
     // Add master comp to render queue
+    /*
     renderQueue = project.renderQueue;
     renderQueueItem = renderQueue.items.add(this.masterComp);
     renderQueueItem.outputModule(1).setSettings({
@@ -59,15 +66,20 @@ function DailyVideo() {
     });
 
     // Listen to render queue events (Not working: https://forums.adobe.com/message/9318251#9318251)
-    // renderQueueItem.onStatusChanged = function () {
-    //     $.writeln(renderQueueItem.status);
-    // };
+    renderQueueItem.onStatusChanged = function () {
+        $.writeln(renderQueueItem.status);
+    };
+    */
+
+    //renderQueue.render();
+
+
 
     // Immediately render comp using Adobe Media Encoder (required for mp4 exports)
-    renderQueue.queueInAME(true);
+    // renderQueue.queueInAME(true);
 
     // Once renderering starts, we don't need the project anymore.
-    this.closeProject();
+    // this.closeProject();
 }
 
 DailyVideo.prototype = {
