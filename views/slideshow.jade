@@ -12,11 +12,21 @@ block content
               li(data-target="#slideshow-carousel" data-slide-to="#{index}" class=index === 0 ? "active" : "")
           .carousel-inner
             each slide, index in slides
-              .item(class=index === 0 ? "active" : "")
+              .item(class=index === 0 ? "active" : "" data-type="#{slide.type}")
                 img(src="#{slide.image_url_large}")
-                select.form-control.template-select
-                  each template, index in config.templates
-                    option(value="#{template.name}")= template.title
+                .form-inline
+                  .form-group
+                    label Template
+                    select.form-control.template-select
+                      each template, index in config.templates
+                        if template.visible
+                          option(value="#{template.name}")= template.title
+                  .form-group
+                    label
+                    .checkbox
+                      label
+                        input(type="checkbox")
+                        | Add Bumper
                 .carousel-caption
                   h3!= slide.caption.toUpperCase()
           a.left.carousel-control(href="#slideshow-carousel" data-slide="prev")

@@ -14,7 +14,7 @@
         this.$downloadLink = $('#videoDownload');
         this.$audioLength = $('#recommendedAudioLength');
 
-        this.config = window.videoConfig;
+        this.config = this.parseConfig();
         this.VIDEO_TIME = 20 // in seconds
         this.imageCount = this.$carousel.find('.item').length;
         this.slideDuration = Math.ceil(this.VIDEO_TIME / this.imageCount);
@@ -27,12 +27,23 @@
 
     $.extend(Generator.prototype, {
 
+        parseConfig: function() {
+            // Convert templates array into object with keys
+            var config = window.videoConfig;
+            config.templates = config.templates.reduce(function (acc, template) {
+                acc[template.name] = template;
+                return acc;
+            }, {});
+            return config;
+        },
         init: function () {
             this.$form.on('submit', this.submit.bind(this));
             this.$audioLength.text('Note: audio should be less than ' + this.realVideoDuration + ' seconds in length');
             this.$carousel.carousel({
-                interval: this.slideDuration * 1000
+                interval: false
+                //interval: this.slideDuration * 1000
             });
+            this.presetSlideTemplates();
         },
 
         bindSocketEvents(socket) {
@@ -69,20 +80,61 @@
             this.$fileInput.prop('disabled', !bool);
         },
 
+        presetSlideTemplates: function() {
+            // Preselect template based on slide type
+            this.$carousel.find('.item').each(function (i, slide) {
+                $(slide).find('select').val(function () {
+                    switch ($(slide).data('type')) {
+                        case 'quote':
+                            return 'quote';
+                            break;
+                        case 'text':
+                            return 'title_1';
+                            break;
+                        case 'image':
+                        return 'slide_in_out';
+                            break;
+                        default:
+                            return 'share';
+                    }
+                }).trigger('change');
+            });
+        },
+
         getSlidesData: function () {
             // Create array of image objects for POST
-            return this.$carousel.find('.item').map(function (i, slide) {
-                return {
+            var templates = this.config.templates;
+            var slideData;
+            var data = this.$carousel.find('.item').map(function (i, slide) {
+                slideData = [{
                     image: $(slide).children('img').attr('src'),
                     caption: $(slide).children('.carousel-caption').text(),
-                    template: this.config.templates[$(slide).children('select').prop('selectedIndex')]
+                    template: templates[$(slide).find('select').val()]
+                }];
+                if ($(slide).find('input[type="checkbox"]').is(':checked')) {
+                    slideData.unshift({
+                        template: templates['bumper']
+                    });
                 }
+                return slideData;
             }.bind(this)).toArray();
+
+            // todo: add special bumper before joke slide
+
+            data.push({
+                template: templates['share']
+            });
+
+            return data;
         },
 
         submit: function (e) {
             var formData = new FormData();
             var file;
+
+            console.log(JSON.stringify(this.getSlidesData()));
+            //return false;
+
             // this.toggleFormEnabled(false);
             file = this.$fileInput[0].files[0];
             formData.append('socket_id', APP.socket_id);

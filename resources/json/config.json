@@ -4,6 +4,7 @@
         {
             "name": "share",
             "title": "Share",
+            "visible": false,
             "frames": {
                 "total": 90,
                 "in": 0,
@@ -13,6 +14,7 @@
         {
             "name": "bumper",
             "title": "Story Bumper",
+            "visible": false,
             "frames": {
                 "total": 90,
                 "in": 5,
@@ -22,6 +24,7 @@
         {
             "name": "date",
             "title": "Today's Date",
+            "visible": false,
             "frames": {
                 "total": 90,
                 "in": 5,
@@ -31,6 +34,7 @@
         {
             "name": "joke",
             "title": "Joke",
+            "visible": true,
             "frames": {
                 "total": 90,
                 "in": 0,
@@ -40,6 +44,7 @@
         {
             "name": "quote",
             "title": "Quotation",
+            "visible": true,
             "frames": {
                 "total": 90,
                 "in": 0,
@@ -49,6 +54,7 @@
         {
             "name": "title_1",
             "title": "Story Title",
+            "visible": true,
             "frames": {
                 "total": 90,
                 "in": 10,
@@ -58,6 +64,7 @@
         {
             "name": "slide_in_out",
             "title": "Slide In/Out",
+            "visible": true,
             "frames": {
                 "total": 120,
                 "in": 10,
@@ -67,6 +74,7 @@
         {
             "name": "slide_in_out_split",
             "title": "Slide In/Out Splitscreen",
+            "visible": true,
             "frames": {
                 "total": 120,
                 "in": 10,
@@ -76,6 +84,7 @@
         {
             "name": "zoom_in_up",
             "title": "Zoom In/Up",
+            "visible": true,
             "frames": {
                 "total": 120,
                 "in": 10,
