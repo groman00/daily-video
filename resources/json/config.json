@@ -74,17 +74,8 @@
             }
         },
         {
-            "name": "slide_in_up",
-            "title": "Slide In/Up",
-            "frames": {
-                "total": 120,
-                "in": 10,
-                "out": 10
-            }
-        },
-        {
-            "name": "zoom_in_out",
-            "title": "Zoom In/Out",
+            "name": "zoom_in_up",
+            "title": "Zoom In/Up",
             "frames": {
                 "total": 120,
                 "in": 10,

@@ -41,7 +41,8 @@ function DailyVideo() {
 
     // Assign references for top level items and folders
     this.itemCollection = project.items;
-    this.prefabFolder = project.item(1);
+    // this.prefabFolder = project.item(1);
+    this.prefabFolder = this.getFolderByName('Prefabs');
     this.videoFolder = this.itemCollection.addFolder('Video' + timestamp);
 
     // Create master comp and insert into working folder
@@ -56,14 +57,8 @@ function DailyVideo() {
     audio.parentFolder = this.videoFolder;
     this.masterComp.layers.add(audio, config.videoDuration);
 
-
-
-    project.close(CloseOptions.SAVE_CHANGES);
-
-
-
-    // Add master comp to render queue
     /*
+    // Add master comp to render queue
     renderQueue = project.renderQueue;
     renderQueueItem = renderQueue.items.add(this.masterComp);
     renderQueueItem.outputModule(1).setSettings({
@@ -76,10 +71,9 @@ function DailyVideo() {
     renderQueueItem.onStatusChanged = function () {
         $.writeln(renderQueueItem.status);
     };
+
+    renderQueue.render();
     */
-
-    //renderQueue.render();
-
 
 
     // Immediately render comp using Adobe Media Encoder (required for mp4 exports)
@@ -145,6 +139,22 @@ DailyVideo.prototype = {
     },
 
     /**
+     * Find root folder by name
+     * @param  {String} name
+     * @return {FolderItem}
+     */
+    getFolderByName: function (name) {
+        var folder, i;
+        for (i = 1; i <= project.numItems; i ++) {
+            if ((project.item(i) instanceof FolderItem) && (project.item(i).name === name)) {
+                folder = project.item(i);
+                break;
+            }
+        }
+        return folder;
+    },
+
+    /**
      * Create child comps by cloning prefab templates.  Insert into working folder.
      * @return {CompItem[]}
      */
@@ -156,11 +166,10 @@ DailyVideo.prototype = {
             slide = slides[i];
             image = project.importFile(new ImportOptions(File(slide.image)));
             image.parentFolder = this.videoFolder;
-            comp = this.findCompByName(this.prefabFolder, slide.template).duplicate();
+            comp = this.findCompByName(this.prefabFolder, slide.template.name).duplicate();
             comp.name = 'Comp_' + i;
-            comp.layers.add(image); // Import slide image to layer and add to comp
-            comp.layer(2).sourceText.setValue(slide.caption); // Set text layer sourceText
-            comp.layer(2).moveToBeginning(); // Bring text layer to front
+            comp.layer(1).sourceText.setValue(slide.caption); // Set text layer sourceText
+            comp.layer(2).replaceSource(image, true); // Set image source
             comp.parentFolder = this.videoFolder;
             comps.push(comp);
         }
@@ -186,6 +195,7 @@ app.saveProjectOnCrash = false;
 app.onError = function (errString) {};
 
 // Open project model and kick off automation
+//app.open(new File(DIR.resources + "aep/DailyVideo.aep"));
 app.open(new File(DIR.resources + "aep/DailyVideo.aep"));
 project = app.project;
 video = new DailyVideo();

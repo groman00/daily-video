@@ -83,14 +83,10 @@
         submit: function (e) {
             var formData = new FormData();
             var file;
-
-            console.log(this.getSlidesData());
-
-            /*
-            this.toggleFormEnabled(false);
+            // this.toggleFormEnabled(false);
             file = this.$fileInput[0].files[0];
             formData.append('socket_id', APP.socket_id);
-            formData.append('fps', this.videoConfig.fps);
+            formData.append('fps', this.config.fps);
             formData.append('slides', JSON.stringify(this.getSlidesData()));
             formData.append('videoDuration', this.realVideoDuration);
             formData.append('slideDuration', this.slideDuration);
@@ -110,8 +106,7 @@
                 success: function(){
                     console.log(arguments)
                 }
-            });*/
-
+            });
             return false;
         }
 
