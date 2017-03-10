@@ -14,6 +14,7 @@
         this.$downloadLink = $('#videoDownload');
         this.$audioLength = $('#recommendedAudioLength');
 
+        this.config = window.videoConfig;
         this.VIDEO_TIME = 20 // in seconds
         this.imageCount = this.$carousel.find('.item').length;
         this.slideDuration = Math.ceil(this.VIDEO_TIME / this.imageCount);
@@ -74,17 +75,22 @@
                 return {
                     image: $(slide).children('img').attr('src'),
                     caption: $(slide).children('.carousel-caption').text(),
-                    template: $(slide).children('select').val().replace(/ /g, '_')
+                    template: this.config.templates[$(slide).children('select').prop('selectedIndex')]
                 }
-            }).toArray();
+            }.bind(this)).toArray();
         },
 
         submit: function (e) {
             var formData = new FormData();
             var file;
+
+            console.log(this.getSlidesData());
+
+            /*
             this.toggleFormEnabled(false);
             file = this.$fileInput[0].files[0];
             formData.append('socket_id', APP.socket_id);
+            formData.append('fps', this.videoConfig.fps);
             formData.append('slides', JSON.stringify(this.getSlidesData()));
             formData.append('videoDuration', this.realVideoDuration);
             formData.append('slideDuration', this.slideDuration);
@@ -104,7 +110,7 @@
                 success: function(){
                     console.log(arguments)
                 }
-            });
+            });*/
 
             return false;
         }

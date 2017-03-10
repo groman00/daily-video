@@ -15,9 +15,8 @@ block content
               .item(class=index === 0 ? "active" : "")
                 img(src="#{slide.image_url_large}")
                 select.form-control.template-select
-                  option(selected) Template 1
-                  option Template 2
-                  option Template 3
+                  each template, index in config.templates
+                    option(value="#{template.name}")= template.title
                 .carousel-caption
                   h3!= slide.caption.toUpperCase()
           a.left.carousel-control(href="#slideshow-carousel" data-slide="prev")
@@ -43,3 +42,4 @@ block content
                 label.progress-label
                 .progress
                   .progress-bar.progress-bar-striped(style="width: 0%")
+  script(type='text/javascript') window.videoConfig = !{JSON.stringify(config)};

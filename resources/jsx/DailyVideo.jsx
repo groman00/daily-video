@@ -19,6 +19,13 @@ var DIR = {
     exports: __dirname + 'public/exports/'
 };
 
+var fps = 30;
+var utils = {
+    framesToSeconds: function (frames) {
+        return ( frames / fps ) * 60;
+    }
+}
+
 function DailyVideo() {
     var jobs = this.getJSON(DIR.resources + 'json/jobs.json');
     var timestamp = jobs.activeJobs.pop();

@@ -1,3 +1,4 @@
+const fs = require('fs');
 var express = require('express');
 var router = express.Router();
 var request = require('request');
@@ -44,10 +45,18 @@ router.get('/slideshow/:id', function(req, res, next) {
       return false;
     }
     var data = JSON.parse(body);
-    res.render('slideshow', {
-      title: data.title,
-      slides: data.slides,
-      pageScript: 'slideshow'
+    fs.readFile( __dirname + '/../resources/json/config.json', (e, videoConfig) => {
+      if (e) {
+        console.log('Missing Config');
+        res.end('');
+        return false;
+      }
+      res.render('slideshow', {
+        title: data.title,
+        slides: data.slides,
+        config: JSON.parse(videoConfig),
+        pageScript: 'slideshow'
+      });
     });
   });
 });

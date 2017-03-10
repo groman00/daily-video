@@ -1,0 +1,95 @@
+{
+    "fps": 30,
+    "templates": [
+        {
+            "name": "share",
+            "title": "Share",
+            "frames": {
+                "total": 90,
+                "in": 0,
+                "out": 0
+            }
+        },
+        {
+            "name": "bumper",
+            "title": "Story Bumper",
+            "frames": {
+                "total": 90,
+                "in": 5,
+                "out": 5
+            }
+        },
+        {
+            "name": "date",
+            "title": "Today's Date",
+            "frames": {
+                "total": 90,
+                "in": 5,
+                "out": 5
+            }
+        },
+        {
+            "name": "joke",
+            "title": "Joke",
+            "frames": {
+                "total": 90,
+                "in": 0,
+                "out": 0
+            }
+        },
+        {
+            "name": "quote",
+            "title": "Quotation",
+            "frames": {
+                "total": 90,
+                "in": 0,
+                "out": 10
+            }
+        },
+        {
+            "name": "title_1",
+            "title": "Story Title",
+            "frames": {
+                "total": 90,
+                "in": 10,
+                "out": 10
+            }
+        },
+        {
+            "name": "slide_in_out",
+            "title": "Slide In/Out",
+            "frames": {
+                "total": 120,
+                "in": 10,
+                "out": 10
+            }
+        },
+        {
+            "name": "slide_in_out_split",
+            "title": "Slide In/Out Splitscreen",
+            "frames": {
+                "total": 120,
+                "in": 10,
+                "out": 10
+            }
+        },
+        {
+            "name": "slide_in_up",
+            "title": "Slide In/Up",
+            "frames": {
+                "total": 120,
+                "in": 10,
+                "out": 10
+            }
+        },
+        {
+            "name": "zoom_in_out",
+            "title": "Zoom In/Out",
+            "frames": {
+                "total": 120,
+                "in": 10,
+                "out": 10
+            }
+        }
+    ]
+}
