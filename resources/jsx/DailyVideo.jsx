@@ -22,7 +22,7 @@ var DIR = {
 var fps = 30;
 var utils = {
     framesToSeconds: function (frames) {
-        return ( frames / fps ) * 60;
+        return ( frames / fps );
     }
 }
 
@@ -181,11 +181,16 @@ DailyVideo.prototype = {
      * @param {[type]} comps [description]
      */
     addChildCompsToMaster: function (comps) {
-        var duration = this.config.slideDuration;
-        var layer, i;
+        var slides = this.config.slides;
+        var currentPosition = 0;
+        var layer, i, duration, frames;
         for(i = 0, max = comps.length; i < max; i++){
+            frames = slides[i].template.frames;
+            duration = utils.framesToSeconds(frames.total);
             layer = this.masterComp.layers.add(comps[i], duration);
-            layer.startTime = duration * i;
+            layer.moveToEnd();
+            layer.startTime = currentPosition;
+            currentPosition = currentPosition + (duration - utils.framesToSeconds(frames.out));
         }
     }
 };
