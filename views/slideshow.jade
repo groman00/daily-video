@@ -29,6 +29,8 @@ block content
                         | Add Bumper
                 .carousel-caption
                   h3!= slide.caption.toUpperCase()
+                .carousel-title
+                  h4!= slide.title
           a.left.carousel-control(href="#slideshow-carousel" data-slide="prev")
             span.glyphicon.glyphicon-chevron-left
           a.right.carousel-control(href="#slideshow-carousel" data-slide="next")

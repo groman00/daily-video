@@ -17,18 +17,29 @@
 }
 
 .carousel-caption {
-    right: 48px;
-    bottom: 48px;
-    left: 48px;
+    top: 50px;
+    right: 50px;
+    left: 50px;
     padding-top: 0;
     padding-bottom: 0;
-    text-align: left;
+    text-align: center;
+    bottom: auto;
 }
 
-.carousel-caption h3{
+.carousel-caption h3 {
+    margin: 0;
     font-size: 30px;
     line-height: 1.4;
     text-shadow: 2px 2px 2px rgba(0,0,0, 1);
+}
+
+.carousel-title {
+    text-align: center;
+    color: white;
+    position:absolute;
+    right: 50px;
+    bottom: 80px;
+    left: 50px;
 }
 
 #videoDownload {

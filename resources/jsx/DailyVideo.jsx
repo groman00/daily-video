@@ -161,24 +161,31 @@ DailyVideo.prototype = {
     generateChildComps: function () {
         var slides = this.config.slides;
         var comps = [];
-        var comp, slide, image, i;
+        var comp, slide, image, templateName, i;
         for(i = 0, max = slides.length; i < max; i++){
             slide = slides[i];
-            comp = this.findCompByName(this.prefabFolder, slide.template.name).duplicate();
+            templateName = slide.template.name;
+            comp = this.findCompByName(this.prefabFolder, templateName).duplicate();
             comp.name = 'Comp_' + i;
 
             /**
              * todo
              * Clean up this logic.  Handle quotation authors.  Handle Joke and punchline.
              */
-            if (!/bumper|share/.test(slide.template.name)) {
+            if (!/bumper|share/.test(templateName)) {
                 comp.layer(1).sourceText.setValue(slide.caption); // Set text layer sourceText
             }
-            if (!/bumper|share|quote|joke|title_1/.test(slide.template.name)) {
+
+            if (!/bumper|share|quote|joke|title_1/.test(templateName)) {
                 image = project.importFile(new ImportOptions(File(slide.image)));
                 image.parentFolder = this.videoFolder;
                 comp.layer(2).replaceSource(image, true); // Set image source
             }
+
+            if (/joke|quote/.test(templateName)) {
+                comp.layer(2).sourceText.setValue(slide.title); // Set text layer sourceText
+            }
+
             comp.parentFolder = this.videoFolder;
             comps.push(comp);
         }

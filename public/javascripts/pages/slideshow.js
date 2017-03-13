@@ -109,6 +109,7 @@
             var data = this.$carousel.find('.item').map(function (i, slide) {
                 slideData = [{
                     image: $(slide).children('img').attr('src'),
+                    title: $(slide).children('.carousel-title').text(),
                     caption: $(slide).children('.carousel-caption').text(),
                     template: templates[$(slide).find('select').val()]
                 }];
