@@ -7,7 +7,6 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var app = express();
 
-console.log('hello')
 /* Socket.io */
 app.io = require('socket.io')()
 app.io.on('connection', function(socket){

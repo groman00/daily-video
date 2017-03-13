@@ -12,7 +12,7 @@
 #include "../js/json2.js"
 var video;
 var project;
-var __dirname = '/Library/WebServer/Documents/alpha/daily-video/';
+var __dirname = '/Library/WebServer/Documents/alpha/daily-video/'; // Can we get this via command line? http://stackoverflow.com/questions/33732071/how-to-use-terminal-command-using-extendscript-toolkit
 var DIR = {
     resources: __dirname + 'resources/',
     temp: __dirname + 'temp/',
