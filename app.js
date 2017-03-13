@@ -7,6 +7,8 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var app = express();
 
+require('dotenv').config();
+
 /* Socket.io */
 app.io = require('socket.io')()
 app.io.on('connection', function(socket){
