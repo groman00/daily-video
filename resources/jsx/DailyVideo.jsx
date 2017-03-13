@@ -12,7 +12,7 @@
 #include "../js/json2.js"
 var video;
 var project;
-var __dirname = system.callSystem("pwd").replace('/resources/jsx', '/');
+var __dirname = system.callSystem("pwd").split('resources/jsx')[0];
 var DIR = {
     resources: __dirname + 'resources/',
     temp: __dirname + 'temp/',
