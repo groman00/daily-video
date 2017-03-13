@@ -22,6 +22,16 @@
             }
         },
         {
+            "name": "bumper_joke",
+            "title": "Joke Bumper",
+            "visible": false,
+            "frames": {
+                "total": 90,
+                "in": 0,
+                "out": 5
+            }
+        },
+        {
             "name": "date",
             "title": "Today's Date",
             "visible": false,

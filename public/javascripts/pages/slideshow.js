@@ -1,9 +1,15 @@
 /**
  * Video Generator
  */
+
 (function (window, $) {
 
     "use strict";
+
+    Date.prototype.getMonthText = function() {
+        var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        return months[this.getMonth()];
+    }
 
     function Generator() {
         this.$carousel = $('#slideshow-carousel');
@@ -103,25 +109,38 @@
         },
 
         getSlidesData: function () {
+            // todo: Clean this up
             // Create array of image objects for POST
             var templates = this.config.templates;
-            var slideData;
+            var slideData, template;
+            var now = new Date();
             var data = this.$carousel.find('.item').map(function (i, slide) {
+                template = templates[$(slide).find('select').val()];
                 slideData = [{
                     image: $(slide).children('img').attr('src'),
                     title: $(slide).children('.carousel-title').text(),
                     caption: $(slide).children('.carousel-caption').text(),
-                    template: templates[$(slide).find('select').val()]
+                    template: template
                 }];
                 if ($(slide).find('input[type="checkbox"]').is(':checked')) {
                     slideData.unshift({
                         template: templates['bumper']
                     });
                 }
+                if (template.name === 'joke') {
+                    slideData.unshift({
+                        template: templates['bumper_joke']
+                    });
+                }
                 return slideData;
             }.bind(this)).toArray();
 
             // todo: add special bumper before joke slide
+            data.splice(1, 0, {
+                template: templates['date'],
+                title: now.getDate(),
+                caption: now.getMonthText().toUpperCase(),
+            })
 
             data.push({
                 template: templates['share']
@@ -134,8 +153,9 @@
             var formData = new FormData();
             var file;
 
-            console.log(JSON.stringify(this.getSlidesData()));
-            //return false;
+            //console.log(JSON.stringify(this.getSlidesData()));
+            console.log(this.getSlidesData());
+            // return false;
 
             // this.toggleFormEnabled(false);
             file = this.$fileInput[0].files[0];

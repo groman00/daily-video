@@ -170,19 +170,19 @@ DailyVideo.prototype = {
 
             /**
              * todo
-             * Clean up this logic.  Handle quotation authors.  Handle Joke and punchline.
+             * Clean up this logic.  Handle quotation authors and quotation marks.  Handle Joke and punchline.
              */
             if (!/bumper|share/.test(templateName)) {
                 comp.layer(1).sourceText.setValue(slide.caption); // Set text layer sourceText
             }
 
-            if (!/bumper|share|quote|joke|title_1/.test(templateName)) {
+            if (!/bumper|share|quote|joke|title_1|date/.test(templateName)) {
                 image = project.importFile(new ImportOptions(File(slide.image)));
                 image.parentFolder = this.videoFolder;
                 comp.layer(2).replaceSource(image, true); // Set image source
             }
 
-            if (/joke|quote/.test(templateName)) {
+            if (/^joke$|quote|date/.test(templateName)) {
                 comp.layer(2).sourceText.setValue(slide.title); // Set text layer sourceText
             }
 
