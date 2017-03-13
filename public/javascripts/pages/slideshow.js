@@ -25,7 +25,13 @@
         this.VIDEO_TIME = 120 // This should be determined by the frames set in slide template config
         this.imageCount = this.$carousel.find('.item').length;
         this.slideDuration = Math.ceil(this.VIDEO_TIME / this.imageCount);
-        this.realVideoDuration = this.slideDuration * this.imageCount;
+
+        this.realVideoDuration = 0;
+        // this.realVideoDuration = this.slideDuration * this.imageCount;
+
+
+        console.log(this.realVideoDuration);
+
         this.init();
         if (APP.socket) {
             this.bindSocketEvents(APP.socket);
@@ -151,19 +157,23 @@
 
         submit: function (e) {
             var formData = new FormData();
+            var slideData = this.getSlidesData();
+            var frames;
             var file;
+            var totalFrames = slideData.reduce(function (acc, data) {
+                frames = data.template.frames;
+                return acc + (frames.total - frames.out);
+            }, 0);
 
             //console.log(JSON.stringify(this.getSlidesData()));
             console.log(this.getSlidesData());
-            // return false;
 
             // this.toggleFormEnabled(false);
             file = this.$fileInput[0].files[0];
             formData.append('socket_id', APP.socket_id);
             formData.append('fps', this.config.fps);
-            formData.append('slides', JSON.stringify(this.getSlidesData()));
-            formData.append('videoDuration', this.realVideoDuration);
-            // formData.append('slideDuration', this.slideDuration);
+            formData.append('slides', JSON.stringify(slideData));
+            formData.append('videoDuration', (totalFrames / this.config.fps));
             formData.append('timestamp', '_' + new Date().getTime());
             if (file){
                 formData.append('audio', file, file.name);

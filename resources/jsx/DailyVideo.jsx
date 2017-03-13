@@ -79,7 +79,7 @@ function DailyVideo() {
     // renderQueue.queueInAME(true);
 
     // Once renderering starts, we don't need the project anymore.
-    // this.closeProject();
+    this.closeProject();
 }
 
 DailyVideo.prototype = {
