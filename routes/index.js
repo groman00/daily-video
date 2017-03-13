@@ -76,7 +76,7 @@ router.post('/generate-video', upload.single('audio'), function (req, res, next)
       audio: audio,
       slides: JSON.parse(slides),
       videoDuration: req.body.videoDuration,
-      slideDuration: req.body.slideDuration,
+      //slideDuration: req.body.slideDuration,
       timestamp: req.body.timestamp
     });
     res.end('success');

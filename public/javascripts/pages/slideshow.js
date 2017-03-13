@@ -15,7 +15,8 @@
         this.$audioLength = $('#recommendedAudioLength');
 
         this.config = this.parseConfig();
-        this.VIDEO_TIME = 20 // in seconds
+        // this.VIDEO_TIME = 20 // in seconds
+        this.VIDEO_TIME = 120 // This should be determined by the frames set in slide template config
         this.imageCount = this.$carousel.find('.item').length;
         this.slideDuration = Math.ceil(this.VIDEO_TIME / this.imageCount);
         this.realVideoDuration = this.slideDuration * this.imageCount;
@@ -40,8 +41,8 @@
             this.$form.on('submit', this.submit.bind(this));
             this.$audioLength.text('Note: audio should be less than ' + this.realVideoDuration + ' seconds in length');
             this.$carousel.carousel({
-                interval: false
-                //interval: this.slideDuration * 1000
+                // interval: false
+                interval: this.slideDuration * 1000 // Need to tweak this so it matches template config
             });
             this.presetSlideTemplates();
         },
@@ -141,7 +142,7 @@
             formData.append('fps', this.config.fps);
             formData.append('slides', JSON.stringify(this.getSlidesData()));
             formData.append('videoDuration', this.realVideoDuration);
-            formData.append('slideDuration', this.slideDuration);
+            // formData.append('slideDuration', this.slideDuration);
             formData.append('timestamp', '_' + new Date().getTime());
             if (file){
                 formData.append('audio', file, file.name);
