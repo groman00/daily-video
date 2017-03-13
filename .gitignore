@@ -1,6 +1,5 @@
 node_modules
 resources/aep/Adobe After Effects Auto-Save
 resources/aep/DailyVideo_AME
-public/exports
 .env
 npm-debug.log
