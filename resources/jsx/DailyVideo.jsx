@@ -12,13 +12,12 @@
 #include "../js/json2.js"
 var video;
 var project;
-var __dirname = '/Library/WebServer/Documents/alpha/daily-video/'; // Can we get this via command line? http://stackoverflow.com/questions/33732071/how-to-use-terminal-command-using-extendscript-toolkit
+var __dirname = system.callSystem("pwd").replace('/resources/jsx', '/');
 var DIR = {
     resources: __dirname + 'resources/',
     temp: __dirname + 'temp/',
     exports: __dirname + 'public/exports/'
 };
-
 var fps = 30;
 var utils = {
     framesToSeconds: function (frames) {
@@ -216,7 +215,6 @@ app.saveProjectOnCrash = false;
 app.onError = function (errString) {};
 
 // Open project model and kick off automation
-//app.open(new File(DIR.resources + "aep/DailyVideo.aep"));
 app.open(new File(DIR.resources + "aep/DailyVideo.aep"));
 project = app.project;
 video = new DailyVideo();
