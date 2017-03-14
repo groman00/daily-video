@@ -1,3 +1,4 @@
+const fs = require('fs');
 var express = require('express');
 var router = express.Router();
 var request = require('request');
@@ -26,20 +27,17 @@ router.get('/slideshows/:id', function(req, res, next) {
       return false;
     }
     var data = JSON.parse(body);
-    res.send(JSON.stringify(data));
-    // fs.readFile( __dirname + '/../resources/json/config.json', (e, videoConfig) => {
-    //   if (e) {
-    //     console.log('Missing Config');
-    //     res.end('');
-    //     return false;
-    //   }
-    //   res.render('slideshow', {
-    //     title: data.title,
-    //     slides: data.slides,
-    //     config: JSON.parse(videoConfig),
-    //     pageScript: 'slideshow'
-    //   });
-    // });
+    fs.readFile( __dirname + '/../resources/json/config.json', (e, config) => {
+      if (e) {
+        console.log('Missing Config');
+        res.end('{}');
+        return false;
+      }
+      res.send(JSON.stringify({
+        slideshow: data,
+        config: JSON.parse(config)
+      }));
+    });
   });
 });
 

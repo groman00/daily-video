@@ -5,14 +5,14 @@
         <div class="panels flex-grow-1">
             <div class="panels-top flex-grow-1">
                 <div class="panel-left">
-                    <video-editor :slides="slides"></video-editor>
+                    <video-editor :slides="slides" :templates="templates"></video-editor>
                 </div>
                 <div class="panel-right">
                     <video-preview src="/videos/bumper.mp4"></video-preview>
                 </div>
             </div>
             <div class="panels-bottom flex-grow-0">
-                <video-toolbar></video-toolbar>
+                <video-toolbar :onSubmit="generateVideo"></video-toolbar>
             </div>
         </div>
     </div>
@@ -23,7 +23,9 @@
     export default {
         data() {
             return {
-                slides: []
+                slides: [],
+                fps: 0,
+                templates: {}
             }
         },
         created() {
@@ -31,15 +33,58 @@
         },
         methods: {
             fetchData() {
+                let body;
                 this.$http.get(api.route('slideshow', { id: this.$route.params.id }))
                     .then((response) => {
-                        this.slides = response.body.slides;
+                        body = response.body;
+                        this.fps = body.config.fps;
+                        this.templates = this.parseTemplates(body.config.templates);
+                        this.slides = this.parseSlides(body.slideshow.slides);
+                        console.log(this.slides);
                     }, (response) => {
                         // console.log('error', response);
                     });
             },
+            /**
+             * Convert templates array to object with keys
+             * @param  {Array} templates
+             * @return {Object}
+             */
+            parseTemplates(templates) {
+
+                return templates.reduce(function (acc, template) {
+                    acc[template.name] = template;
+                    return acc;
+                }, {});
+            },
+            /**
+             * Pre-assign templates to slides based on slide type.
+             * @param  {Array} slides
+             * @return {Array}
+             */
+            parseSlides(slides) {
+                let type;
+                return slides.map((slide) => {
+                    switch (slide.type) {
+                        case 'quote':
+                            type = 'quote';
+                            break;
+                        case 'text':
+                            type = 'title_1';
+                            break;
+                        default:
+                            type = 'slide_in_out';
+                    }
+                    slide.template = this.templates[type];
+                    return slide;
+                });
+            },
             goBack() {
                 this.$router.push({ name: 'home' });
+            },
+            generateVideo() {
+                console.log(this.slides);
+                return false;
             }
         }
     }
