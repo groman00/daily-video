@@ -5,3 +5,51 @@ body{
 img {
     display: block;
 }
+
+html,
+body,
+#app,
+.page-wrapper {
+    height: 100%;
+}
+.page-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-shrink-0 {
+    flex-shrink: 0;
+}
+
+.flex-grow-1 {
+    flex-grow: 1;
+}
+
+.video-page {
+
+    .panels {
+        display: flex;
+        flex-flow: column;
+        align-items: stretch;
+    }
+
+    .panels-top {
+        display: flex;
+        flex-flow: row wrap;
+        align-items: stretch;
+    }
+
+    .panel-left,
+    .panel-right {
+        flex: 0 0 50%;
+
+        > div {
+            height: 100%;
+            width: 100%;
+        }
+    }
+
+    .panels-bottom {
+        height: 300px;
+    }
+}

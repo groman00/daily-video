@@ -1,13 +1,20 @@
 <style scoped></style>
 <template>
-    <div class="page-wrapper">
+    <div class="video-page page-wrapper">
         <app-bar :config="{ buttonLeft: 'back' }" :onBackButton="goBack"></app-bar>
-        <div v-if="slides.length" class="grid">
-            <div class="cell-m-4" v-for="slide in slides" key="slide.id">
-                <thumbnail :title="slide.title" :image="slide.image_url_thumb"></thumbnail>
+        <div class="panels flex-grow-1">
+            <div class="panels-top flex-grow-1">
+                <div class="panel-left">
+                    <video-editor :slides="slides"></video-editor>
+                </div>
+                <div class="panel-right">
+                    <video-preview src="/videos/bumper.mp4"></video-preview>
+                </div>
+            </div>
+            <div class="panels-bottom flex-grow-0">
+                <video-toolbar></video-toolbar>
             </div>
         </div>
-        <loading-indicator v-else></loading-indicator>
     </div>
 </template>
 <script>

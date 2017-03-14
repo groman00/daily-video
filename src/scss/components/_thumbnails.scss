@@ -3,8 +3,8 @@
 
     .thumbnail-image {
         border: solid 1px $white;
-
-        margin-bottom: $gutter;
+        border-radius: 12px;
+        margin-bottom: $gutter-narrow;
     }
 
     .thumbnail-title {}
@@ -20,6 +20,7 @@ a:hover .thumbnail {
 .thumbnail-large {
 
     .thumbnail-image {
-        border-radius: 45px;
+        border-radius: 44px;
+        margin-bottom: $gutter;
     }
 }

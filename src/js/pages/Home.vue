@@ -1,8 +1,8 @@
 <style scoped></style>
 <template>
-    <div class="page-wrapper">
+    <div class="home-page page-wrapper">
         <app-bar></app-bar>
-        <div v-if="slideshows.length" class="grid">
+        <div v-if="slideshows.length" class="grid flex-grow-1">
             <div class="cell-m-4" v-for="slideshow in slideshows" key="slideshow.id">
                 <router-link :to="{ name: 'video', params: { id: slideshow.id } }" exact>
                     <thumbnail size="large" :title="slideshow.title" :image="slideshow.image_url_thumb"></thumbnail>
