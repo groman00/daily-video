@@ -3,3 +3,5 @@ resources/aep/Adobe After Effects Auto-Save
 resources/aep/DailyVideo_AME
 .env
 npm-debug.log
+public/css
+public/js

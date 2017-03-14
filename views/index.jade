@@ -1,15 +1,5 @@
 extends layout
 
 block content
-  .container
-    .page-header
-      h1= title
-    .row
-      each slideshow, index in slideshows
-        .col-xs-12.col-sm-6.col-md-3
-          .thumbnail
-            img(src="#{slideshow.image_url_thumb}")
-            .caption
-              p= slideshow.title.substr(0, 60)
-                p
-                  a.btn.btn-primary(href="/slideshow/#{slideshow.id}") Select
+    #app
+        router-view

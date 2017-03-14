@@ -5,14 +5,8 @@ html(lang="en")
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     title= title
-    link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/css/style.css')
   body
     block content
     script(src='/socket.io/socket.io.js')
-    script(src='/javascripts/vendor/jquery-2.2.4.min.js')
-    script(src='/javascripts/vendor/bootstrap.min.js')
-    script(src='/javascripts/script.js')
-    script(src='/javascripts/plugins/progressIndicator.js')
-    if pageScript
-        script(src='/javascripts/pages/#{pageScript}.js')
+    script(src='/js/bundle.js')
