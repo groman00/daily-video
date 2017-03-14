@@ -7,8 +7,8 @@ function Api() {
     var match;
     this.router = new VueRouter({
         routes: [
-            // { path: host + '/gallery', name: 'galleries' },
-            // { path: host + '/gallery/:id', name: 'gallery' }
+            { path: host + '/slideshows', name: 'slideshows' },
+            { path: host + '/slideshows/:id', name: 'slideshow' }
         ]
     });
     this.route = function (name = '', params = {}) {

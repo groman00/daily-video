@@ -1,0 +1,74 @@
+body {
+    font-family: $font-family-base;
+    font-size: $font-size-base;
+    font-weight: $font-weight-regular;
+    line-height: $line-height-base;
+    color: $white;
+}
+
+a,
+a:visited,
+a:active,
+a:focus {
+    text-decoration: none;
+    outline: 0;
+    // color: $gray-light;
+}
+
+a:hover{
+    text-decoration: underline;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6{
+    // font-weight: $font-weight-semibold;
+    // line-height: $line-height-heading;
+    margin: 0;
+    padding: 0;
+}
+
+p {
+    margin: 0;
+    padding: 0;
+}
+
+// h1,
+// h2,
+// .h1,
+// .h2 {
+//     font-family: $font-family-secondary;
+//     font-weight: $font-weight-bold;
+// }
+
+// h1,
+// .h1 {
+//     font-size: 34px;
+// }
+
+// h2,
+// .h2 {
+//     font-size: 24px;
+// }
+
+// h3,
+// .h3 {
+//     font-size: 18px;
+//     letter-spacing: 0.6px;
+// }
+
+// h4,
+// .h4 {
+//     font-size: $font-size-mobile-base;
+//     font-weight: $font-weight-normal;
+// }
+
+// h5,
+// .h5 {
+//     font-size: 14px;
+// }
+
+// p {}

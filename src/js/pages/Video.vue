@@ -1,12 +1,10 @@
 <style scoped></style>
 <template>
     <div class="page-wrapper">
-        <app-bar></app-bar>
-        <div v-if="slideshows.length" class="grid">
-            <div class="cell-m-4" v-for="slideshow in slideshows" key="slideshow.id">
-                <router-link :to="{ name: 'video', params: { id: slideshow.id } }" exact>
-                    <thumbnail size="large" :title="slideshow.title" :image="slideshow.image_url_thumb"></thumbnail>
-                </router-link>
+        <app-bar :config="{ buttonLeft: 'back' }" :onBackButton="goBack"></app-bar>
+        <div v-if="slides.length" class="grid">
+            <div class="cell-m-4" v-for="slide in slides" key="slide.id">
+                <thumbnail :title="slide.title" :image="slide.image_url_thumb"></thumbnail>
             </div>
         </div>
         <loading-indicator v-else></loading-indicator>
@@ -18,7 +16,7 @@
     export default {
         data() {
             return {
-                slideshows: []
+                slides: []
             }
         },
         created() {
@@ -26,12 +24,15 @@
         },
         methods: {
             fetchData() {
-                this.$http.get(api.route('slideshows'))
+                this.$http.get(api.route('slideshow', { id: this.$route.params.id }))
                     .then((response) => {
-                        this.slideshows = response.body.results;
+                        this.slides = response.body.slides;
                     }, (response) => {
                         // console.log('error', response);
                     });
+            },
+            goBack() {
+                this.$router.push({ name: 'home' });
             }
         }
     }

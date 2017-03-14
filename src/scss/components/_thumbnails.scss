@@ -1,0 +1,25 @@
+.thumbnail {
+    color: $white;
+
+    .thumbnail-image {
+        border: solid 1px $white;
+
+        margin-bottom: $gutter;
+    }
+
+    .thumbnail-title {}
+}
+
+a:hover .thumbnail {
+
+    .thumbnail-image {
+        opacity: .65;
+    }
+}
+
+.thumbnail-large {
+
+    .thumbnail-image {
+        border-radius: 45px;
+    }
+}

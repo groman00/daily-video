@@ -9,10 +9,7 @@ router.get('/slideshows', function(req, res, next) {
   res.setHeader('Content-Type', 'application/json');
   request(options, function (error, response, body) {
     var data = JSON.parse(body);
-    res.send(JSON.stringify({
-      title: 'Select a Slideshow',
-      slideshows: data.results
-    }));
+    res.send(JSON.stringify(data));
   });
 });
 

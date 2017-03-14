@@ -4,7 +4,7 @@
 $tablet-width: 767px;
 $desktop-width: 1024px;
 $app-bar-height: 50px;
-$gutter: 15px;
+$gutter: 24px;
 $gutter-wide: $gutter * 2;
 
 // ==========================================================================
@@ -17,13 +17,13 @@ $grey-dark: #373737;
 // ==========================================================================
 // Font Families
 // ==========================================================================
-$font-family-base: sans-serif;
+$font-family-base: "Gill Sans", sans-serif;
 $font-family-alt: serif;
 
 // ==========================================================================
 // Font Sizes
 // ==========================================================================
-$font-size-base: 15px;
+$font-size-base: 16px;
 $font-size-largest: $font-size-base + 3;
 $font-size-larger: $font-size-base + 2;
 $font-size-large: $font-size-base + 1;
@@ -31,8 +31,7 @@ $font-size-small: $font-size-base - 1;
 $font-size-smaller: $font-size-base - 2;
 $font-size-smallest: $font-size-base - 3;
 
-$line-height-base: 17 / 15;
-$line-height-smaller: 15 / 13;
+$line-height-base: 19 / 16;
 
 // ==========================================================================
 // Font Weights

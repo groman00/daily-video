@@ -1,0 +1,103 @@
+.clearfix:before,
+.clearfix:after{
+	display: table;
+	content: " ";
+}
+
+.clearfix:after{
+	clear: both;
+}
+
+.pull-left{
+	float:left;
+}
+
+.pull-right{
+	float:right;
+}
+
+.text-left{
+    text-align:left;
+}
+
+.text-right{
+    text-align:right;
+}
+
+.text-center{
+    text-align:center;
+}
+
+.text-justify {
+    text-align: justify;
+}
+
+.text-nowrap {
+    white-space: nowrap;
+}
+
+.text-lowercase {
+    text-transform: lowercase;
+}
+
+.text-uppercase {
+    text-transform: uppercase;
+}
+
+.text-capitalize {
+    text-transform: capitalize;
+}
+
+.hide{
+	display:none !important;
+}
+
+.invisible-mobile {
+    visibility: hidden;
+}
+
+.hidden-mobile {
+    display: none;
+}
+
+.no-highlight{
+    -webkit-tap-highlight-color: transparent;
+}
+
+.table{
+    display:table;
+}
+
+.table-cell{
+    display:table-cell;
+}
+
+.table-row{
+    display:table-row;
+}
+
+.overflow-hidden{
+    overflow:hidden;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0;
+}
+
+@include media-tablet {
+
+    .invisible-mobile{
+        visibility: visible;
+    }
+
+    .hidden-mobile {
+        display: block;
+    }
+}
