@@ -2,23 +2,13 @@
     "fps": 30,
     "templates": [
         {
-            "name": "share",
-            "title": "Share",
-            "visible": false,
-            "frames": {
-                "total": 90,
-                "in": 0,
-                "out": 0
-            }
-        },
-        {
             "name": "bumper",
             "title": "Story Bumper",
             "visible": false,
             "frames": {
                 "total": 90,
-                "in": 5,
-                "out": 5
+                "in": 10,
+                "out": 10
             }
         },
         {
@@ -28,23 +18,31 @@
             "frames": {
                 "total": 90,
                 "in": 0,
-                "out": 5
+                "out": 10
             }
         },
         {
             "name": "date",
             "title": "Today's Date",
             "visible": false,
+            "characters": {
+                "title": 100,
+                "caption": 100
+            },
             "frames": {
                 "total": 90,
-                "in": 5,
-                "out": 5
+                "in": 0,
+                "out": 10
             }
         },
         {
             "name": "joke",
             "title": "Joke",
             "visible": true,
+            "characters": {
+                "title": 99,
+                "caption": 113
+            },
             "frames": {
                 "total": 90,
                 "in": 0,
@@ -55,6 +53,10 @@
             "name": "quote",
             "title": "Quotation",
             "visible": true,
+            "characters": {
+                "title": 48,
+                "caption": 118
+            },
             "frames": {
                 "total": 90,
                 "in": 0,
@@ -62,19 +64,22 @@
             }
         },
         {
-            "name": "title_1",
-            "title": "Story Title",
-            "visible": true,
+            "name": "share",
+            "title": "Share",
+            "visible": false,
             "frames": {
                 "total": 90,
-                "in": 10,
-                "out": 10
+                "in": 0,
+                "out": 0
             }
         },
         {
             "name": "slide_in_out",
             "title": "Slide In/Out",
             "visible": true,
+            "characters": {
+                "caption": 97
+            },
             "frames": {
                 "total": 120,
                 "in": 10,
@@ -85,8 +90,24 @@
             "name": "slide_in_out_split",
             "title": "Slide In/Out Splitscreen",
             "visible": true,
+            "characters": {
+                "caption": 85
+            },
             "frames": {
                 "total": 120,
+                "in": 10,
+                "out": 10
+            }
+        },
+        {
+            "name": "title_1",
+            "title": "Story Title",
+            "visible": true,
+            "characters": {
+                "caption": 64
+            },
+            "frames": {
+                "total": 90,
                 "in": 10,
                 "out": 10
             }
@@ -95,6 +116,9 @@
             "name": "zoom_in_up",
             "title": "Zoom In/Up",
             "visible": true,
+            "characters": {
+                "caption": 95
+            },
             "frames": {
                 "total": 120,
                 "in": 10,
