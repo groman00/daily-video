@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "build": "webpack --progress",
+    "watch": "webpack --progress --watch"
   },
   "dependencies": {
     "async": "^2.1.5",
