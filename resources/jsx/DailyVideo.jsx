@@ -160,7 +160,7 @@ DailyVideo.prototype = {
     generateChildComps: function () {
         var slides = this.config.slides;
         var comps = [];
-        var comp, slide, image, templateName, characters, i;
+        var comp, slide, image, title, caption, templateName, characters, i;
         for(i = 0, max = slides.length; i < max; i++){
             slide = slides[i];
             templateName = slide.template.name;
@@ -171,9 +171,14 @@ DailyVideo.prototype = {
             /**
              * todo
              * Clean up this logic.  Handle quotation authors and quotation marks.  Handle Joke and punchline.
+             * Maybe give each slide type it's own render function?
              */
             if (!/bumper|share/.test(templateName)) {
-                comp.layer(1).sourceText.setValue(slide.caption.substr(0, characters.caption)); // Set text layer sourceText
+                caption = slide.caption.substr(0, characters.caption);
+                if (templateName === 'quote') {
+                    caption = '"' + caption + '"';
+                }
+                comp.layer(1).sourceText.setValue(caption); // Set text layer sourceText
             }
 
             if (!/bumper|share|quote|joke|title_1|date/.test(templateName)) {
@@ -183,7 +188,11 @@ DailyVideo.prototype = {
             }
 
             if (/^joke$|quote|date/.test(templateName)) {
-                comp.layer(2).sourceText.setValue(slide.title.substr(0, characters.title)); // Set text layer sourceText
+                title = slide.title.substr(0, characters.title);
+                if (templateName === 'quote') {
+                    title = '- ' + title;
+                }
+                comp.layer(2).sourceText.setValue(title); // Set text layer sourceText
             }
 
             comp.parentFolder = this.videoFolder;

@@ -106,7 +106,7 @@
                 });
                 slides.splice(1, 0, {
                     template: templates['date'],
-                    title: now.getDate(),
+                    title: now.getDate().toString(),
                     caption: now.getMonthText().toUpperCase(),
                 });
                 slides.push({
