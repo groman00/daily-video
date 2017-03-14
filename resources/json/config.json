@@ -104,7 +104,7 @@
             "title": "Story Title",
             "visible": true,
             "characters": {
-                "caption": 64
+                "caption": 42
             },
             "frames": {
                 "total": 90,

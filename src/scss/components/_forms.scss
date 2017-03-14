@@ -2,3 +2,14 @@ input,
 textarea {
     // color: $grey-dark;
 }
+
+.form-control {
+    display: block;
+
+    input[type="text"],
+    textarea,
+    select {
+      width:100%;
+      margin-bottom: $gutter-narrow;
+    }
+}
