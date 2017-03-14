@@ -13,6 +13,9 @@
                 <textarea v-model="slide.caption" placeholder="Add a caption">
                     {{ slide.caption }}
                 </textarea>
+                <label>
+                    <input type="checkbox" v-model="slide.bumper"> Add Bumper
+                </label>
             </div>
         </div>
         <loading-indicator v-else></loading-indicator>
@@ -21,5 +24,6 @@
 <script>
     export default {
         props: ['slides', 'templates']
+
     }
 </script>

@@ -8,7 +8,8 @@ function Api() {
     this.router = new VueRouter({
         routes: [
             { path: host + '/slideshows', name: 'slideshows' },
-            { path: host + '/slideshows/:id', name: 'slideshow' }
+            { path: host + '/slideshows/:id', name: 'slideshow' },
+            { path: host + '/generate-video', name: 'generate-video' }
         ]
     });
     this.route = function (name = '', params = {}) {

@@ -2,7 +2,14 @@
 <template>
     <div class="video-toolbar">
         <h3>Video Toolbar</h3>
-        <button @click="submit">Generate Video</button>
+        <div class="grid">
+            <div class="cell-m-4">
+                <button class="button" @click="submit">Generate Video</button>
+            </div>
+            <div class="cell-m-4">
+                Audio File: <input ref="audio" type="file" name="audio" accept=".mp3">
+            </div>
+        </div>
     </div>
 </template>
 <script>
@@ -17,6 +24,9 @@
         methods: {
             submit() {
                 this.onSubmit();
+            },
+            getAudioFile() {
+                return this.$refs.audio.files[0];
             }
         }
     }

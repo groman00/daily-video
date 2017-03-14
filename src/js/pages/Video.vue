@@ -12,7 +12,7 @@
                 </div>
             </div>
             <div class="panels-bottom flex-grow-0">
-                <video-toolbar :onSubmit="generateVideo"></video-toolbar>
+                <video-toolbar ref="videoToolbar" :onSubmit="generateVideo"></video-toolbar>
             </div>
         </div>
     </div>
@@ -51,7 +51,6 @@
              * @return {Object}
              */
             parseTemplates(templates) {
-
                 return templates.reduce(function (acc, template) {
                     acc[template.name] = template;
                     return acc;
@@ -76,14 +75,72 @@
                             type = 'slide_in_out';
                     }
                     slide.template = this.templates[type];
+                    slide.image = slide.image_url_large;
+                    slide.bumper = false;
                     return slide;
                 });
             },
             goBack() {
                 this.$router.push({ name: 'home' });
             },
+            /**
+             * Merge bumpers, dates, etc into slide data for upload
+             * @return {Array}
+             */
+            mergeDefaultSlides() {
+                const templates = this.templates;
+                const slides = [];
+                const now = new Date();
+                Object.assign([], this.slides).forEach((slide, index) => {
+                    if (slide.bumper) {
+                        slides.push({
+                            template: templates['bumper']
+                        });
+                    }
+                    if (slide.template.name === 'joke') {
+                        slides.push({
+                            template: templates['bumper_joke']
+                        });
+                    }
+                    slides.push(slide);
+                });
+                slides.splice(1, 0, {
+                    template: templates['date'],
+                    title: now.getDate(),
+                    caption: now.getMonthText().toUpperCase(),
+                });
+                slides.push({
+                    template: templates['share']
+                });
+                return slides;
+            },
             generateVideo() {
-                console.log(this.slides);
+                let frames;
+                const formData = new FormData();
+                const slideData = this.mergeDefaultSlides();
+                const file = this.$refs.videoToolbar.getAudioFile();
+                const totalFrames = slideData.reduce(function (acc, slide) {
+                    frames = slide.template.frames;
+                    return acc + (frames.total - frames.out);
+                }, 0);
+
+                formData.append('socket_id', this.$root.socket_id);
+                formData.append('fps', this.fps);
+                formData.append('slides', JSON.stringify(slideData));
+                formData.append('videoDuration', (totalFrames / this.fps));
+                formData.append('timestamp', '_' + new Date().getTime());
+                if (file){
+                    formData.append('audio', file, file.name);
+                }
+
+                console.log(formData);
+
+               this.$http.post(api.route('generate-video'), formData)
+                    .then((response) => {
+                        console.log(response);
+                    }, (response) => {
+                        console.log('error', response);
+                    });
                 return false;
             }
         }
