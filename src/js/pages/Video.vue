@@ -129,6 +129,7 @@
                 formData.append('slides', JSON.stringify(slideData));
                 formData.append('videoDuration', (totalFrames / this.fps));
                 formData.append('timestamp', '_' + new Date().getTime());
+                formData.append('preview', this.$refs.videoToolbar.isPreview);
                 if (file){
                     formData.append('audio', file, file.name);
                 }

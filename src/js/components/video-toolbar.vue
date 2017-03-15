@@ -8,11 +8,13 @@
             <div class="cell-m-4">
                 <progress-bar></progress-bar>
             </div>
-            <div class="cell-m-4">
-                <div class="button-group pull-right">
-                    <button class="button" @click="submit">Generate Video</button>
-                    <button class="button" @click="generatePreview">Generate Preview</button>
-                </div>
+            <div class="cell-m-2">
+                <button class="button pull-right" @click="submit">Generate Video</button>
+            </div>
+            <div class="cell-m-2">
+                <label>
+                    <input type="checkbox" v-model="isPreview"> Low Res Preview
+                </label>
             </div>
         </div>
     </div>
@@ -24,6 +26,11 @@
                 type: Function,
                 default: Function.prototype,
                 required: false
+            }
+        },
+        data() {
+            return {
+                isPreview: true
             }
         },
         methods: {
