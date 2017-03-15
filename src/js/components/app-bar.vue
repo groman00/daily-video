@@ -2,8 +2,7 @@
 <template>
     <div class="app-bar flex-shrink-0">
         <button v-if="config.buttonLeft === 'back'" class="button button-left" @click="backButtonClicked">
-            <!-- <icon name="arrow-back"/>  -->
-            All Projects
+            &laquo; All Projects
         </button>
     </div>
 </template>

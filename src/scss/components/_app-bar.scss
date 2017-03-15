@@ -1,4 +1,8 @@
 .app-bar {
     background-color: $grey-dark;
     height: $app-bar-height;
+
+    .button-left {
+        margin: 10px $gutter;
+    }
 }
