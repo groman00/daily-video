@@ -3,6 +3,7 @@ var express = require('express');
 var router = express.Router();
 var request = require('request');
 var generator = require('../lib/generator');
+var slidePreview = require('../lib/slide-preview');
 var multer  = require('multer');
 var upload = multer({
   storage: multer.diskStorage({
@@ -12,6 +13,10 @@ var upload = multer({
     }
   })
 });
+
+function getSocketById(req, id) {
+  return req.app.io.sockets.connected[id];
+};
 
 /**
  * GET: List available slideshows
@@ -62,7 +67,7 @@ router.get('/slideshows/:id', function(req, res, next) {
 router.post('/generate-video', upload.single('audio'), function (req, res, next) {
   var slides = req.body.slides;
   var audio = __dirname + '/../public/fixtures/empty.mp3';
-  var socket = req.app.io.sockets.connected[req.body.socket_id];
+  var socket = getSocketById(req, req.body.socket_id);
   if (req.file) {
     audio = __dirname + '/../' + req.file.path
   }
@@ -77,6 +82,16 @@ router.post('/generate-video', upload.single('audio'), function (req, res, next)
     res.end('success');
   }
   res.end('fail');
+});
+
+
+/**
+ * POST: Generate preview from slide data
+ */
+router.post('/generate-slide-preview', function (req, res, next) {
+  var socket = getSocketById(req, req.body.socket_id);
+  slidePreview(socket, req.body.slide, req.body.timestamp);
+  res.end('');
 });
 
 module.exports = router;

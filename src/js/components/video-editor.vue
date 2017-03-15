@@ -39,7 +39,8 @@
         props: ['slides', 'templates'],
         methods: {
             showPreview(slide) {
-                this.eventHub.$emit('show-preview', slide.template.name);
+                //this.eventHub.$emit('show-preview', slide.template.name);
+                this.eventHub.$emit('show-preview', slide);
             }
         }
     }
