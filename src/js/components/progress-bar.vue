@@ -30,9 +30,9 @@
         },
         methods: {
             showProgress(data) {
+                // console.log(this.progress);
                 this.label = data.message;
                 this.progress = data.progress ? data.progress : 1;
-                console.log(this.progress);
             },
             showComplete(data) {
                 this.label = 'Render Complete';
