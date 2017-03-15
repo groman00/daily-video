@@ -6,7 +6,7 @@
                 Audio File: <input ref="audio" type="file" name="audio" accept=".mp3">
             </div>
             <div class="cell-m-4">
-
+                <progress-bar></progress-bar>
             </div>
             <div class="cell-m-4">
                 <button class="button pull-right" @click="submit">Generate Video</button>

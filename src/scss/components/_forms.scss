@@ -5,11 +5,11 @@ textarea {
 
 .form-control {
     display: block;
+    margin-bottom: $gutter-narrow;
 
     input[type="text"],
     textarea,
     select {
       width:100%;
-      margin-bottom: $gutter-narrow;
     }
 }

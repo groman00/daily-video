@@ -25,6 +25,9 @@
                             <input type="checkbox" v-model="slide.bumper"> Add Bumper
                         </label>
                     </div>
+                    <div class="form-control">
+                        <a href="#">Preview</a>
+                    </div>
                 </div>
             </div>
         </div>
