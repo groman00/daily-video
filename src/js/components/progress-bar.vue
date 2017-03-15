@@ -5,6 +5,7 @@
         <div class="progress-bar-track">
             <div class="progress-bar-fill" :style="{ 'width': (progress * 100) + '%'}"></div>
         </div>
+        <a style="display:block;margin-top:12px;" :href="downloadLink">{{ downloadLink }}</a>
     </div>
 </template>
 <script>
@@ -12,7 +13,8 @@
         data() {
             return {
                 label: ' ',
-                progress: 0
+                progress: 0,
+                downloadLink: ''
             }
         },
         created() {
@@ -37,9 +39,7 @@
             showComplete(data) {
                 this.label = 'Render Complete';
                 this.progress = 0;
-                // this.$downloadLink
-                //     .attr('href', data.file)
-                //     .removeClass('hide');
+                this.downloadLink = data.file;
             },
             showError(error) {
                 this.label = error;
