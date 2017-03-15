@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node ./bin/www",
     "build": "webpack --progress",
-    "watch": "webpack --progress --watch"
+    "watch": "webpack --progress --watch",
+    "deploy": "webpack --progress && npm run start"
   },
   "dependencies": {
     "async": "^2.1.5",
