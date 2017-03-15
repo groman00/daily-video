@@ -25,3 +25,14 @@
         background-color: $grey-light;
     }
 }
+
+.button-group {
+
+    .button {
+        margin: 0 $gutter-narrow 0 0;
+
+        &:last-child {
+            margin-right: 0
+        }
+    }
+}

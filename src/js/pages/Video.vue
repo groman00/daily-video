@@ -8,7 +8,7 @@
                     <video-editor :slides="slides" :templates="templates"></video-editor>
                 </div>
                 <div class="panel-right">
-                    <video-preview src="/videos/bumper.mp4"></video-preview>
+                    <video-preview></video-preview>
                 </div>
             </div>
             <div class="panels-bottom flex-grow-0">

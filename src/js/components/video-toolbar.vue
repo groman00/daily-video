@@ -9,7 +9,10 @@
                 <progress-bar></progress-bar>
             </div>
             <div class="cell-m-4">
-                <button class="button pull-right" @click="submit">Generate Video</button>
+                <div class="button-group pull-right">
+                    <button class="button" @click="submit">Generate Video</button>
+                    <button class="button" @click="generatePreview">Generate Preview</button>
+                </div>
             </div>
         </div>
     </div>
@@ -29,6 +32,9 @@
             },
             getAudioFile() {
                 return this.$refs.audio.files[0];
+            },
+            generatePreview() {
+                alert('Coming Soon!');
             }
         }
     }

@@ -26,7 +26,7 @@
                         </label>
                     </div>
                     <div class="form-control">
-                        <a href="#">Preview</a>
+                        <button class="button" @click="showPreview(slide)">Preview</button>
                     </div>
                 </div>
             </div>
@@ -36,7 +36,11 @@
 </template>
 <script>
     export default {
-        props: ['slides', 'templates']
-
+        props: ['slides', 'templates'],
+        methods: {
+            showPreview(slide) {
+                this.eventHub.$emit('show-preview', slide.template.name);
+            }
+        }
     }
 </script>
