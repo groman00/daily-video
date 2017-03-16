@@ -24,6 +24,11 @@
     &:focus {
         background-color: $grey-light;
     }
+
+    &[disabled] {
+        background-color: $grey-light;
+        cursor: not-allowed;
+    }
 }
 
 .button-group {
