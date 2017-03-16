@@ -56,34 +56,19 @@ function Preview() {
         comp.layer(2).sourceText.setValue(title); // Set text layer sourceText
     }
 
-
-
-
     renderQueue = project.renderQueue;
     renderQueueItem = renderQueue.items.add(comp);
-
-
-    // Need to use AME...
     renderQueueItem.setSettings({
         'Quality': 'Draft',
-        'Resolution': 'Half'
+        'Resolution': 'Third'
     });
-
     renderQueueItem.outputModule(1).setSettings({
         'Output File Info': {
             'Full Flat Path': DIR.exports + 'preview_' + slide.id + timestamp
         }
     });
-
-    // Listen to render queue events (Not working: https://forums.adobe.com/message/9318251#9318251)
-    renderQueueItem.onStatusChanged = function () {
-        $.writeln(renderQueueItem.status);
-    };
-
-    renderQueue.render();
-
-    // Once renderering starts, we don't need the project anymore.
-    // this.closeProject();
+    renderQueue.queueInAME(true);
+    // project.close(CloseOptions.SAVE_CHANGES);
 
 }
 

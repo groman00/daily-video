@@ -40,7 +40,7 @@
         methods: {
             showPreview(slide) {
                 //this.eventHub.$emit('show-preview', slide.template.name);
-                this.eventHub.$emit('show-preview', slide);
+                this.eventHub.$emit('fetch-preview', slide);
             }
         }
     }
