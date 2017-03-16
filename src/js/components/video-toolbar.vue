@@ -3,7 +3,27 @@
     <div class="video-toolbar">
         <div class="grid">
             <div class="cell-m-4">
-                Audio File: <input ref="audio" type="file" name="audio" accept=".mp3">
+                <div class="form-control">
+                    <label style="display:block;width:50%;">
+                        Audio Track:
+                        <select v-model="audioTrack">
+                            <option value="" selected>
+                                No Audio
+                            </option>
+                            <option v-for="track in audioTracks" :value="track">
+                                {{ track.replace('_', ' ').replace('.mp3', '') }}
+                            </option>
+                        </select>
+                    </label>
+                    <input type="range" min="-30" max="30" step="1" v-model="audioTrackLevel">
+                    <span>Audio Track Level: {{ audioTrackLevel }}</span>
+                    <button class="button" :disabled="audioTrack === ''" @click="audioPreview">{{ isPlayingAudio ? 'Stop' : 'Preview' }}</button>
+                    <audio v-if="audioTrack" ref="audioTrackPreview" style="display:none;" :src="'/fixtures/' + audioTrack"></audio>
+                </div>
+                <div class="form-control">
+                    Narration Track: <input ref="audio" type="file" name="audio" accept=".mp3">
+                    <!-- Need to show selected file name.  Need to be able to remove file. -->
+                </div>
             </div>
             <div class="cell-m-4">
                 <progress-bar></progress-bar>
@@ -30,18 +50,40 @@
         },
         data() {
             return {
-                isPreview: true
+                isPreview: true,
+                isPlayingAudio: false,
+                audioTrack: '',
+                audioTrackLevel: '0',
+                audioTracks: [
+                    'Frosted_Glass.mp3',
+                    'Gentle_Marimbas.mp3',
+                    'Orange_Juicier.mp3'
+                ]
+            }
+        },
+        watch: {
+            audioTrack() {
+                this.isPlayingAudio = false;
+            },
+            isPlayingAudio(bool) {
+                const track = this.$refs.audioTrackPreview;
+                if (bool) {
+                    track.currentTime = 0;
+                }
+                track[bool ? 'play' : 'pause']();
             }
         },
         methods: {
             submit() {
-                this.onSubmit();
+                this.onSubmit({
+                    audioTrack: this.audioTrack,
+                    audioTrackLevel: this.audioTrackLevel,
+                    narrationTrack: this.$refs.audio.files[0],
+                    isPreview: this.isPreview
+                });
             },
-            getAudioFile() {
-                return this.$refs.audio.files[0];
-            },
-            generatePreview() {
-                alert('Coming Soon!');
+            audioPreview() {
+                this.isPlayingAudio = this.$refs.audioTrackPreview.paused;
             }
         }
     }

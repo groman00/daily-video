@@ -64,26 +64,27 @@ router.get('/slideshows/:id', function(req, res, next) {
 /**
  * POST: Generate video from slideshow data
  */
-router.post('/generate-video', upload.single('audio'), function (req, res, next) {
+router.post('/generate-video', upload.single('narrationTrack'), function (req, res, next) {
   var slides = req.body.slides;
-  var audio = __dirname + '/../public/fixtures/empty.mp3';
+  var narrationTrack = __dirname + '/../public/fixtures/empty.mp3';
   var socket = getSocketById(req, req.body.socket_id);
   if (req.file) {
-    audio = __dirname + '/../' + req.file.path
+    narrationTrack = __dirname + '/../' + req.file.path
   }
   if (slides) {
     generator(socket, {
-      audio: audio,
+      narrationTrack: narrationTrack,
       slides: JSON.parse(slides),
       videoDuration: req.body.videoDuration,
       timestamp: req.body.timestamp,
       preview: req.body.preview,
+      audioTrack: req.body.audioTrack,
+      audioTrackLevel: req.body.audioTrackLevel
     });
     res.end('success');
   }
   res.end('fail');
 });
-
 
 /**
  * POST: Generate preview from slide data
