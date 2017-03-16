@@ -19,7 +19,8 @@
                     <audio v-if="audioTrack" ref="audioTrackPreview" style="display:none;" :src="'/fixtures/' + audioTrack"></audio>
                 </div>
                 <div class="form-control">
-                    Voiceover Track: <input ref="audio" type="file" name="audio" accept=".mp3">
+                    Narration Track: <input ref="audio" type="file" name="audio" accept=".mp3">
+                    <!-- Need to show selected file name.  Need to be able to remove file. -->
                 </div>
             </div>
             <div class="cell-m-4">
@@ -71,19 +72,14 @@
         },
         methods: {
             submit() {
-                this.onSubmit();
-            },
-            getAudioFile() {
-                return this.$refs.audio.files[0];
-            },
-            generatePreview() {
-                alert('Coming Soon!');
+                this.onSubmit({
+                    audioTrack: this.audioTrack,
+                    narrationTrack: this.$refs.audio.files[0],
+                    isPreview: this.isPreview
+                });
             },
             audioPreview() {
                 this.isPlayingAudio = this.$refs.audioTrackPreview.paused;
-            },
-            getData() {
-                // return;
             }
         }
     }

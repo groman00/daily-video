@@ -16,7 +16,8 @@ var __dirname = system.callSystem("pwd").split('resources/jsx')[0];
 var DIR = {
     resources: __dirname + 'resources/',
     temp: __dirname + 'temp/',
-    exports: __dirname + 'public/exports/'
+    exports: __dirname + 'public/exports/',
+    fixtures: __dirname + 'public/fixtures/'
 };
 var fps = 30;
 var utils = {
@@ -29,7 +30,7 @@ function DailyVideo() {
     var jobs = this.getJSON(DIR.resources + 'json/jobs.json');
     var timestamp = jobs.activeJobs.pop();
     var config = this.config = this.getJSON(DIR.temp + timestamp + '/json/config.json');
-    var audio, renderQueue, renderQueueItem, timestamp;
+    var narrationTrack, audioTrack, renderQueue, renderQueueItem, timestamp;
     if (!config) {
         // Config JSON not found, exit job.
         this.closeProject();
@@ -51,10 +52,16 @@ function DailyVideo() {
     // Create child comps and add to master comp as layers
     this.addChildCompsToMaster(this.generateChildComps());
 
-    // Add audio and create audio layer in master comp
-    audio = project.importFile(new ImportOptions(File(config.audio)));
-    audio.parentFolder = this.videoFolder;
-    this.masterComp.layers.add(audio, config.videoDuration);
+    // Add narrationTrack and create narrationTrack layer in master comp
+    narrationTrack = project.importFile(new ImportOptions(File(config.narrationTrack)));
+    narrationTrack.parentFolder = this.videoFolder;
+    this.masterComp.layers.add(narrationTrack, config.videoDuration);
+
+    // Add audioTrack, if configured
+    audioTrack = project.importFile(new ImportOptions(File(DIR.fixtures + config.audioTrack)));
+    audioTrack.parentFolder = this.videoFolder;
+    this.masterComp.layers.add(audioTrack, config.videoDuration);
+
 
     /*
     // Add master comp to render queue

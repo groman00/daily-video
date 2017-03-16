@@ -59,20 +59,21 @@ router.get('/slideshows/:id', function(req, res, next) {
 /**
  * POST: Generate video from slideshow data
  */
-router.post('/generate-video', upload.single('audio'), function (req, res, next) {
+router.post('/generate-video', upload.single('narrationTrack'), function (req, res, next) {
   var slides = req.body.slides;
-  var audio = __dirname + '/../public/fixtures/empty.mp3';
+  var narrationTrack = __dirname + '/../public/fixtures/empty.mp3';
   var socket = req.app.io.sockets.connected[req.body.socket_id];
   if (req.file) {
-    audio = __dirname + '/../' + req.file.path
+    narrationTrack = __dirname + '/../' + req.file.path
   }
   if (slides) {
     generator(socket, {
-      audio: audio,
+      narrationTrack: narrationTrack,
       slides: JSON.parse(slides),
       videoDuration: req.body.videoDuration,
       timestamp: req.body.timestamp,
       preview: req.body.preview,
+      audioTrack: req.body.audioTrack,
     });
     res.end('success');
   }

@@ -114,11 +114,12 @@
                 });
                 return slides;
             },
-            generateVideo() {
+            generateVideo(settings) {
                 let frames;
                 const formData = new FormData();
                 const slideData = this.mergeDefaultSlides();
-                const file = this.$refs.videoToolbar.getAudioFile();
+                const narrationTrack = settings.narrationTrack;
+                const audioTrack = settings.audioTrack;
                 const totalFrames = slideData.reduce(function (acc, slide) {
                     frames = slide.template.frames;
                     return acc + (frames.total - frames.out);
@@ -129,14 +130,15 @@
                 formData.append('slides', JSON.stringify(slideData));
                 formData.append('videoDuration', (totalFrames / this.fps));
                 formData.append('timestamp', '_' + new Date().getTime());
-                formData.append('preview', this.$refs.videoToolbar.isPreview);
-                if (file){
-                    formData.append('audio', file, file.name);
+                formData.append('preview', settings.isPreview);
+                formData.append('audioTrack', settings.audioTrack);
+
+                if (narrationTrack){
+                    formData.append('narrationTrack', narrationTrack, narrationTrack.name);
                 }
 
                 console.log(formData);
-
-               this.$http.post(api.route('generate-video'), formData)
+                this.$http.post(api.route('generate-video'), formData)
                     .then((response) => {
                         console.log(response);
                     }, (response) => {
