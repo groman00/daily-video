@@ -15,6 +15,8 @@
                             </option>
                         </select>
                     </label>
+                    <input type="range" min="-30" max="30" step="1" v-model="audioTrackLevel">
+                    <span>Audio Track Level: {{ audioTrackLevel }}</span>
                     <button class="button" :disabled="audioTrack === ''" @click="audioPreview">{{ isPlayingAudio ? 'Stop' : 'Preview' }}</button>
                     <audio v-if="audioTrack" ref="audioTrackPreview" style="display:none;" :src="'/fixtures/' + audioTrack"></audio>
                 </div>
@@ -51,6 +53,7 @@
                 isPreview: true,
                 isPlayingAudio: false,
                 audioTrack: '',
+                audioTrackLevel: '0',
                 audioTracks: [
                     'Frosted_Glass.mp3',
                     'Gentle_Marimbas.mp3',
@@ -74,6 +77,7 @@
             submit() {
                 this.onSubmit({
                     audioTrack: this.audioTrack,
+                    audioTrackLevel: this.audioTrackLevel,
                     narrationTrack: this.$refs.audio.files[0],
                     isPreview: this.isPreview
                 });

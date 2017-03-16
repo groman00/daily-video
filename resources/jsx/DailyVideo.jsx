@@ -58,10 +58,12 @@ function DailyVideo() {
     this.masterComp.layers.add(narrationTrack, config.videoDuration);
 
     // Add audioTrack, if configured
-    audioTrack = project.importFile(new ImportOptions(File(DIR.fixtures + config.audioTrack)));
-    audioTrack.parentFolder = this.videoFolder;
-    this.masterComp.layers.add(audioTrack, config.videoDuration);
-
+    if (config.audioTrack) {
+        audioTrack = project.importFile(new ImportOptions(File(DIR.fixtures + config.audioTrack)));
+        audioTrack.parentFolder = this.videoFolder;
+        this.masterComp.layers.add(audioTrack, config.videoDuration);
+        this.masterComp.layer(1).audioLevels.setValue([config.audioTrackLevel, config.audioTrackLevel]);
+    }
 
     /*
     // Add master comp to render queue

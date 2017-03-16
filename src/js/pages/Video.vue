@@ -132,6 +132,7 @@
                 formData.append('timestamp', '_' + new Date().getTime());
                 formData.append('preview', settings.isPreview);
                 formData.append('audioTrack', settings.audioTrack);
+                formData.append('audioTrackLevel', settings.audioTrackLevel);
 
                 if (narrationTrack){
                     formData.append('narrationTrack', narrationTrack, narrationTrack.name);
