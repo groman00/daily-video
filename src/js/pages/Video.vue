@@ -135,6 +135,7 @@
                 formData.append('preview', settings.isPreview);
                 formData.append('audioTrack', settings.audioTrack);
                 formData.append('audioTrackLevel', settings.audioTrackLevel);
+                formData.append('narrationTrackLevel', settings.narrationTrackLevel);
 
                 if (narrationTrack){
                     formData.append('narrationTrack', narrationTrack, narrationTrack.name);

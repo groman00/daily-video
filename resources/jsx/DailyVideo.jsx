@@ -56,6 +56,7 @@ function DailyVideo() {
     narrationTrack = project.importFile(new ImportOptions(File(config.narrationTrack)));
     narrationTrack.parentFolder = this.videoFolder;
     this.masterComp.layers.add(narrationTrack, config.videoDuration);
+    this.masterComp.layer(1).audioLevels.setValue([config.narrationTrackLevel, config.narrationTrackLevel]);
 
     // Add audioTrack, if configured
     if (config.audioTrack) {

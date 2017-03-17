@@ -79,7 +79,8 @@ router.post('/generate-video', upload.single('narrationTrack'), function (req, r
       timestamp: req.body.timestamp,
       preview: req.body.preview,
       audioTrack: req.body.audioTrack,
-      audioTrackLevel: req.body.audioTrackLevel
+      audioTrackLevel: req.body.audioTrackLevel,
+      narrationTrackLevel: req.body.narrationTrackLevel
     });
     res.end('success');
   }
