@@ -7,10 +7,33 @@ select {
 .form-control {
     display: block;
     margin-bottom: $gutter-narrow;
+    font-weight: $font-weight-semibold;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
 
     input[type="text"],
     textarea,
     select {
-      width:100%;
+        width:100%;
+        background-color: $grey-darker;
+        border: solid 1px $grey-light;
+        padding: 6px;
+        font-size: $font-size-smaller;
+        line-height: $line-height-smaller;
+        color: $white;
+    }
+
+    select {
+        height: 31px;
+    }
+
+    textarea {
+        min-height: 72px;
+    }
+
+    .checkbox {
+        font-size: $font-size-smallest;
     }
 }

@@ -1,7 +1,7 @@
 <style scoped></style>
 <template>
     <div class="video-page page-wrapper">
-        <app-bar :config="{ buttonLeft: 'back' }" :onBackButton="goBack"></app-bar>
+        <app-bar :config="{ buttonLeft: 'back', title: title }" :onBackButton="goBack"></app-bar>
         <div class="panels flex-grow-1">
             <div class="panels-top flex-grow-1">
                 <div class="panel-left">
@@ -25,7 +25,8 @@
             return {
                 slides: [],
                 fps: 0,
-                templates: {}
+                templates: {},
+                title: ''
             }
         },
         created() {
@@ -40,6 +41,7 @@
                         this.fps = body.config.fps;
                         this.templates = this.parseTemplates(body.config.templates);
                         this.slides = this.parseSlides(body.slideshow.slides);
+                        this.title = body.slideshow.title;
                         console.log(this.slides);
                     }, (response) => {
                         // console.log('error', response);

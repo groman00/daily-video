@@ -1,9 +1,10 @@
 <style scoped></style>
 <template>
     <div class="app-bar flex-shrink-0">
-        <button v-if="config.buttonLeft === 'back'" class="button button-left" @click="backButtonClicked">
-            &laquo; All Projects
+        <button v-if="config.buttonLeft === 'back'" class="button button-blue button-left" @click="backButtonClicked">
+            &lsaquo; All Projects
         </button>
+        <h1 v-if="config.title" class="app-bar-title text-center">{{ config.title }}</h1>
     </div>
 </template>
 <script>
@@ -12,7 +13,8 @@
             config: {
                 type: Object,
                 default: {
-                    buttonLeft: null
+                    buttonLeft: null,
+                    title: ''
                 },
                 required: true
             },

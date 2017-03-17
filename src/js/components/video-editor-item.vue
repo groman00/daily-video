@@ -18,12 +18,12 @@
             </textarea>
         </div>
         <div class="form-control">
-            <label>
+            <label class="checkbox">
                 <input type="checkbox" v-model="slide.bumper" @change="itemUpdated"> Add Bumper
             </label>
         </div>
         <div class="form-control">
-            <button class="button" @click="showPreview(slide)">Preview</button>
+            <button class="button button-blue" @click="showPreview(slide)">Preview</button>
         </div>
     </div>
 </template>

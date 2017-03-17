@@ -13,10 +13,12 @@ $gutter-wide: $gutter * 2;
 // ==========================================================================
 $white: #fff;
 $black: #000;
-$grey-light: #D8D8D8;
+$grey-light: #B4B4B4;
 $grey: #5F5E5F;
-$grey-dark: #373737;
+$grey-dark: #3D3D3D;
+$grey-darker: #252525;
 $hot-blue: #3E82FF;
+$hot-blue-active: #2D5EB7;
 
 // ==========================================================================
 // Font Families
@@ -36,6 +38,7 @@ $font-size-smaller: $font-size-base - 2;
 $font-size-smallest: $font-size-base - 3;
 
 $line-height-base: 19 / 16;
+$line-height-smaller: ($font-size-smaller + 3) / $font-size-smaller;
 
 // ==========================================================================
 // Font Weights
