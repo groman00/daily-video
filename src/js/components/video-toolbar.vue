@@ -132,9 +132,11 @@
         },
         created() {
             this.eventHub.$on('render-complete', this.renderComplete);
+            this.eventHub.$on('video-rendering', this.disableSubmit);
         },
         beforeDestroy() {
             this.eventHub.$off('render-complete', this.renderComplete);
+            this.eventHub.$off('video-rendering', this.disableSubmit);
         },
         watch: {
             audioTrack() {
@@ -158,6 +160,9 @@
                     narrationTrackLevel: this.narrationTrackLevel,
                     isPreview: this.isPreview
                 });
+            },
+            disableSubmit() {
+                this.isDisabled = true;
             },
             audioPreview() {
                 this.isPlayingAudio = this.$refs.audioTrackPreview.paused;

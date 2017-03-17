@@ -30,6 +30,7 @@
                     return;
                 }
                 this.loading = true;
+                this.eventHub.$emit('video-rendering');
                 this.$http.post(api.route('generate-slide-preview'), {
                     'slide': slide,
                     'socket_id': this.$root.socket_id,
@@ -40,6 +41,7 @@
                 });
             },
             showPreview(src) {
+                this.eventHub.$emit('render-complete');
                 this.loading = false;
                 this.src = src;
                 this.$nextTick(() => {
