@@ -64,6 +64,7 @@ function Preview() {
     });
     renderQueueItem.outputModule(1).setSettings({
         'Output File Info': {
+            //'Full Flat Path': DIR.exports + 'preview_' + slide.id
             'Full Flat Path': DIR.exports + 'preview_' + slide.id + timestamp
         }
     });

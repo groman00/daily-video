@@ -11,6 +11,7 @@ import loadingIndicator from './components/loading-indicator.vue';
 import progressBar from './components/progress-bar.vue';
 import videoPreview from './components/video-preview.vue';
 import videoEditor from './components/video-editor.vue';
+import videoEditorItem from './components/video-editor-item.vue';
 import videoToolbar from './components/video-toolbar.vue';
 
 const eventHub = Vue.prototype.eventHub = new Vue(); // Create a new instance of Vue to use as an event hub.
@@ -27,6 +28,7 @@ Vue.component('loading-indicator', loadingIndicator);
 Vue.component('progress-bar', progressBar);
 Vue.component('video-preview', videoPreview);
 Vue.component('video-editor', videoEditor);
+Vue.component('video-editor-item', videoEditorItem);
 Vue.component('video-toolbar', videoToolbar);
 
 Vue.use(VueResource);
