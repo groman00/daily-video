@@ -1,3 +1,6 @@
+require('./db');
+require('dotenv').config();
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -7,8 +10,6 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var apiRoutes = require('./routes/api');
 var app = express();
-
-require('dotenv').config();
 
 /* Socket.io */
 app.io = require('socket.io')()

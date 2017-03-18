@@ -4,6 +4,8 @@ var router = express.Router();
 var request = require('request');
 var generator = require('../lib/generator');
 var slidePreview = require('../lib/slide-preview');
+var projectController = require('../lib/Controllers/projectController');
+
 var multer  = require('multer');
 var upload = multer({
   storage: multer.diskStorage({
@@ -95,5 +97,34 @@ router.post('/generate-slide-preview', function (req, res, next) {
   slidePreview(socket, req.body.slide, req.body.timestamp);
   res.end('');
 });
+
+
+/**
+ * POST: Save project data
+ */
+/* Use Middleware to handle project saving */
+router.get('/save-project', projectController.saveProject);
+//router.post('/save-project', function (req, res, next) {
+  /*var slides = req.body.slides;
+  var narrationTrack = __dirname + '/../public/fixtures/empty.mp3';
+  var socket = getSocketById(req, req.body.socket_id);
+  if (req.file) {
+    narrationTrack = __dirname + '/../' + req.file.path
+  }
+  if (slides) {
+    generator(socket, {
+      narrationTrack: narrationTrack,
+      slides: JSON.parse(slides),
+      videoDuration: req.body.videoDuration,
+      timestamp: req.body.timestamp,
+      preview: req.body.preview,
+      audioTrack: req.body.audioTrack,
+      audioTrackLevel: req.body.audioTrackLevel,
+      narrationTrackLevel: req.body.narrationTrackLevel
+    });
+    res.end('success');
+  }*/
+//   res.end('doo');
+// });
 
 module.exports = router;
