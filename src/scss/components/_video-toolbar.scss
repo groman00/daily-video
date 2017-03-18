@@ -1,3 +1,55 @@
 .video-toolbar {
     color: $white;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: stretch;
+    height: 100%;
+
+    .section {
+
+    }
+
+    .section-header {
+        height: 40px;
+        line-height: 40px;
+        font-size: $font-size-smallest;
+        text-transform: uppercase;
+        font-weight: $font-weight-semibold;
+        background-color: rgba(255, 255,255, .17);
+        color: rgba(255, 255, 255, .5);
+        padding: 0 32px;
+    }
+
+    .section-sound {
+        flex: 0 0 40%;
+        background-color: $grey;
+
+        .control {
+            float: left;
+            width:50%;
+        }
+
+        .control-left {
+            border-right:solid 1px rgba(255, 255, 255, .25);
+        }
+    }
+
+    .section-export {
+        flex: 0 0 60%;
+        background-color: $grey-darker;
+
+        .checkbox {
+            margin-left: $gutter;
+        }
+    }
+
+    .control-header {
+        /* Music: */
+        font-weight: $font-weight-semibold;
+        font-size: $font-size-larger;
+        margin-bottom: $gutter-narrow;
+    }
+    .control-body {
+        padding: 50px 32px;
+    }
 }

@@ -1,7 +1,7 @@
 <style scoped></style>
 <template>
     <div class="video-page page-wrapper">
-        <app-bar :config="{ buttonLeft: 'back' }" :onBackButton="goBack"></app-bar>
+        <app-bar :config="{ buttonLeft: 'back', title: title }" :onBackButton="goBack"></app-bar>
         <div class="panels flex-grow-1">
             <div class="panels-top flex-grow-1">
                 <div class="panel-left">
@@ -25,7 +25,8 @@
             return {
                 slides: [],
                 fps: 0,
-                templates: {}
+                templates: {},
+                title: ''
             }
         },
         created() {
@@ -40,6 +41,7 @@
                         this.fps = body.config.fps;
                         this.templates = this.parseTemplates(body.config.templates);
                         this.slides = this.parseSlides(body.slideshow.slides);
+                        this.title = body.slideshow.title;
                         console.log(this.slides);
                     }, (response) => {
                         // console.log('error', response);
@@ -114,11 +116,12 @@
                 });
                 return slides;
             },
-            generateVideo() {
+            generateVideo(settings) {
                 let frames;
                 const formData = new FormData();
                 const slideData = this.mergeDefaultSlides();
-                const file = this.$refs.videoToolbar.getAudioFile();
+                const narrationTrack = settings.narrationTrack;
+                const audioTrack = settings.audioTrack;
                 const totalFrames = slideData.reduce(function (acc, slide) {
                     frames = slide.template.frames;
                     return acc + (frames.total - frames.out);
@@ -129,13 +132,17 @@
                 formData.append('slides', JSON.stringify(slideData));
                 formData.append('videoDuration', (totalFrames / this.fps));
                 formData.append('timestamp', '_' + new Date().getTime());
-                if (file){
-                    formData.append('audio', file, file.name);
+                formData.append('preview', settings.isPreview);
+                formData.append('audioTrack', settings.audioTrack);
+                formData.append('audioTrackLevel', settings.audioTrackLevel);
+                formData.append('narrationTrackLevel', settings.narrationTrackLevel);
+
+                if (narrationTrack){
+                    formData.append('narrationTrack', narrationTrack, narrationTrack.name);
                 }
 
                 console.log(formData);
-
-               this.$http.post(api.route('generate-video'), formData)
+                this.$http.post(api.route('generate-video'), formData)
                     .then((response) => {
                         console.log(response);
                     }, (response) => {

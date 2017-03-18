@@ -1,11 +1,11 @@
 <style scoped></style>
 <template>
     <div class="progress-bar">
-        <h3 class="progress-bar-label text-center">{{ label }}</h3>
         <div class="progress-bar-track">
             <div class="progress-bar-fill" :style="{ 'width': (progress * 100) + '%'}"></div>
         </div>
-        <a style="display:block;margin-top:12px;" :href="downloadLink">{{ downloadLink }}</a>
+        <a v-if="downloadLink" class="button button-blue download-link pull-right" :href="downloadLink">Save</a>
+        <h3 class="progress-bar-label">{{ label }}</h3>
     </div>
 </template>
 <script>
@@ -40,10 +40,12 @@
                 this.label = 'Render Complete';
                 this.progress = 0;
                 this.downloadLink = data.file;
+                this.eventHub.$emit('render-complete');
             },
             showError(error) {
                 this.label = error;
                 this.progress = 0;
+                this.eventHub.$emit('render-complete');
             }
         }
     }

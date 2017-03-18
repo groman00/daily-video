@@ -1,8 +1,16 @@
 .app-bar {
     background-color: $grey-dark;
     height: $app-bar-height;
+    color: $white;
+    padding: 0 $gutter;
 
     .button-left {
-        margin: 10px $gutter;
+        margin: 10px 0;
+        float: left;
     }
+}
+
+.app-bar-title {
+    line-height: $app-bar-height;
+    font-size: $font-size-base;
 }

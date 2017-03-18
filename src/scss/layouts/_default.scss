@@ -43,9 +43,15 @@ body,
         align-items: stretch;
     }
 
+    .panel-left {
+        flex: 0 0 55%;
+    }
+    .panel-right {
+        flex: 0 0 45%;
+    }
+
     .panel-left,
     .panel-right {
-        flex: 0 0 50%;
 
         > div {
             height: 100%;
@@ -54,6 +60,6 @@ body,
     }
 
     .panels-bottom {
-        height: 200px;
+        // height: 200px;
     }
 }

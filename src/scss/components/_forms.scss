@@ -1,15 +1,49 @@
 input,
-textarea {
-    // color: $grey-dark;
+textarea,
+select {
+    color: $grey-dark;
 }
 
 .form-control {
     display: block;
     margin-bottom: $gutter-narrow;
+    font-weight: $font-weight-semibold;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
 
     input[type="text"],
+    input[type="range"],
     textarea,
     select {
-      width:100%;
+        width:100%;
+        background-color: $grey-darker;
+        border: solid 1px $grey-light;
+        padding: 6px;
+        font-size: $font-size-smaller;
+        line-height: $line-height-smaller;
+        color: $white;
+    }
+
+    select {
+        height: 31px;
+    }
+
+    textarea {
+        min-height: 72px;
+    }
+
+    .checkbox {
+        font-size: $font-size-smallest;
+    }
+
+    .form-control-hint {
+        display: block;
+        width: 100%;
+        font-size: 12px;
+        opacity: .5;
+        text-align: center;
+        margin-top: -1 * ($gutter-narrow / 2);
     }
 }
