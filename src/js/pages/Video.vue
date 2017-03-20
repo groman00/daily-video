@@ -146,24 +146,28 @@
                 }
 
                 console.log(formData);
-                this.$http.post(api.route('generate-video'), formData)
-                    .then((response) => {
-                        console.log(response);
-                    }, (response) => {
-                        console.log('error', response);
-                    });
-
                 */
 
-                this.$http.post(api.route('render-project'), {})
+                /*this.$http.post(api.route('generate-video'), formData)
                     .then((response) => {
                         console.log(response);
                     }, (response) => {
                         console.log('error', response);
-                    });
+                    });*/
+
+
+
+                this.$http.post(api.route('render-project'), {
+                    socketId: this.$root.socket_id,
+                    slideshowId: this.$route.params.id,
+                    slides: this.mergeDefaultSlides()
+                })
+                .then((response) => {
+                    console.log(response);
+                }, (response) => {
+                    console.log('error', response);
+                });
                 return false;
-
-
 
 
             },

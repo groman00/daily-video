@@ -1,13 +1,11 @@
 const fs = require('fs');
-var express = require('express');
-var router = express.Router();
-var request = require('request');
-var generator = require('../lib/generator');
-var slidePreview = require('../lib/slide-preview');
-var projectController = require('../lib/Controllers/projectController');
-
-var multer  = require('multer');
-var upload = multer({
+const express = require('express');
+const router = express.Router();
+const request = require('request');
+const generator = require('../lib/generator');
+const slidePreview = require('../lib/slide-preview');
+const multer  = require('multer');
+const upload = multer({
   storage: multer.diskStorage({
     destination: './uploads/',
     filename: function (req, file, cb) {
@@ -15,6 +13,9 @@ var upload = multer({
     }
   })
 });
+
+const jobQueue = require('../lib/jobQueue');
+const projectController = require('../lib/Controllers/projectController')(jobQueue);
 
 function getSocketById(req, id) {
   return req.app.io.sockets.connected[id];
@@ -103,7 +104,10 @@ router.post('/generate-slide-preview', function (req, res, next) {
 /**
  * POST: Render project to video
  */
-router.post('/render-project', upload.single('narrationTrack'), projectController.render);
+// router.post('/render-project', upload.single('narrationTrack'), projectController.render);
+router.post('/render-project', upload.single('narrationTrack'), (req, res, next) => {
+  projectController.render(req, res, next);
+});
 
   /*
   var slides = req.body.slides;
@@ -136,6 +140,9 @@ router.post('/render-project', upload.single('narrationTrack'), projectControlle
 /**
  * POST: Save project data
  */
-router.post('/save-project', projectController.save);
+//router.post('/save-project', projectController.save);
+router.post('/save-project', (req, res, next) => {
+  projectController.save(req, res, next);
+});
 
 module.exports = router;
