@@ -54,6 +54,7 @@
                 <div class="control-body">
                     <div class="form-control">
                         <button class="button button-blue button-huge" :disabled="isDisabled" @click="submit">Generate Video</button>
+                        <button class="button button-blue" @click="save">Save Project</button>
                         <label class="checkbox">
                             <input type="checkbox" v-model="isPreview"> Select for low-resolution
                         </label>
@@ -112,6 +113,11 @@
                 type: Function,
                 default: Function.prototype,
                 required: false
+            },
+            onSave: {
+                type: Function,
+                default: Function.prototype,
+                required: false
             }
         },
         data() {
@@ -152,7 +158,7 @@
         },
         methods: {
             submit() {
-                this.isDisabled = true;
+                //this.isDisabled = true;
                 this.onSubmit({
                     audioTrack: this.audioTrack,
                     audioTrackLevel: this.audioTrackLevel,
@@ -160,6 +166,9 @@
                     narrationTrackLevel: this.narrationTrackLevel,
                     isPreview: this.isPreview
                 });
+            },
+            save() {
+                this.onSave();
             },
             disableSubmit() {
                 this.isDisabled = true;

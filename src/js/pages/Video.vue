@@ -12,7 +12,8 @@
                 </div>
             </div>
             <div class="panels-bottom flex-grow-0">
-                <video-toolbar ref="videoToolbar" :onSubmit="generateVideo"></video-toolbar>
+                <!-- <video-toolbar ref="videoToolbar" :onSubmit="generateVideo" :onSave:"saveProject"></video-toolbar> -->
+                <video-toolbar ref="videoToolbar" :onSubmit="renderProject" :onSave="saveProject"></video-toolbar>
             </div>
         </div>
     </div>
@@ -116,8 +117,11 @@
                 });
                 return slides;
             },
-            generateVideo(settings) {
-                let frames;
+            //generateVideo(settings) {
+            renderProject(settings) {
+
+
+                /*let frames;
                 const formData = new FormData();
                 const slideData = this.mergeDefaultSlides();
                 const narrationTrack = settings.narrationTrack;
@@ -148,7 +152,31 @@
                     }, (response) => {
                         console.log('error', response);
                     });
+
+                */
+
+                this.$http.post(api.route('render-project'), {})
+                    .then((response) => {
+                        console.log(response);
+                    }, (response) => {
+                        console.log('error', response);
+                    });
                 return false;
+
+
+
+
+            },
+            saveProject() {
+                this.$http.post(api.route('save-project'), {
+                    slideshowId: this.$route.params.id,
+                    slides: this.mergeDefaultSlides()
+                })
+                .then((response) => {
+                    console.log('project saved', response);
+                }, (response) => {
+                    console.log('error saving', response);
+                });
             }
         }
     }

@@ -49,6 +49,7 @@ router.get('/slideshows/:id', function(req, res, next) {
       return false;
     }
     var data = JSON.parse(body);
+    /* todo: put template config into mongo */
     fs.readFile( __dirname + '/../resources/json/config.json', (e, config) => {
       if (e) {
         console.log('Missing Config');
@@ -100,12 +101,12 @@ router.post('/generate-slide-preview', function (req, res, next) {
 
 
 /**
- * POST: Save project data
+ * POST: Render project to video
  */
-/* Use Middleware to handle project saving */
-router.get('/save-project', projectController.saveProject);
-//router.post('/save-project', function (req, res, next) {
-  /*var slides = req.body.slides;
+router.post('/render-project', upload.single('narrationTrack'), projectController.render);
+
+  /*
+  var slides = req.body.slides;
   var narrationTrack = __dirname + '/../public/fixtures/empty.mp3';
   var socket = getSocketById(req, req.body.socket_id);
   if (req.file) {
@@ -123,8 +124,18 @@ router.get('/save-project', projectController.saveProject);
       narrationTrackLevel: req.body.narrationTrackLevel
     });
     res.end('success');
-  }*/
-//   res.end('doo');
+  }
+  res.end('fail');
+  */
+
 // });
+
+
+
+
+/**
+ * POST: Save project data
+ */
+router.post('/save-project', projectController.save);
 
 module.exports = router;
