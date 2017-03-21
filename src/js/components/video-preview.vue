@@ -25,10 +25,10 @@
         },
         methods: {
             fetchPreview(slide, hasPreview, timestamp) {
-                if (hasPreview) {
-                    this.showPreview('preview_' + slide.id + timestamp + '.mp4');
-                    return;
-                }
+                // if (hasPreview) {
+                //     this.showPreview('preview_' + slide.id + timestamp + '.mp4');
+                //     return;
+                // }
                 this.loading = true;
                 this.eventHub.$emit('video-rendering');
                 this.$http.post(api.route('preview-slide'), {
