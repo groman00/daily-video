@@ -121,7 +121,7 @@
             renderProject(settings) {
 
 
-                /*let frames;
+                let frames;
                 const formData = new FormData();
                 const slideData = this.mergeDefaultSlides();
                 const narrationTrack = settings.narrationTrack;
@@ -131,11 +131,11 @@
                     return acc + (frames.total - frames.out);
                 }, 0);
 
+                formData.append('slideshowId', this.$route.params.id);
                 formData.append('socket_id', this.$root.socket_id);
                 formData.append('fps', this.fps);
                 formData.append('slides', JSON.stringify(slideData));
                 formData.append('videoDuration', (totalFrames / this.fps));
-                formData.append('timestamp', '_' + new Date().getTime());
                 formData.append('preview', settings.isPreview);
                 formData.append('audioTrack', settings.audioTrack);
                 formData.append('audioTrackLevel', settings.audioTrackLevel);
@@ -146,22 +146,8 @@
                 }
 
                 console.log(formData);
-                */
 
-                /*this.$http.post(api.route('generate-video'), formData)
-                    .then((response) => {
-                        console.log(response);
-                    }, (response) => {
-                        console.log('error', response);
-                    });*/
-
-
-
-                this.$http.post(api.route('render-project'), {
-                    socketId: this.$root.socket_id,
-                    slideshowId: this.$route.params.id,
-                    slides: this.mergeDefaultSlides()
-                })
+                this.$http.post(api.route('render-project'), formData)
                 .then((response) => {
                     console.log(response);
                 }, (response) => {

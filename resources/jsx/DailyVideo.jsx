@@ -1,24 +1,6 @@
-/**
- * Need a way to handle multiple jobs at one time:
- * Make a jobs json with an array of current job timestamps.  Let this file take the last job timestamp,
- * fetch the timestamped config file and generate a new aep with that time stamp.  That way each job has its
- * own config and project.  Let the node script clean out the temp folder after render starts.
- *
- * -OR-
- *
- * Build some logic to wait for any existing project jobs to finish?
- */
-
 #include "../js/json2.js"
-var video;
+
 var project;
-var __dirname = system.callSystem("pwd").split('resources/jsx')[0];
-var DIR = {
-    resources: __dirname + 'resources/',
-    temp: __dirname + 'temp/',
-    exports: __dirname + 'public/exports/',
-    fixtures: __dirname + 'public/fixtures/'
-};
 var fps = 30;
 var utils = {
     framesToSeconds: function (frames) {
@@ -26,27 +8,28 @@ var utils = {
     }
 }
 
-function DailyVideo() {
-    var jobs = this.getJSON(DIR.resources + 'json/jobs.json');
-    var timestamp = jobs.activeJobs.pop();
-    var config = this.config = this.getJSON(DIR.temp + timestamp + '/json/config.json');
-    var narrationTrack, audioTrack, renderQueue, renderQueueItem, timestamp;
+function DailyVideo(id) {
+    var config, narrationTrack, audioTrack, renderQueue, renderQueueItem;
+
+    DIR.temp = DIR.temp + id;
+    config = this.config = this.getJSON(DIR.temp + '/json/config.json');
+
     if (!config) {
         // Config JSON not found, exit job.
         this.closeProject();
     }
 
     // Clone Project in temp folder
-    project.save(new File(DIR.temp + timestamp + '/aep/DailyVideo.aep'));
+    project.save(new File(DIR.temp + '/aep/DailyVideo.aep'));
 
     // Assign references for top level items and folders
     this.itemCollection = project.items;
     // this.prefabFolder = project.item(1);
     this.prefabFolder = this.getFolderByName('Prefabs');
-    this.videoFolder = this.itemCollection.addFolder('Video' + timestamp);
+    this.videoFolder = this.itemCollection.addFolder('Video_' + id);
 
     // Create master comp and insert into working folder
-    this.masterComp = this.addComp('Master' + timestamp, config.videoDuration);
+    this.masterComp = this.addComp('Master_' + id, config.videoDuration);
     this.masterComp.parentFolder = this.videoFolder;
 
     // Create child comps and add to master comp as layers
@@ -89,18 +72,10 @@ function DailyVideo() {
     // renderQueue.queueInAME(true);
 
     // Once renderering starts, we don't need the project anymore.
-    this.closeProject();
+    project.close(CloseOptions.SAVE_CHANGES);
 }
 
 DailyVideo.prototype = {
-
-    closeProject: function () {
-        // Close project without saving.
-        // Adding sleep to prevent app crashes.
-        //$.sleep(2000);
-        //project.close(CloseOptions.DO_NOT_SAVE_CHANGES);
-        project.close(CloseOptions.SAVE_CHANGES);
-    },
 
     /**
      * Read json file and parse to object;
@@ -230,11 +205,17 @@ DailyVideo.prototype = {
     }
 };
 
-// Safeguards to prevent application crashing and error dialog boxes
-app.saveProjectOnCrash = false;
-app.onError = function (errString) {};
-
-// Open project model and kick off automation
-app.open(new File(DIR.resources + "aep/DailyVideo.aep"));
-project = app.project;
-video = new DailyVideo();
+function main(jobId, dir) {
+    var video;
+    DIR = {
+        resources: dir + '/resources/',
+        temp: dir + '/temp/',
+        exports: dir + '/public/exports/',
+        fixtures: dir + '/public/fixtures/'
+    };
+    app.saveProjectOnCrash = false;
+    app.onError = function (errString) {};
+    app.open(new File(DIR.resources + "aep/DailyVideo.aep"));
+    project = app.project;
+    video = new DailyVideo(jobId);
+}
