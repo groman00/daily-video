@@ -31,10 +31,11 @@
                 }
                 this.loading = true;
                 this.eventHub.$emit('video-rendering');
-                this.$http.post(api.route('generate-slide-preview'), {
+                this.$http.post(api.route('preview-slide'), {
                     'slide': slide,
-                    'socket_id': this.$root.socket_id,
-                    'timestamp': timestamp
+                    'socket_id': this.$root.socket_id
+                    // ,
+                    // 'timestamp': timestamp
                 })
                 .then((response) => {
                     console.log(response);

@@ -16,6 +16,7 @@ const upload = multer({
 
 const jobQueue = require('../lib/jobQueue');
 const projectController = require('../lib/Controllers/projectController')(jobQueue);
+const previewController = require('../lib/Controllers/previewController')(jobQueue);
 
 function getSocketById(req, id) {
   return req.app.io.sockets.connected[id];
@@ -50,7 +51,7 @@ router.get('/slideshows/:id', function(req, res, next) {
       return false;
     }
     var data = JSON.parse(body);
-    /* todo: put template config into mongo */
+    /* todo: put template config into mongo? */
     fs.readFile( __dirname + '/../resources/json/config.json', (e, config) => {
       if (e) {
         console.log('Missing Config');
@@ -66,40 +67,16 @@ router.get('/slideshows/:id', function(req, res, next) {
 });
 
 /**
- * POST: Generate video from slideshow data
- */
-router.post('/generate-video', upload.single('narrationTrack'), function (req, res, next) {
-  var slides = req.body.slides;
-  var narrationTrack = __dirname + '/../public/fixtures/empty.mp3';
-  var socket = getSocketById(req, req.body.socket_id);
-  if (req.file) {
-    narrationTrack = __dirname + '/../' + req.file.path
-  }
-  if (slides) {
-    generator(socket, {
-      narrationTrack: narrationTrack,
-      slides: JSON.parse(slides),
-      videoDuration: req.body.videoDuration,
-      timestamp: req.body.timestamp,
-      preview: req.body.preview,
-      audioTrack: req.body.audioTrack,
-      audioTrackLevel: req.body.audioTrackLevel,
-      narrationTrackLevel: req.body.narrationTrackLevel
-    });
-    res.end('success');
-  }
-  res.end('fail');
-});
-
-/**
  * POST: Generate preview from slide data
  */
-router.post('/generate-slide-preview', function (req, res, next) {
-  var socket = getSocketById(req, req.body.socket_id);
-  slidePreview(socket, req.body.slide, req.body.timestamp);
-  res.end('');
+router.post('/preview-slide', (req, res, next) => {
+  previewController.render(req, res, next);
 });
-
+// router.post('/generate-slide-preview', function (req, res, next) {
+//   var socket = getSocketById(req, req.body.socket_id);
+//   slidePreview(socket, req.body.slide, req.body.timestamp);
+//   res.end('');
+// });
 
 /**
  * POST: Render project to video

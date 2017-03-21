@@ -9,8 +9,7 @@ function Api() {
         routes: [
             { path: host + '/slideshows', name: 'slideshows' },
             { path: host + '/slideshows/:id', name: 'slideshow' },
-            { path: host + '/generate-video', name: 'generate-video' },
-            { path: host + '/generate-slide-preview', name: 'generate-slide-preview' },
+            { path: host + '/preview-slide', name: 'preview-slide' },
             { path: host + '/save-project', name: 'save-project' },
             { path: host + '/render-project', name: 'render-project' }
         ]
