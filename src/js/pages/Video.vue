@@ -117,10 +117,7 @@
                 });
                 return slides;
             },
-            //generateVideo(settings) {
-            renderProject(settings) {
-
-
+            getFormData(settings) {
                 let frames;
                 const formData = new FormData();
                 const slideData = this.mergeDefaultSlides();
@@ -144,24 +141,19 @@
                 if (narrationTrack){
                     formData.append('narrationTrack', narrationTrack, narrationTrack.name);
                 }
-
-                console.log(formData);
-
-                this.$http.post(api.route('render-project'), formData)
+                return formData;
+            },
+            renderProject(settings) {
+                this.$http.post(api.route('render-project'), this.getFormData(settings))
                 .then((response) => {
                     console.log(response);
                 }, (response) => {
                     console.log('error', response);
                 });
                 return false;
-
-
             },
-            saveProject() {
-                this.$http.post(api.route('save-project'), {
-                    slideshowId: this.$route.params.id,
-                    slides: this.mergeDefaultSlides()
-                })
+            saveProject(settings) {
+                this.$http.post(api.route('save-project'), this.getFormData(settings))
                 .then((response) => {
                     console.log('project saved', response);
                 }, (response) => {

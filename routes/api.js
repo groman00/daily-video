@@ -111,7 +111,7 @@ router.post('/render-project', upload.single('narrationTrack'), (req, res, next)
 /**
  * POST: Save project data
  */
-router.post('/save-project', (req, res, next) => {
+router.post('/save-project', upload.single('narrationTrack'), (req, res, next) => {
   projectController.save(req, res, next);
 });
 

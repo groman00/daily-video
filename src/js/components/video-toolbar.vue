@@ -159,16 +159,19 @@
         methods: {
             submit() {
                 //this.isDisabled = true;
-                this.onSubmit({
+                this.onSubmit(this.getSettings());
+            },
+            save() {
+                this.onSave(this.getSettings());
+            },
+            getSettings() {
+                return {
                     audioTrack: this.audioTrack,
                     audioTrackLevel: this.audioTrackLevel,
                     narrationTrack: this.narrationTrack,
                     narrationTrackLevel: this.narrationTrackLevel,
                     isPreview: this.isPreview
-                });
-            },
-            save() {
-                this.onSave();
+                };
             },
             disableSubmit() {
                 this.isDisabled = true;
