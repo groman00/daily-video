@@ -40,12 +40,15 @@ function Preview(id) {
                 'Full Flat Path': DIR.exports + 'preview_' + id
             }
         });
+        renderQueue.queueInAME(true);
 
-        // renderQueue.queueInAME(true);
+        app.setTimeout(function () {
+            project.close(CloseOptions.SAVE_CHANGES);
+        }, 500);
 
-    } catch(e) {}
-
-    project.close(CloseOptions.SAVE_CHANGES);
+    } catch(e) {
+        project.close(CloseOptions.SAVE_CHANGES);
+    }
 }
 
 function main(jobId, dir) {
