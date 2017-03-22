@@ -42,9 +42,10 @@ function Preview(id) {
         });
         renderQueue.queueInAME(true);
 
-        app.setTimeout(function () {
-            project.close(CloseOptions.SAVE_CHANGES);
-        }, 500);
+        // app.setTimeout(function () {
+            // project.close(CloseOptions.SAVE_CHANGES);
+            // project.close(CloseOptions.DO_NOT_SAVE_CHANGES);
+        // }, 3500); // AE crashes without this.  Investigate other options.
 
     } catch(e) {
         project.close(CloseOptions.SAVE_CHANGES);
