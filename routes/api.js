@@ -3,6 +3,9 @@ const express = require('express');
 const router = express.Router();
 const request = require('request');
 const multer  = require('multer');
+const jobQueue = require('../lib/jobQueue');
+const projectController = require('../lib/Controllers/projectController')(jobQueue);
+const previewController = require('../lib/Controllers/previewController')(jobQueue);
 const upload = multer({
   storage: multer.diskStorage({
     destination: './uploads/',
@@ -11,13 +14,6 @@ const upload = multer({
     }
   })
 });
-const jobQueue = require('../lib/jobQueue');
-const projectController = require('../lib/Controllers/projectController')(jobQueue);
-const previewController = require('../lib/Controllers/previewController')(jobQueue);
-
-function getSocketById(req, id) {
-  return req.app.io.sockets.connected[id];
-};
 
 /**
  * GET: List available slideshows
@@ -69,11 +65,6 @@ router.get('/slideshows/:id', function(req, res, next) {
 router.post('/preview-slide', (req, res, next) => {
   previewController.render(req, res, next);
 });
-// router.post('/generate-slide-preview', function (req, res, next) {
-//   var socket = getSocketById(req, req.body.socket_id);
-//   slidePreview(socket, req.body.slide, req.body.timestamp);
-//   res.end('');
-// });
 
 /**
  * POST: Render project to video

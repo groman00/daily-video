@@ -119,7 +119,7 @@
         },
         methods: {
             submit() {
-                //this.isDisabled = true;
+                this.isDisabled = true;
                 this.onSubmit(this.getSettings());
             },
             save() {
