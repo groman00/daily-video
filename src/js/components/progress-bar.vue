@@ -4,7 +4,7 @@
         <div class="progress-bar-track">
             <div class="progress-bar-fill" :style="{ 'width': (progress * 100) + '%'}"></div>
         </div>
-        <a v-if="downloadLink" class="button button-blue download-link pull-right" :href="downloadLink">Save</a>
+        <a v-if="downloadLink" class="button button-blue download-link pull-right" :href="downloadLink">Save Video</a>
         <h3 class="progress-bar-label">{{ label }}</h3>
     </div>
 </template>
