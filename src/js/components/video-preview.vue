@@ -16,33 +16,26 @@
             }
         },
         created() {
-            this.eventHub.$on('fetch-preview', this.fetchPreview);
-            this.$root.socket.on('preview-ready', this.showPreview);
+            this.eventHub.$on('fetching-preview', this.fetchingPreview);
+            this.eventHub.$on('play-preview', this.playPreview);
+            this.$root.socket.on('preview-ready', this.playPreview);
+            this.$root.socket.on('preview-error', this.previewError);
         },
         beforeDestroy() {
-            this.eventHub.$off('fetch-preview', this.fetchPreview);
-            this.$root.socket.off('preview-ready', this.showPreview);
+            this.eventHub.$off('fetching-preview', this.fetchingPreview);
+            this.eventHub.$off('play-preview', this.playPreview);
+            this.$root.socket.off('preview-ready', this.playPreview);
+            this.$root.socket.off('preview-error', this.previewError);
         },
         methods: {
-            fetchPreview(slide, hasPreview, timestamp) {
-                // if (hasPreview) {
-                //     this.showPreview('preview_' + slide.id + timestamp + '.mp4');
-                //     return;
-                // }
+            fetchingPreview() {
                 this.loading = true;
-                this.eventHub.$emit('video-rendering');
-                this.$http.post(api.route('preview-slide'), {
-                    'slide': slide,
-                    'socket_id': this.$root.socket_id
-                    // ,
-                    // 'timestamp': timestamp
-                })
-                .then((response) => {
-                    console.log(response);
-                });
             },
-            showPreview(src) {
-                this.eventHub.$emit('render-complete');
+            previewError() {
+                this.loading = false;
+                // Show error message?
+            },
+            playPreview(src) {
                 this.loading = false;
                 this.src = src;
                 this.$nextTick(() => {

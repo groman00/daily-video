@@ -2,8 +2,6 @@ const fs = require('fs');
 const express = require('express');
 const router = express.Router();
 const request = require('request');
-const generator = require('../lib/generator');
-const slidePreview = require('../lib/slide-preview');
 const multer  = require('multer');
 const upload = multer({
   storage: multer.diskStorage({
@@ -13,7 +11,6 @@ const upload = multer({
     }
   })
 });
-
 const jobQueue = require('../lib/jobQueue');
 const projectController = require('../lib/Controllers/projectController')(jobQueue);
 const previewController = require('../lib/Controllers/previewController')(jobQueue);
@@ -27,7 +24,7 @@ function getSocketById(req, id) {
  */
 router.get('/slideshows', function(req, res, next) {
   var options = {
-    url: 'http://alpha.aol.com/slideshows-json'
+    url: 'http://alpha.aol.com/slideshows-json?site_id=996'
   };
   res.setHeader('Content-Type', 'application/json');
   request(options, function (error, response, body) {

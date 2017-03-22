@@ -54,10 +54,10 @@
                 <div class="control-body">
                     <div class="form-control">
                         <button class="button button-blue button-huge" :disabled="isDisabled" @click="submit">Generate Video</button>
-                        <button class="button button-blue" @click="save">Save Project</button>
                         <label class="checkbox">
                             <input type="checkbox" v-model="isPreview"> Select for low-resolution
                         </label>
+                        <button class="button button-blue button-huge pull-right" @click="save">Save Project</button>
                     </div>
                     <div class="form-control">
                         <progress-bar></progress-bar>
@@ -65,45 +65,6 @@
                 </div>
             </div>
         </section>
-
-
-        <!-- <div class="grid">
-            <div class="cell-m-4">
-                <div class="form-control">
-                    <label style="display:block;width:50%;">
-                        Audio Track:
-                        <select v-model="audioTrack">
-                            <option value="" selected>
-                                No Audio
-                            </option>
-                            <option v-for="track in audioTracks" :value="track">
-                                {{ track.replace('_', ' ').replace('.mp3', '') }}
-                            </option>
-                        </select>
-                    </label>
-                    <input type="range" min="-30" max="30" step="1" v-model="audioTrackLevel">
-                    <span>Audio Track Level: {{ audioTrackLevel }}</span>
-                    <button class="button" :disabled="audioTrack === ''" @click="audioPreview">{{ isPlayingAudio ? 'Stop' : 'Preview' }}</button>
-                    <audio v-if="audioTrack" ref="audioTrackPreview" style="display:none;" :src="'/fixtures/' + audioTrack"></audio>
-                </div>
-                <div class="form-control">
-                    Narration Track: <input ref="audio" type="file" name="audio" accept=".mp3">
-                </div>
-            </div>
-            <div class="cell-m-4">
-                <progress-bar></progress-bar>
-            </div>
-            <div class="cell-m-2">
-                <button class="button pull-right" @click="submit">Generate Video</button>
-            </div>
-            <div class="cell-m-2">
-                <label>
-                    <input type="checkbox" v-model="isPreview"> Low Res Preview
-                </label>
-            </div>
-        </div> -->
-
-
     </div>
 </template>
 <script>
@@ -138,11 +99,11 @@
         },
         created() {
             this.eventHub.$on('render-complete', this.renderComplete);
-            this.eventHub.$on('video-rendering', this.disableSubmit);
+            // this.eventHub.$on('video-rendering', this.disableSubmit);
         },
         beforeDestroy() {
             this.eventHub.$off('render-complete', this.renderComplete);
-            this.eventHub.$off('video-rendering', this.disableSubmit);
+            // this.eventHub.$off('video-rendering', this.disableSubmit);
         },
         watch: {
             audioTrack() {
@@ -173,9 +134,9 @@
                     isPreview: this.isPreview
                 };
             },
-            disableSubmit() {
-                this.isDisabled = true;
-            },
+            // disableSubmit() {
+            //     this.isDisabled = true;
+            // },
             audioPreview() {
                 this.isPlayingAudio = this.$refs.audioTrackPreview.paused;
             },

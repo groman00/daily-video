@@ -9,6 +9,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var apiRoutes = require('./routes/api');
+var io = require('./io');
 var app = express();
 
 /* Socket.io */
@@ -17,6 +18,7 @@ app.io.on('connection', function(socket){
     // Send socket id to client
     socket.emit('register', socket.id);
 });
+io(app.io);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

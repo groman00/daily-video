@@ -37,7 +37,7 @@ function Preview(id) {
         renderQueueItem.outputModule(1).setSettings({
             'Output File Info': {
                 //'Full Flat Path': DIR.exports + 'preview_' + slide.id + timestamp
-                'Full Flat Path': DIR.exports + 'preview_' + id
+                'Full Flat Path': DIR.exports + 'preview_' + config._id
             }
         });
         renderQueue.queueInAME(true);
