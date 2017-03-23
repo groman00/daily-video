@@ -6,6 +6,7 @@ const multer  = require('multer');
 const jobQueue = require('../lib/jobQueue');
 const projectController = require('../lib/Controllers/projectController')(jobQueue);
 const previewController = require('../lib/Controllers/previewController')(jobQueue);
+const uploadController = require('../lib/Controllers/uploadController')();
 const upload = multer({
   storage: multer.diskStorage({
     destination: './uploads/',
@@ -78,6 +79,14 @@ router.post('/render-project', upload.single('narrationTrack'), (req, res, next)
  */
 router.post('/save-project', upload.single('narrationTrack'), (req, res, next) => {
   projectController.save(req, res, next);
+});
+
+/**
+ * POST: Upload video to vidible
+ */
+//router.post('/upload-video', (req, res, next) => {
+router.get('/upload-video', (req, res, next) => {
+  uploadController.upload(req, res, next);
 });
 
 module.exports = router;
