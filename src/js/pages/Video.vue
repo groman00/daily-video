@@ -12,7 +12,6 @@
                 </div>
             </div>
             <div class="panels-bottom flex-grow-0">
-                <!-- <video-toolbar ref="videoToolbar" :onSubmit="generateVideo" :onSave:"saveProject"></video-toolbar> -->
                 <video-toolbar ref="videoToolbar" :onSubmit="renderProject" :onSave="saveProject"></video-toolbar>
             </div>
         </div>
@@ -82,9 +81,6 @@
                     slide.bumper = false;
                     return slide;
                 });
-            },
-            goBack() {
-                this.$router.push({ name: 'home' });
             },
             /**
              * Merge bumpers, dates, etc into slide data for upload

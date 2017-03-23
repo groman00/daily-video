@@ -11,7 +11,8 @@ function Api() {
             { path: host + '/slideshows/:id', name: 'slideshow' },
             { path: host + '/preview-slide', name: 'preview-slide' },
             { path: host + '/save-project', name: 'save-project' },
-            { path: host + '/render-project', name: 'render-project' }
+            { path: host + '/render-project', name: 'render-project' },
+            { path: host + '/vidible-uploads', name: 'vidible-uploads' }
         ]
     });
     this.route = function (name = '', params = {}) {

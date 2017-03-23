@@ -4,7 +4,10 @@
         <div class="progress-bar-track">
             <div class="progress-bar-fill" :style="{ 'width': (progress * 100) + '%'}"></div>
         </div>
-        <a v-if="downloadLink" class="button button-blue download-link pull-right" :href="downloadLink">Save Video</a>
+        <template v-if="downloadLink">
+            <a class="button button-blue download-link pull-right" style="margin-left: 12px;" @click="uploadVideo">Upload Video</a>
+            <a class="button button-blue download-link pull-right" :href="downloadLink">Save Video</a>
+        </template>
         <h3 class="progress-bar-label">{{ label }}</h3>
     </div>
 </template>
@@ -46,6 +49,9 @@
                 this.label = error;
                 this.progress = 0;
                 this.eventHub.$emit('render-complete');
+            },
+            uploadVideo() {
+                alert('Coming Soon!');
             }
         }
     }

@@ -4,13 +4,25 @@
     color: $white;
     padding: 0 $gutter;
 
-    .button-left {
+    .button-left,
+    .button-right {
         margin: 10px 0;
+        z-index: 1;
+    }
+
+    .button-left {
         float: left;
+    }
+
+    .button-right {
+        float: right;
     }
 }
 
 .app-bar-title {
     line-height: $app-bar-height;
     font-size: $font-size-base;
+    position: absolute;
+    left: 0;
+    right: 0;
 }
