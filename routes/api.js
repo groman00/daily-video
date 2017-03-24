@@ -96,9 +96,13 @@ router.get('/vidible-uploads', (req, res, next) => {
   vidibleController.search(req, res, next);
 });
 
-
-router.get('/', (req, res, next) => {
-  res.end('');
+/**
+ * Catchall
+ */
+router.get('/*', (req, res, next) => {
+  res.send({
+    error: 'service not found'
+  });
 });
 
 module.exports = router;
