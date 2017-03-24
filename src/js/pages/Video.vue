@@ -141,20 +141,20 @@
             },
             renderProject(settings) {
                 this.$http.post(api.route('render-project'), this.getFormData(settings))
-                .then((response) => {
-                    console.log(response);
-                }, (response) => {
-                    console.log('error', response);
-                });
+                    .then((response) => {
+                        console.log(response);
+                    }, (response) => {
+                        console.log('error', response);
+                    });
                 return false;
             },
             saveProject(settings) {
                 this.$http.post(api.route('save-project'), this.getFormData(settings))
-                .then((response) => {
-                    console.log('project saved', response);
-                }, (response) => {
-                    console.log('error saving', response);
-                });
+                    .then((response) => {
+                        console.log('project saved', response);
+                    }, (response) => {
+                        console.log('error saving', response);
+                    });
             }
         }
     }

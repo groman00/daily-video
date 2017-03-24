@@ -12,6 +12,8 @@
     </div>
 </template>
 <script>
+    import api from '../routers/api';
+
     export default {
         data() {
             return {
@@ -51,7 +53,17 @@
                 this.eventHub.$emit('render-complete');
             },
             uploadVideo() {
-                alert('Coming Soon!');
+                const data = {
+                    name: 'Daily Video Ingestion ' + Date.now(),
+                    file: this.downloadLink.split('/').pop()
+                };
+                this.$http.post(api.route('vidible-upload'), data)
+                    .then((response) => {
+                        console.log(response);
+                        alert('Upload Complete!  Files will be available in the uploads queue shortly.');
+                    }, (response) => {
+                        console.log('error', response);
+                    });
             }
         }
     }

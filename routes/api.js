@@ -85,7 +85,7 @@ router.post('/save-project', upload.single('narrationTrack'), (req, res, next) =
  * POST: Upload video to Vidible
  */
 //router.post('/upload-video', (req, res, next) => {
-router.get('/vidible-upload', (req, res, next) => {
+router.post('/vidible-upload', (req, res, next) => {
   vidibleController.upload(req, res, next);
 });
 

@@ -12,6 +12,7 @@ function Api() {
             { path: host + '/preview-slide', name: 'preview-slide' },
             { path: host + '/save-project', name: 'save-project' },
             { path: host + '/render-project', name: 'render-project' },
+            { path: host + '/vidible-upload', name: 'vidible-upload' },
             { path: host + '/vidible-uploads', name: 'vidible-uploads' }
         ]
     });
