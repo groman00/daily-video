@@ -32,7 +32,7 @@ function Preview(id) {
         renderQueueItem = renderQueue.items.add(comp);
         renderQueueItem.setSettings({
             'Quality': 'Draft',
-            'Resolution': 'Third'
+            'Resolution': 'Quarter'
         });
         renderQueueItem.outputModule(1).setSettings({
             'Output File Info': {
