@@ -3,16 +3,14 @@
     <div class="slide-preview">
         <loading-indicator v-if="loading"></loading-indicator>
         <div v-show="!loading" ref="preview" style="position: relative;">
-            <!-- MAYBE TRY USING A CANVAS INSTEAD? -->
-            <!-- http://www.williammalone.com/articles/create-html5-canvas-javascript-sprite-animation/ -->
-            <!-- requestAnimationFrame! -->
-            <!-- http://awardwinningfjords.com/2012/03/08/image-sequences.html -->
-            <img class="frame" style="position: absolute;z-index: -1;" v-for="frame in frames" :src="'/exports/preview_' + previewId + '/' + frame" @load="imageLoaded">
+            <canvas height="270" width="480" class="slide-preview-canvas" ref="previewCanvas"></canvas>
         </div>
     </div>
 
 </template>
 <script>
+    var doc = document;
+    var win = window;
 
     export default {
         data() {
@@ -20,9 +18,13 @@
                 loading: false,
                 fps: 30,
                 previewId: undefined,
+                files: [],
                 frames: [],
-                totalImages: 0,
-                imagesLoaded: 0
+                totalFrames: 0,
+                imagesLoaded: 0,
+                animationFrame: undefined,
+                currentFrame: 0,
+                context: undefined
             }
         },
         created() {
@@ -30,30 +32,45 @@
             this.eventHub.$on('play-preview', this.playPreview);
             this.$root.socket.on('preview-error', this.previewError);
         },
+        mounted() {
+            this.context = this.$refs.previewCanvas.getContext("2d");
+        },
         beforeDestroy() {
             this.eventHub.$off('fetching-preview', this.fetchingPreview);
             this.eventHub.$off('play-preview', this.playPreview);
             this.$root.socket.off('preview-error', this.previewError);
         },
+        watch: {
+            files(frames) {
+                let img;
+                frames.forEach((frame) => {
+                    img = doc.createElement('img');
+                    img.onload = this.imageLoaded;
+                    img.src = this.imageSource(frame);
+                    this.frames.push(img);
+                });
+            }
+        },
         methods: {
             imageLoaded() {
                 this.imagesLoaded = this.imagesLoaded + 1;
-                if (this.imagesLoaded === this.totalImages) {
+                if (this.imagesLoaded === this.totalFrames) {
                     this.loading = false;
-                    this.runPreview();
+                    //this.runPreview();
+                    this.animationLoop();
                 }
             },
-            runPreview() {
-                let i = 0;
-                let interval = setInterval(() => {
-                    this.$refs.preview.children[i].style.zIndex = i;
-                    i = i + 1;
-                    if (i === this.totalImages) {
-                        this.reset();
-                        clearInterval(interval);
-                        console.log('preview done');
-                    }
-                }, this.fps);
+            animationLoop() {
+                if (this.currentFrame < this.totalFrames) {
+                    this.context.drawImage(this.frames[this.currentFrame], 0, 0, 480, 270);
+                    this.currentFrame = this.currentFrame + 1;
+                    this.animationFrame = win.requestAnimationFrame(this.animationLoop);
+                    return;
+                }
+                this.reset();
+            },
+            imageSource(file) {
+                return '/exports/preview_' + this.previewId + '/' + file;
             },
             fetchingPreview() {
                 this.loading = true;
@@ -65,15 +82,17 @@
             playPreview(preview) {
                 console.log('files!', preview)
                 this.previewId= preview.previewId;
-                this.frames = preview.files;
-                this.totalImages = preview.files.length;
+                this.files = preview.files;
+                this.totalFrames = preview.files.length;
             },
             reset() {
-                console.log('resetting');
                 this.previewId= undefined;
+                this.files = [];
                 this.frames = [];
-                this.totalImages = 0;
+                this.totalFrames = 0;
                 this.imagesLoaded = 0;
+                this.currentFrame = 0;
+                this.context.clearRect(0, 0, 480, 270);
             }
         }
     }
