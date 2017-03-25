@@ -36,7 +36,8 @@
             return {
                 hasPreview: false,
                 isDisabled: false,
-                previewFile: undefined
+                previewId: undefined,
+                previewFiles: []
             }
         },
         created() {
@@ -45,17 +46,16 @@
             this.eventHub.$on('fetching-preview', this.setDisabled);
         },
         beforeDestroy() {
-            // this.previewTimestamp = this.getTimestamp();
             this.$root.socket.off('preview-ready', this.setEnabled);
             this.$root.socket.off('preview-error', this.setEnabled);
             this.eventHub.$off('fetching-preview', this.setDisabled);
         },
         methods: {
             fetchPreview(slide) {
-                if (this.hasPreview) {
-                    this.eventHub.$emit('play-preview', this.previewFile);
-                    return false;
-                }
+                // if (this.hasPreview) {
+                //     this.eventHub.$emit('play-preview', this.previewFile);
+                //     return false;
+                // }
                 this.eventHub.$emit('fetching-preview');
                 this.$http.post(api.route('preview-slide'), {
                     'slide': slide,
@@ -63,7 +63,7 @@
                 })
                 .then((response) => {
                     if (response.body.file) {
-                        this.previewFile = response.body.file;
+                        this.previewId = response.body.previewId;
                         this.hasPreview = true;
                     }
                 });

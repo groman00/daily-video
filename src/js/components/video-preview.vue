@@ -36,11 +36,12 @@
                 // Show error message?
             },
             playPreview(src) {
+                console.log('files!', src)
                 this.loading = false;
-                this.src = src;
-                this.$nextTick(() => {
-                    this.$refs.video.play();
-                });
+                // this.src = src;
+                // this.$nextTick(() => {
+                //     this.$refs.video.play();
+                // });
             },
             videoEnded() {
                 this.src = '';
