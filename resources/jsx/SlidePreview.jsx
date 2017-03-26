@@ -32,15 +32,21 @@ function Preview(id) {
         renderQueueItem = renderQueue.items.add(comp);
         renderQueueItem.setSettings({
             'Quality': 'Draft',
-            'Resolution': 'Third'
+            'Resolution': 'Quarter'
         });
+        renderQueueItem.outputModule(1).applyTemplate('Preview_Sequence');
         renderQueueItem.outputModule(1).setSettings({
             'Output File Info': {
-                //'Full Flat Path': DIR.exports + 'preview_' + slide.id + timestamp
-                'Full Flat Path': DIR.exports + 'preview_' + config._id
+                // 'Full Flat Path': DIR.exports + 'preview_' + config._id
+                'Base Path': DIR.exports,
+                'Subfolder Path': 'preview_' + config._id,
+                'File Name': '[#####].jpg'
             }
         });
-        renderQueue.queueInAME(true);
+
+        // renderQueue.queueInAME(true);
+        renderQueue.render();
+        project.close(CloseOptions.SAVE_CHANGES);
 
         // app.setTimeout(function () {
             // project.close(CloseOptions.SAVE_CHANGES);

@@ -36,24 +36,26 @@
             return {
                 hasPreview: false,
                 isDisabled: false,
-                previewFile: undefined
+                preview: {
+                    previewId: 0,
+                    files: []
+                }
             }
         },
         created() {
-            this.$root.socket.on('preview-ready', this.setEnabled);
+            this.$root.socket.on('preview-ready', this.previewReady);
             this.$root.socket.on('preview-error', this.setEnabled);
             this.eventHub.$on('fetching-preview', this.setDisabled);
         },
         beforeDestroy() {
-            // this.previewTimestamp = this.getTimestamp();
-            this.$root.socket.off('preview-ready', this.setEnabled);
+            this.$root.socket.off('preview-ready', this.previewReady);
             this.$root.socket.off('preview-error', this.setEnabled);
             this.eventHub.$off('fetching-preview', this.setDisabled);
         },
         methods: {
             fetchPreview(slide) {
                 if (this.hasPreview) {
-                    this.eventHub.$emit('play-preview', this.previewFile);
+                    this.dispatchPreview();
                     return false;
                 }
                 this.eventHub.$emit('fetching-preview');
@@ -62,14 +64,19 @@
                     'socket_id': this.$root.socket_id
                 })
                 .then((response) => {
-                    if (response.body.file) {
-                        this.previewFile = response.body.file;
-                        this.hasPreview = true;
-                    }
+                    this.preview = Object.assign({}, { previewId: response.body.previewId });
+                    this.hasPreview = true;
                 });
             },
-            setEnabled() {
+            previewReady(preview) {
+                if (preview.previewId === this.preview.previewId) {
+                    this.preview = Object.assign({}, preview);
+                    this.dispatchPreview();
+                }
                 this.isDisabled = false;
+            },
+            dispatchPreview() {
+                this.eventHub.$emit('play-preview', this.preview);
             },
             setDisabled() {
                 this.isDisabled = true;
