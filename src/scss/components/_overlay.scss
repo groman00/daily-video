@@ -1,0 +1,27 @@
+.overlay{
+    @include cover-parent(fixed);
+    background: rgba(0, 0, 0, .8);
+    z-index: 100;
+    overflow-y: auto;
+    transform: translate3d(0, 100%, 0);
+    transition: transform 300ms ease-in-out;
+
+    &.open{
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+.upload-dialog {
+    width: 60%;
+    height: 60%;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+    text-align: center;
+
+    h2,
+    p {
+        margin-bottom: $gutter;
+    }
+}

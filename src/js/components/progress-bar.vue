@@ -9,23 +9,37 @@
             <a class="button button-blue download-link pull-right" :href="downloadLink">Save Video</a>
         </template>
         <h3 class="progress-bar-label">{{ label }}</h3>
+        <overlay>
+            <div slot="overlay-content" class="upload-dialog">
+                <template v-if="isUploading">
+                    <h2>Uploading to Vidible</h2>
+                    <loading-indicator></loading-indicator>
+                </template>
+                <template v-else>
+                    <h2>Upload Complete</h2>
+                    <p>Links will be availble in the uploads panel shortly.</p>
+                    <button class="button button-blue" @click="clearUploadOverlay">Close</button>
+                </template>
+            </div>
+        </overlay>
     </div>
 </template>
 <script>
     import api from '../routers/api';
 
+    /**
+     * Todo: remove all logic not related to progress events.
+     */
     export default {
         data() {
             return {
                 label: ' ',
                 progress: 0,
-                downloadLink: ''
+                downloadLink: '',
+                isUploading: false
             }
         },
         created() {
-            /**
-             * Should this code be in the video editor, and the event hub can broadcast the progress events?
-             */
             this.$root.socket.on('progress', this.showProgress);
             this.$root.socket.on('complete', this.showComplete);
             this.$root.socket.on('jobError', this.showError);
@@ -53,6 +67,10 @@
                 this.eventHub.$emit('render-complete');
             },
             uploadVideo() {
+                this.isUploading = true;
+                this.$nextTick(() => {
+                    this.eventHub.$emit('open-overlay');
+                });
                 const data = {
                     name: 'Daily Video Ingestion ' + Date.now(),
                     file: this.downloadLink.split('/').pop()
@@ -60,10 +78,15 @@
                 this.$http.post(api.route('vidible-upload'), data)
                     .then((response) => {
                         console.log(response);
-                        alert('Upload Complete!  Files will be available in the uploads queue shortly.');
+                        this.isUploading = false
                     }, (response) => {
-                        console.log('error', response);
+                        alert('upload failed.  Please try again.');
+                        this.eventHub.$emit('close-overlay');
+                        this.isUploading = false
                     });
+            },
+            clearUploadOverlay() {
+                this.eventHub.$emit('close-overlay');
             }
         }
     }

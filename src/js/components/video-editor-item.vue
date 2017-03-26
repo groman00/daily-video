@@ -43,14 +43,14 @@
             }
         },
         created() {
+            this.eventHub.$on('fetching-preview', this.setDisabled);
             this.$root.socket.on('preview-ready', this.previewReady);
             this.$root.socket.on('preview-error', this.setEnabled);
-            this.eventHub.$on('fetching-preview', this.setDisabled);
         },
         beforeDestroy() {
+            this.eventHub.$off('fetching-preview', this.setDisabled);
             this.$root.socket.off('preview-ready', this.previewReady);
             this.$root.socket.off('preview-error', this.setEnabled);
-            this.eventHub.$off('fetching-preview', this.setDisabled);
         },
         methods: {
             fetchPreview(slide) {
