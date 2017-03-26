@@ -2,11 +2,10 @@
 <template>
     <div class="slide-preview">
         <loading-indicator v-if="loading"></loading-indicator>
-        <div v-show="!loading" ref="preview" style="position: relative;">
-            <canvas height="270" width="480" class="slide-preview-canvas" ref="previewCanvas"></canvas>
+        <div v-show="!loading" class="slide-preview-container" ref="preview">
+            <canvas class="slide-preview-canvas" ref="previewCanvas"></canvas>
         </div>
     </div>
-
 </template>
 <script>
     var doc = document;
@@ -24,7 +23,8 @@
                 imagesLoaded: 0,
                 animationFrame: undefined,
                 currentFrame: 0,
-                context: undefined
+                context: undefined,
+                aspectRatio: 270/480
             }
         },
         created() {
@@ -56,14 +56,17 @@
                 this.imagesLoaded = this.imagesLoaded + 1;
                 if (this.imagesLoaded === this.totalFrames) {
                     this.loading = false;
-                    //this.runPreview();
-                    this.animationLoop();
+                    this.$nextTick(() => {
+                        this.setCanvasSize();
+                        this.animationLoop();
+                    });
                 }
             },
             animationLoop() {
                 if (this.currentFrame < this.totalFrames) {
-                    this.context.drawImage(this.frames[this.currentFrame], 0, 0, 480, 270);
+                    this.context.drawImage(this.frames[this.currentFrame], ...this.getCanvasRect());
                     this.currentFrame = this.currentFrame + 1;
+                    // Set proper frames per second: http://creativejs.com/resources/requestanimationframe/
                     this.animationFrame = win.requestAnimationFrame(this.animationLoop);
                     return;
                 }
@@ -85,6 +88,15 @@
                 this.files = preview.files;
                 this.totalFrames = preview.files.length;
             },
+            setCanvasSize() {
+                const canvas = this.$refs.previewCanvas;
+                const width = this.$refs.preview.offsetWidth;
+                canvas.width = width;
+                canvas.height = width * this.aspectRatio;
+            },
+            getCanvasRect() {
+                return [0, 0, this.$refs.previewCanvas.width, this.$refs.previewCanvas.height]
+            },
             reset() {
                 this.previewId= undefined;
                 this.files = [];
@@ -92,7 +104,7 @@
                 this.totalFrames = 0;
                 this.imagesLoaded = 0;
                 this.currentFrame = 0;
-                this.context.clearRect(0, 0, 480, 270);
+                this.context.clearRect(...this.getCanvasRect());
             }
         }
     }

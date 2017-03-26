@@ -12,8 +12,14 @@
     background: $black;
     position: relative;
 
-    .frame {
-        // height: 100%;
-        width: 100%;
+    .slide-preview-container {
+        position: relative;
+        height: 100%;
+    }
+
+    .slide-preview-canvas {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
     }
 }
