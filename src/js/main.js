@@ -40,6 +40,7 @@ Vue.use(VueResource);
     created() {
         this.socket = io();
         this.socket.on('register', (id) => {
+            console.log('registering new socket id');
             this.socket_id = id;
         });
     }
