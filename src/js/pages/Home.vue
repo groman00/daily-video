@@ -4,7 +4,7 @@
         <app-bar></app-bar>
         <div v-if="slideshows.length" class="grid flex-grow-1">
             <div class="cell-m-4" v-for="slideshow in slideshows" key="slideshow.id">
-                <router-link :to="{ name: 'video', params: { id: slideshow.id } }" exact>
+                <router-link v-if="slideshow" :to="{ name: 'video', params: { id: slideshow.id } }" exact>
                     <thumbnail size="large" :title="slideshow.title" :image="slideshow.image_url_thumb"></thumbnail>
                 </router-link>
             </div>
