@@ -22,6 +22,10 @@ body,
     flex-shrink: 0;
 }
 
+.flex-shrink-1 {
+    flex-shrink: 1;
+}
+
 .flex-grow-1 {
     flex-grow: 1;
 }
@@ -42,6 +46,8 @@ body,
         display: flex;
         flex-flow: row wrap;
         align-items: stretch;
+        overflow: auto;
+        height: 0;
     }
 
     .panel-left {
@@ -58,9 +64,5 @@ body,
             height: 100%;
             width: 100%;
         }
-    }
-
-    .panels-bottom {
-        // height: 200px;
     }
 }

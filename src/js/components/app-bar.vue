@@ -1,6 +1,6 @@
 <style scoped></style>
 <template>
-    <div class="app-bar flex-shrink-0">
+    <div class="app-bar flex-shrink-1">
         <h1 v-if="config.title" class="app-bar-title text-center">{{ config.title }}</h1>
         <div class="button-group buttons-left">
             <router-link v-if="config.buttonLeft === 'back'" :to="{ name: 'home' }" exact class="button button-blue">
@@ -26,17 +26,6 @@
                 },
                 required: true
             }
-            // ,
-            // onBackButton: {
-            //     type: Function,
-            //     default: Function.prototype,
-            //     required: false
-            // }
-        },
-        methods: {
-            // backButtonClicked() {
-            //     this.onBackButton();
-            // }
         }
     }
 </script>

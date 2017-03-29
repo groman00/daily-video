@@ -11,7 +11,7 @@
                     <slide-preview></slide-preview>
                 </div>
             </div>
-            <div class="panels-bottom flex-grow-0">
+            <div class="panels-bottom flex-shrink-1">
                 <video-toolbar ref="videoToolbar" :onSubmit="renderProject" :onSave="saveProject"></video-toolbar>
             </div>
         </div>
