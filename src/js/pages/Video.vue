@@ -35,13 +35,22 @@
         methods: {
             fetchData() {
                 let body;
+                let slides;
                 this.$http.get(api.route('slideshow', { id: this.$route.params.id }))
                     .then((response) => {
                         body = response.body;
+                        slides = body.slideshow.slides;
+
+
                         this.fps = body.config.fps;
                         this.templates = this.parseTemplates(body.config.templates);
-                        this.slides = this.parseSlides(body.slideshow.slides);
+                        //this.slides = this.parseSlides(body.slideshow.slides);
+                        // slideshowId indicates that the slideshow exists in our database.
+                        this.slides = body.slideshow.slideshowId ? slides : this.parseSlides(slides);
                         this.title = body.slideshow.title;
+
+
+
                         console.log(this.slides);
                     }, (response) => {
                         // console.log('error', response);

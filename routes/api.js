@@ -7,6 +7,7 @@ const jobQueue = require('../lib/jobQueue');
 const projectController = require('../lib/Controllers/projectController')(jobQueue);
 const previewController = require('../lib/Controllers/previewController')(jobQueue);
 const vidibleController = require('../lib/Controllers/vidibleController')();
+const slideshowController = require('../lib/Controllers/slideshowController')();
 const upload = multer({
   storage: multer.diskStorage({
     destination: './uploads/',
@@ -19,45 +20,15 @@ const upload = multer({
 /**
  * GET: List available slideshows
  */
-router.get('/slideshows', function(req, res, next) {
-  var options = {
-    url: 'http://alpha.aol.com/slideshows-json?site_id=996'
-  };
-  res.setHeader('Content-Type', 'application/json');
-  request(options, function (error, response, body) {
-    var data = JSON.parse(body);
-    res.send(JSON.stringify(data));
-  });
+router.get('/slideshows', (req, res, next) => {
+  slideshowController.all(req, res, next);
 });
 
 /**
  * GET: slideshow by id
  */
-router.get('/slideshows/:id', function(req, res, next) {
-  var options = {
-    url: 'http://alpha.aol.com/slideshow-json/' + req.params.id
-  };
-  res.setHeader('Content-Type', 'application/json');
-  request(options, function (error, response, body) {
-    if (error) {
-      console.log('Error:', error);
-      res.end('{}');
-      return false;
-    }
-    var data = JSON.parse(body);
-    /* todo: put template config into mongo? */
-    fs.readFile( __dirname + '/../resources/json/config.json', (e, config) => {
-      if (e) {
-        console.log('Missing Config');
-        res.end('{}');
-        return false;
-      }
-      res.send(JSON.stringify({
-        slideshow: data,
-        config: JSON.parse(config)
-      }));
-    });
-  });
+router.get('/slideshows/:id', (req, res, next) => {
+  slideshowController.one(req, res, next);
 });
 
 /**
