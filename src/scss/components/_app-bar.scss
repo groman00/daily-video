@@ -4,17 +4,15 @@
     color: $white;
     padding: 0 $gutter;
 
-    .button-left,
-    .button-right {
-        margin: 10px 0;
-        z-index: 1;
+    .button-group {
+        margin-top: 10px;
     }
 
-    .button-left {
+    .buttons-left {
         float: left;
     }
 
-    .button-right {
+    .buttons-right {
         float: right;
     }
 }

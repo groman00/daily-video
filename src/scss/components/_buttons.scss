@@ -56,13 +56,11 @@
 }
 
 .button-group {
+    margin-left: -1 * $gutter-narrow;
+    margin-right: -1 * $gutter-narrow;
 
     .button {
-        margin: 0 $gutter-narrow 0 0;
-
-        &:last-child {
-            margin-right: 0
-        }
+        margin: 0 $gutter-narrow;
     }
 }
 
