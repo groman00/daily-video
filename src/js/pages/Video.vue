@@ -1,9 +1,9 @@
 <style scoped></style>
 <template>
     <div class="video-page page-wrapper">
-        <app-bar :config="{ buttonLeft: 'back', title: slideshow.title }" :onBackButton="goBack"></app-bar>
-        <div class="panels flex-grow-1">
-            <div class="panels-top flex-grow-1">
+        <app-bar :config="{ buttonLeft: 'back', title: slideshow.title }" v-on:titleUpdated="titleUpdated" :onBackButton="goBack"></app-bar>
+        <div class="flex-columns flex-grow-1">
+            <div class="panels-top flex-rows flex-grow-1">
                 <div class="panel-left">
                     <video-editor :slides="slides" :templates="templates"></video-editor>
                 </div>
@@ -33,6 +33,9 @@
             this.fetchData();
         },
         methods: {
+            titleUpdated(title) {
+                this.slideshow.title = title;
+            },
             fetchData() {
                 let body;
                 let slides;

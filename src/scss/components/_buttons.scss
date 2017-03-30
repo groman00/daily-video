@@ -56,11 +56,11 @@
 }
 
 .button-group {
-    margin-left: -1 * $gutter-narrow;
-    margin-right: -1 * $gutter-narrow;
+    margin-left: -1 * ($gutter-narrow / 2);
+    margin-right: -1 * ($gutter-narrow / 2);
 
     .button {
-        margin: 0 $gutter-narrow;
+        margin: 0 ($gutter-narrow / 2);
     }
 }
 

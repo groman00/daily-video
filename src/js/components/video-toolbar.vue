@@ -60,7 +60,7 @@
                         <button class="button button-blue button-huge pull-right" @click="save">Save Project</button>
                     </div>
                     <div class="form-control">
-                        <progress-bar></progress-bar>
+                        <progress-bar :title="slideshow.title"></progress-bar>
                     </div>
                 </div>
             </div>

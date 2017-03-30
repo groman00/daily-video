@@ -7,20 +7,14 @@
     .button-group {
         margin-top: 10px;
     }
-
-    .buttons-left {
-        float: left;
-    }
-
-    .buttons-right {
-        float: right;
-    }
 }
 
 .app-bar-title {
     line-height: $app-bar-height;
     font-size: $font-size-base;
-    position: absolute;
-    left: 0;
-    right: 0;
+    padding: 0 $gutter-wide;
+
+    input {
+        text-align: center;
+    }
 }

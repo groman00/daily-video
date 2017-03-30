@@ -31,6 +31,7 @@
      * Todo: remove all logic not related to progress events.
      */
     export default {
+        props: ['title'],
         data() {
             return {
                 label: ' ',
@@ -72,7 +73,7 @@
                     this.eventHub.$emit('open-overlay');
                 });
                 const data = {
-                    name: 'Daily Video Ingestion ' + Date.now(),
+                    name: this.title + ' ' + Date.now(),
                     file: this.downloadLink.split('/').pop()
                 };
                 this.$http.post(api.route('vidible-upload'), data)

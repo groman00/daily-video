@@ -30,22 +30,25 @@ body,
     flex-grow: 1;
 }
 
+.flex-columns {
+    display: flex;
+    flex-flow: column;
+    align-items: stretch;
+}
+
+.flex-rows {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: stretch;
+}
+
 .home-page {
     color: $white;
 }
 
 .video-page {
 
-    .panels {
-        display: flex;
-        flex-flow: column;
-        align-items: stretch;
-    }
-
     .panels-top {
-        display: flex;
-        flex-flow: row wrap;
-        align-items: stretch;
         overflow: auto;
         height: 0;
     }
