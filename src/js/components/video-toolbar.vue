@@ -79,6 +79,10 @@
                 type: Function,
                 default: Function.prototype,
                 required: false
+            },
+            slideshow: {
+                type: Object,
+                required: true
             }
         },
         data() {
@@ -99,11 +103,9 @@
         },
         created() {
             this.eventHub.$on('render-complete', this.renderComplete);
-            // this.eventHub.$on('video-rendering', this.disableSubmit);
         },
         beforeDestroy() {
             this.eventHub.$off('render-complete', this.renderComplete);
-            // this.eventHub.$off('video-rendering', this.disableSubmit);
         },
         watch: {
             audioTrack() {
@@ -115,6 +117,10 @@
                     track.currentTime = 0;
                 }
                 track[bool ? 'play' : 'pause']();
+            },
+            slideshow() {
+                this.audioTrack = this.slideshow.audioTrack || '';
+                this.audioTrackLevel = this.slideshow.audioTrackLevel || '0';
             }
         },
         methods: {

@@ -1,7 +1,7 @@
 <style scoped></style>
 <template>
     <div class="video-page page-wrapper">
-        <app-bar :config="{ buttonLeft: 'back', title: title }" :onBackButton="goBack"></app-bar>
+        <app-bar :config="{ buttonLeft: 'back', title: slideshow.title }" :onBackButton="goBack"></app-bar>
         <div class="panels flex-grow-1">
             <div class="panels-top flex-grow-1">
                 <div class="panel-left">
@@ -12,7 +12,7 @@
                 </div>
             </div>
             <div class="panels-bottom flex-shrink-1">
-                <video-toolbar ref="videoToolbar" :onSubmit="renderProject" :onSave="saveProject"></video-toolbar>
+                <video-toolbar ref="videoToolbar" :onSubmit="renderProject" :onSave="saveProject" :slideshow="slideshow"></video-toolbar>
             </div>
         </div>
     </div>
@@ -26,7 +26,7 @@
                 slides: [],
                 fps: 0,
                 templates: {},
-                title: ''
+                slideshow: {}
             }
         },
         created() {
@@ -39,19 +39,11 @@
                 this.$http.get(api.route('slideshow', { id: this.$route.params.id }))
                     .then((response) => {
                         body = response.body;
-                        slides = body.slideshow.slides;
-
-
-                        this.fps = body.config.fps;
+                        this.slideshow = body.slideshow;
                         this.templates = this.parseTemplates(body.config.templates);
-                        //this.slides = this.parseSlides(body.slideshow.slides);
+                        this.fps = body.config.fps;
                         // slideshowId indicates that the slideshow exists in our database.
-                        this.slides = body.slideshow.slideshowId ? slides : this.parseSlides(slides);
-                        this.title = body.slideshow.title;
-
-
-
-                        console.log(this.slides);
+                        this.slides = this.slideshow.slideshowId ? this.slideshow.slides : this.parseSlides(this.slideshow.slides);
                     }, (response) => {
                         // console.log('error', response);
                     });
@@ -134,6 +126,7 @@
                 }, 0);
 
                 formData.append('slideshowId', this.$route.params.id);
+                formData.append('title', this.slideshow.title);
                 formData.append('socket_id', this.$root.socket_id);
                 formData.append('fps', this.fps);
                 formData.append('slides', JSON.stringify(slideData));
@@ -161,6 +154,7 @@
                 this.$http.post(api.route('save-project'), this.getFormData(settings))
                     .then((response) => {
                         console.log('project saved', response);
+                        alert('Saved!');
                     }, (response) => {
                         console.log('error saving', response);
                     });
