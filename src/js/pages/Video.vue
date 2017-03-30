@@ -81,7 +81,7 @@
                             type = 'slide_in_out';
                     }
                     slide.template = this.templates[type];
-                    slide.image = slide.image_url_large;
+                    slide.image = slide.image_type === 'gif' ? slide.original_image : slide.image_url_large;
                     slide.bumper = false;
                     return slide;
                 });

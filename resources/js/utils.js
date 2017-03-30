@@ -78,9 +78,17 @@ var UTILS = {
             comp.layer(1).sourceText.setValue(caption); // Set text layer sourceText
         }
         if (!/bumper|share|quote|joke|title_1|date/.test(templateName)) {
+
             image = project.importFile(new ImportOptions(File(slide.image)));
             image.parentFolder = videoFolder;
             comp.layer(2).replaceSource(image, true); // Set image source
+
+            // GIF Handling
+            if (slide.image_type === 'gif') {
+                comp.layer(2).timeRemapEnabled = true;
+                comp.layer(2).timeRemap.expression = "loopOut('cycle');";
+            }
+
         }
         if (/^joke$|quote|date/.test(templateName)) {
             title = slide.title.substr(0, characters.title);
