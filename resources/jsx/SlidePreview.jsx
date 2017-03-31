@@ -43,19 +43,12 @@ function Preview(id) {
                 'File Name': '[#####].jpg'
             }
         });
-
-        // renderQueue.queueInAME(true);
         renderQueue.render();
-        project.close(CloseOptions.SAVE_CHANGES);
-
-        // app.setTimeout(function () {
-            // project.close(CloseOptions.SAVE_CHANGES);
-            // project.close(CloseOptions.DO_NOT_SAVE_CHANGES);
-        // }, 3500); // AE crashes without this.  Investigate other options.
 
     } catch(e) {
-        project.close(CloseOptions.SAVE_CHANGES);
+        // alert(e);
     }
+    project.close(CloseOptions.SAVE_CHANGES);
 }
 
 function main(jobId, dir) {
