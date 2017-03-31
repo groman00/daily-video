@@ -61,6 +61,20 @@ var UTILS = {
         return folder;
     },
 
+    fitLayerToComp: function (comp, layer, avItem) {
+        var h = avItem.height;
+        var w = avItem.width;
+        var compHeight = comp.height;
+        var compWidth = comp.width;
+        var scale = [100, 100];
+        if (h >= w) {
+            scale = [((w * scaleHeight) / h), ((100 * 1080) / h)];
+        } else {
+            scale = [((100 * 1920) / w), ((h * scaleWidth) / w)];
+        }
+        layer.scale.setValue(scale);
+    },
+
     /**
      * Build comp using variables from template and slide config
      */
@@ -85,6 +99,7 @@ var UTILS = {
 
             // GIF Handling
             if (slide.image_type === 'gif') {
+                this.fitLayerToComp(comp, comp.layer(2), image);
                 comp.layer(2).timeRemapEnabled = true;
                 comp.layer(2).timeRemap.expression = "loopOut('cycle');";
             }
