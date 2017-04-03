@@ -1,13 +1,14 @@
 const fs = require('fs');
+const path = require('path');
 const express = require('express');
 const router = express.Router();
-const request = require('request');
 const multer  = require('multer');
 const jobQueue = require('../lib/jobQueue');
 const projectController = require('../lib/Controllers/projectController')(jobQueue);
 const previewController = require('../lib/Controllers/previewController')(jobQueue);
 const vidibleController = require('../lib/Controllers/vidibleController')();
 const slideshowController = require('../lib/Controllers/slideshowController')();
+const appRoot = path.resolve(__dirname, '../');
 const upload = multer({
   storage: multer.diskStorage({
     destination: './uploads/',
@@ -65,6 +66,19 @@ router.post('/vidible-upload', (req, res, next) => {
  */
 router.get('/vidible-uploads', (req, res, next) => {
   vidibleController.search(req, res, next);
+});
+
+/**
+ * GET: Project config json
+ */
+router.get('/project-config', (req, res, next) => {
+  fs.readFile(appRoot + '/resources/json/config.json', (e, config) => {
+    if (e) {
+      res.send({});
+      return;
+    }
+    res.send(JSON.parse(config));
+  });
 });
 
 /**

@@ -8,6 +8,18 @@
                     <thumbnail size="large" :title="slideshow.title" :image="slideshow.image_url_thumb"></thumbnail>
                 </router-link>
             </div>
+            <!--  -->
+            <!--
+                We should be triggering an api call here to create a new slideshow.
+                Get the slideshow id and then navigating to the editor.  The editor should essentially control the
+                slideshow data in amp.
+            -->
+            <!--  -->
+            <div class="cell-m-4" >
+                <router-link :to="{ name: 'video-new'}" exact>
+                    <thumbnail size="large" title="Create New" image=""></thumbnail>
+                </router-link>
+            </div>
         </div>
         <loading-indicator v-else></loading-indicator>
     </div>
