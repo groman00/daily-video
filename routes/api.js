@@ -3,6 +3,7 @@ const path = require('path');
 const express = require('express');
 const router = express.Router();
 const multer  = require('multer');
+const amp = require('../lib/Services/amp');
 const jobQueue = require('../lib/jobQueue');
 const projectController = require('../lib/Controllers/projectController')(jobQueue);
 const previewController = require('../lib/Controllers/previewController')(jobQueue);
@@ -23,6 +24,13 @@ const upload = multer({
  */
 router.get('/slideshows', (req, res, next) => {
   slideshowController.all(req, res, next);
+});
+
+/**
+ * GET: Create a new slideshow
+ */
+router.get('/slideshows/create', [amp.authenticate], (req, res, next) => {
+  slideshowController.create(req, res, next);
 });
 
 /**
