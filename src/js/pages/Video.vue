@@ -43,48 +43,12 @@
                     .then((response) => {
                         body = response.body;
                         this.slideshow = body.slideshow;
-                        this.templates = this.parseTemplates(body.config.templates);
+                        this.templates = body.config.templates;
                         this.fps = body.config.fps;
-                        // slideshowId indicates that the slideshow exists in our database.
-                        this.slides = this.slideshow.slideshowId ? this.slideshow.slides : this.parseSlides(this.slideshow.slides);
+                        this.slides = this.slideshow.slides;
                     }, (response) => {
                         // console.log('error', response);
                     });
-            },
-            /**
-             * Convert templates array to object with keys
-             * @param  {Array} templates
-             * @return {Object}
-             */
-            parseTemplates(templates) {
-                return templates.reduce(function (acc, template) {
-                    acc[template.name] = template;
-                    return acc;
-                }, {});
-            },
-            /**
-             * Pre-assign templates to slides based on slide type.
-             * @param  {Array} slides
-             * @return {Array}
-             */
-            parseSlides(slides) {
-                let type;
-                return slides.map((slide) => {
-                    switch (slide.type) {
-                        case 'quote':
-                            type = 'quote';
-                            break;
-                        case 'text':
-                            type = 'title_1';
-                            break;
-                        default:
-                            type = 'slide_in_out';
-                    }
-                    slide.template = this.templates[type];
-                    slide.image = slide.image_type === 'gif' ? slide.original_image : slide.image_url_large;
-                    slide.bumper = false;
-                    return slide;
-                });
             },
             /**
              * Merge bumpers, dates, etc into slide data for upload
