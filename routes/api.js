@@ -9,6 +9,7 @@ const projectController = require('../lib/Controllers/projectController')(jobQue
 const previewController = require('../lib/Controllers/previewController')(jobQueue);
 const vidibleController = require('../lib/Controllers/vidibleController')();
 const slideshowController = require('../lib/Controllers/slideshowController')();
+
 const appRoot = path.resolve(__dirname, '../');
 const upload = multer({
   storage: multer.diskStorage({
@@ -31,6 +32,13 @@ router.get('/slideshows', (req, res, next) => {
  */
 router.post('/slideshows/create', [amp.authenticate], (req, res, next) => {
   slideshowController.create(req, res, next);
+});
+
+/**
+ * GET: Get default slide data
+ */
+router.get('/slideshows/slide/new', (req, res, next) => {
+  res.send(slideshowController.defaultSlide());
 });
 
 /**

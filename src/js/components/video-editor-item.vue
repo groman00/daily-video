@@ -24,11 +24,6 @@
                 {{ slide.caption }}
             </textarea>
         </div>
-        <!-- <div class="form-control">
-            <label class="checkbox">
-                <input type="checkbox" v-model="slide.bumper" @change="itemUpdated"> Add Bumper
-            </label>
-        </div> -->
         <div class="form-control">
             <button class="button button-blue" :disabled="isDisabled" @click="fetchPreview(slide)">Preview</button>
         </div>

@@ -1,0 +1,34 @@
+<style scoped></style>
+<template>
+    <div class="cell-m-4">
+        <div class="video-editor-item">
+            <loading-indicator v-if="loading"></loading-indicator>
+            <button v-else class="button button-blue" @click="addNew">+ Add Slide</button>
+        </div>
+    </div>
+</template>
+<script>
+    import api from '../routers/api';
+
+    export default {
+        data() {
+            return {
+                loading: false
+            }
+        },
+        methods: {
+            addNew() {
+                this.loading = true;
+                this.$http.get(api.route('slideshows-slide-new'))
+                    .then((response) => {
+                        this.eventHub.$emit('slide-added', response.body);
+                    }, (response) => {
+                        // console.log('error', response);
+                    })
+                    .then(() => {
+                        this.loading = false;
+                    });
+            }
+        }
+    }
+</script>

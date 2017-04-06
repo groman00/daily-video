@@ -14,6 +14,7 @@ import videoEditor from './components/video-editor.vue';
 import videoEditorItem from './components/video-editor-item.vue';
 import videoToolbar from './components/video-toolbar.vue';
 import overlay from './components/overlay.vue';
+import slideNew from './components/slide-new.vue';
 
 const eventHub = Vue.prototype.eventHub = new Vue(); // Create a new instance of Vue to use as an event hub.
 
@@ -32,6 +33,7 @@ Vue.component('video-editor', videoEditor);
 Vue.component('video-editor-item', videoEditorItem);
 Vue.component('video-toolbar', videoToolbar);
 Vue.component('overlay', overlay);
+Vue.component('slide-new', slideNew);
 
 Vue.use(VueResource);
 

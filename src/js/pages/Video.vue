@@ -33,9 +33,10 @@
         },
         created() {
             this.fetchData();
+            this.eventHub.$on('slide-added', this.addSlide);
         },
         beforeDestroy() {
-
+            this.eventHub.$off('slide-added', this.addSlide);
         },
         methods: {
             titleUpdated(title) {
@@ -55,6 +56,9 @@
                     }, (response) => {
                         // console.log('error', response);
                     });
+            },
+            addSlide(slide) {
+                this.slides.push(slide);
             },
             /**
              * Merge bumpers, dates, etc into slide data for upload

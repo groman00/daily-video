@@ -9,6 +9,8 @@
 }
 
 .video-editor-item {
+    position: relative;
+    height: 100%;
     border: solid 1px rgba(255, 255, 255, .14);
     padding: 18px;
     border-radius: 10px;
