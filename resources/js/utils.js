@@ -79,8 +79,9 @@ var UTILS = {
      * Build comp using variables from template and slide config
      */
     buildCompFromTemplate: function (videoFolder, slide, i) {
-        var templateName = slide.template.name;
-        var characters = slide.template.characters;
+        var slideData = slide.data;
+        var templateName = slideData.slideType + '_' + slideData.slideTemplate.name;
+        var characters = slideData.slideTemplate.characters;
         var comp = UTILS.findCompByName(UTILS.getFolderByName('Prefabs'), templateName).duplicate();
         var image;
         comp.name = 'Comp_' + i;
@@ -91,8 +92,7 @@ var UTILS = {
             }
             comp.layer(1).sourceText.setValue(caption); // Set text layer sourceText
         }
-        if (!/bumper|share|quote|joke|title_1|date/.test(templateName)) {
-
+        if(templateName === 'image') {
             image = project.importFile(new ImportOptions(File(slide.image)));
             image.parentFolder = videoFolder;
             comp.layer(2).replaceSource(image, true); // Set image source
@@ -103,9 +103,8 @@ var UTILS = {
                 comp.layer(2).timeRemapEnabled = true;
                 comp.layer(2).timeRemap.expression = "loopOut('cycle');";
             }
-
         }
-        if (/^joke$|quote|date/.test(templateName)) {
+        if (/^joke|quote|date/.test(templateName)) {
             title = slide.title.substr(0, characters.title);
             if (templateName === 'quote') {
                 title = '- ' + title;

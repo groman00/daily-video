@@ -9,7 +9,6 @@ const projectController = require('../lib/Controllers/projectController')(jobQue
 const previewController = require('../lib/Controllers/previewController')(jobQueue);
 const vidibleController = require('../lib/Controllers/vidibleController')();
 const slideshowController = require('../lib/Controllers/slideshowController')();
-
 const appRoot = path.resolve(__dirname, '../');
 const upload = multer({
   storage: multer.diskStorage({
@@ -35,10 +34,10 @@ router.post('/slideshows/create', [amp.authenticate], (req, res, next) => {
 });
 
 /**
- * GET: Get default slide data
+ * POST: Create a new slide
  */
-router.get('/slideshows/slide/new', (req, res, next) => {
-  res.send(slideshowController.defaultSlide());
+router.post('/slideshows/slide/add', [amp.authenticate], (req, res, next) => {
+  slideshowController.addSlide(req, res, next);
 });
 
 /**
@@ -72,7 +71,6 @@ router.post('/save-project', upload.single('narrationTrack'), (req, res, next) =
 /**
  * POST: Upload video to Vidible
  */
-//router.post('/upload-video', (req, res, next) => {
 router.post('/vidible-upload', (req, res, next) => {
   vidibleController.upload(req, res, next);
 });

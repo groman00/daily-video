@@ -112,7 +112,7 @@ DailyVideo.prototype = {
         var currentPosition = 0;
         var layer, i, duration, frames;
         for(i = 0, max = comps.length; i < max; i++){
-            frames = slides[i].template.frames;
+            frames = slides[i].data.slideTemplate.frames;
             duration = utils.framesToSeconds(frames.total);
             layer = this.masterComp.layers.add(comps[i], duration);
             layer.moveToEnd();

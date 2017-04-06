@@ -11,6 +11,7 @@
     import api from '../routers/api';
 
     export default {
+        props: ['slideshowId'],
         data() {
             return {
                 loading: false
@@ -19,7 +20,7 @@
         methods: {
             addNew() {
                 this.loading = true;
-                this.$http.get(api.route('slideshows-slide-new'))
+                this.$http.post(api.route('slideshows-add-slide'), { slideshow_id: this.slideshowId })
                     .then((response) => {
                         this.eventHub.$emit('slide-added', response.body);
                     }, (response) => {

@@ -5,12 +5,12 @@
             <div class="cell-m-4" v-for="slide in slides" key="slide.id">
                 <video-editor-item :slide="slide" :slideTypes="slideTypes"></video-editor-item>
             </div>
-            <slide-new></slide-new>
+            <slide-new :slideshowId="slideshowId"></slide-new>
         </div>
     </div>
 </template>
 <script>
     export default {
-        props: ['slides', 'slideTypes']
+        props: ['slideshowId', 'slides', 'slideTypes']
     }
 </script>

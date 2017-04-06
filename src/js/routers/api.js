@@ -10,7 +10,7 @@ function Api() {
             // todo: eventually rename all "slideshow" endpoints to "project"
             { path: host + '/slideshows', name: 'slideshows' },
             { path: host + '/slideshows/create', name: 'create-project' },
-            { path: host + '/slideshows/slide/new', name: 'slideshows-slide-new' },
+            { path: host + '/slideshows/slide/add', name: 'slideshows-add-slide' },
             { path: host + '/slideshows/:id', name: 'slideshow' },
             { path: host + '/preview-slide', name: 'preview-slide' },
             { path: host + '/save-project', name: 'save-project' },

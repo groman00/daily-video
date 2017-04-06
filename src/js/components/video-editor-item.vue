@@ -24,9 +24,9 @@
                 {{ slide.caption }}
             </textarea>
         </div>
-        <div class="form-control">
+        <!-- <div class="form-control">
             <button class="button button-blue" :disabled="isDisabled" @click="fetchPreview(slide)">Preview</button>
-        </div>
+        </div> -->
     </div>
 </template>
 <script>
@@ -106,7 +106,6 @@
             },
             itemUpdated() {
                 this.hasPreview = false;
-                console.log(this.slide);
             }
         }
     }

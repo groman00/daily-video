@@ -5,14 +5,14 @@
         <div v-if="slideshow" class="flex-columns flex-grow-1">
             <div class="panels-top flex-rows flex-grow-1">
                 <div class="panel-left">
-                    <video-editor :slides="slides" :slideTypes="slideTypes"></video-editor>
+                    <video-editor :slideshowId="slideshow.id" :slides="slides" :slideTypes="slideTypes"></video-editor>
                 </div>
                 <div class="panel-right">
                     <!-- <slide-preview></slide-preview> -->
                 </div>
             </div>
             <div class="panels-bottom flex-shrink-1">
-                <!-- <video-toolbar ref="videoToolbar" :onSubmit="renderProject" :onSave="saveProject" :slideshow="slideshow"></video-toolbar> -->
+                <video-toolbar ref="videoToolbar" :onSubmit="renderProject" :onSave="saveProject" :slideshow="slideshow"></video-toolbar>
             </div>
         </div>
         <loading-indicator v-else></loading-indicator>
@@ -26,7 +26,6 @@
             return {
                 slides: [],
                 fps: 0,
-                // templates: {},
                 slideTypes: {},
                 slideshow: {}
             }
@@ -49,7 +48,6 @@
                     .then((response) => {
                         body = response.body;
                         this.slideshow = body.slideshow;
-                        // this.templates = body.config.templates;
                         this.slideTypes = body.config.slideTypes;
                         this.fps = body.config.fps;
                         this.slides = this.slideshow.slides;
@@ -93,36 +91,33 @@
                 return slides;
             },
             */
-            /*
+
             getFormData(settings) {
                 let frames;
                 const formData = new FormData();
-                const slideData = this.mergeDefaultSlides();
                 const narrationTrack = settings.narrationTrack;
                 const audioTrack = settings.audioTrack;
-                const totalFrames = slideData.reduce(function (acc, slide) {
-                    frames = slide.template.frames;
+                const totalFrames = this.slides.reduce(function (acc, slide) {
+                    frames = slide.data.slideTemplate.frames;
                     return acc + (frames.total - frames.out);
                 }, 0);
-
                 formData.append('slideshowId', this.$route.params.id);
                 formData.append('title', this.slideshow.title);
                 formData.append('socket_id', this.$root.socket_id);
                 formData.append('fps', this.fps);
-                formData.append('slides', JSON.stringify(slideData));
+                formData.append('slides', JSON.stringify(this.slides));
                 formData.append('videoDuration', (totalFrames / this.fps));
                 formData.append('preview', settings.isPreview);
                 formData.append('audioTrack', settings.audioTrack);
                 formData.append('audioTrackLevel', settings.audioTrackLevel);
                 formData.append('narrationTrackLevel', settings.narrationTrackLevel);
-
                 if (narrationTrack){
                     formData.append('narrationTrack', narrationTrack, narrationTrack.name);
                 }
                 return formData;
             },
-            */
-            /*
+
+
             renderProject(settings) {
                 this.$http.post(api.route('render-project'), this.getFormData(settings))
                     .then((response) => {
@@ -132,7 +127,7 @@
                     });
                 return false;
             },
-            */
+
             /*
             saveProject(settings) {
                 this.$http.post(api.route('save-project'), this.getFormData(settings))
