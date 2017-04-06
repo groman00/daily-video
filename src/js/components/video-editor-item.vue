@@ -3,8 +3,15 @@
     <div class="video-editor-item">
         <thumbnail :image="slide.image_url_thumb"></thumbnail>
         <div class="form-control">
-            <select v-model="slide.template" @change="itemUpdated">
-                <option v-for="template in templates" v-if="template.visible" :value="template">
+            <select v-model="slide.data.slideType" @change="itemUpdated">
+                <option v-for="(obj, type) in slideTypes" :value="type">
+                    {{ type }}
+                </option>
+            </select>
+        </div>
+        <div class="form-control">
+            <select v-model="slide.data.slideTemplate" @change="itemUpdated">
+                <option v-for="template in templates" :value="template">
                     {{ template.title }}
                 </option>
             </select>
@@ -17,11 +24,11 @@
                 {{ slide.caption }}
             </textarea>
         </div>
-        <div class="form-control">
+        <!-- <div class="form-control">
             <label class="checkbox">
                 <input type="checkbox" v-model="slide.bumper" @change="itemUpdated"> Add Bumper
             </label>
-        </div>
+        </div> -->
         <div class="form-control">
             <button class="button button-blue" :disabled="isDisabled" @click="fetchPreview(slide)">Preview</button>
         </div>
@@ -31,9 +38,10 @@
     import api from '../routers/api';
 
     export default {
-        props: ['slide', 'templates'],
+        props: ['slide', 'slideTypes'],
         data() {
             return {
+                templates: {},
                 hasPreview: false,
                 isDisabled: false,
                 preview: {
@@ -43,6 +51,7 @@
             }
         },
         created() {
+            this.loadSlideTemplates();
             this.eventHub.$on('fetching-preview', this.setDisabled);
             this.$root.socket.on('preview-ready', this.previewReady);
             this.$root.socket.on('preview-error', this.setEnabled);
@@ -52,7 +61,26 @@
             this.$root.socket.off('preview-ready', this.previewReady);
             this.$root.socket.off('preview-error', this.setEnabled);
         },
+        watch: {
+            'slide.data.slideType'(type) {
+                this.templates = Object.assign({}, this.slideTypes[type].templates);
+                this.setDefaultSlideTemplate(this.templates);
+            }
+        },
         methods: {
+            loadSlideTemplates() {
+                const slideType = this.slide.data.slideType;
+                const slideTemplate = this.slide.data.slideTemplate;
+                const templates = this.slideTypes[slideType].templates
+                this.templates = Object.assign({}, templates);
+                if (!slideTemplate) {
+                    this.setDefaultSlideTemplate(templates);
+                }
+            },
+            setDefaultSlideTemplate(templates) {
+                // default to first template in this type
+                this.slide.data.slideTemplate = templates[Object.keys(templates)[0]];
+            },
             fetchPreview(slide) {
                 if (this.hasPreview) {
                     this.dispatchPreview();
@@ -83,6 +111,7 @@
             },
             itemUpdated() {
                 this.hasPreview = false;
+                console.log(this.slide);
             }
         }
     }

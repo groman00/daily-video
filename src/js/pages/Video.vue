@@ -5,7 +5,7 @@
         <div v-if="slideshow" class="flex-columns flex-grow-1">
             <div class="panels-top flex-rows flex-grow-1">
                 <div class="panel-left">
-                    <video-editor :slides="slides" :templates="templates"></video-editor>
+                    <video-editor :slides="slides" :slideTypes="slideTypes"></video-editor>
                 </div>
                 <div class="panel-right">
                     <!-- <slide-preview></slide-preview> -->
@@ -26,12 +26,16 @@
             return {
                 slides: [],
                 fps: 0,
-                templates: {},
+                // templates: {},
+                slideTypes: {},
                 slideshow: {}
             }
         },
         created() {
             this.fetchData();
+        },
+        beforeDestroy() {
+
         },
         methods: {
             titleUpdated(title) {
@@ -44,7 +48,8 @@
                     .then((response) => {
                         body = response.body;
                         this.slideshow = body.slideshow;
-                        this.templates = body.config.templates;
+                        // this.templates = body.config.templates;
+                        this.slideTypes = body.config.slideTypes;
                         this.fps = body.config.fps;
                         this.slides = this.slideshow.slides;
                     }, (response) => {
