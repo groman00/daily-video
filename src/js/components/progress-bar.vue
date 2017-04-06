@@ -9,7 +9,7 @@
             <a class="button button-blue download-link pull-right" :href="downloadLink">Save Video</a>
         </template>
         <h3 class="progress-bar-label">{{ label }}</h3>
-        <overlay>
+        <overlay :open="uploadOverlayVisible">
             <div slot="overlay-content" class="upload-dialog">
                 <template v-if="isUploading">
                     <h2>Uploading to Vidible</h2>
@@ -37,7 +37,8 @@
                 label: ' ',
                 progress: 0,
                 downloadLink: '',
-                isUploading: false
+                isUploading: false,
+                uploadOverlayVisible: false
             }
         },
         created() {
@@ -70,7 +71,7 @@
             uploadVideo() {
                 this.isUploading = true;
                 this.$nextTick(() => {
-                    this.eventHub.$emit('open-overlay');
+                    this.uploadOverlayVisible = true;
                 });
                 const data = {
                     name: this.title + ' ' + Date.now(),
@@ -82,12 +83,12 @@
                         this.isUploading = false
                     }, (response) => {
                         alert('upload failed.  Please try again.');
-                        this.eventHub.$emit('close-overlay');
+                        this.uploadOverlayVisible = false;
                         this.isUploading = false
                     });
             },
             clearUploadOverlay() {
-                this.eventHub.$emit('close-overlay');
+                this.uploadOverlayVisible = false;
             }
         }
     }

@@ -12,7 +12,7 @@ const router = new VueRouter({
     routes: [
         { path: '/', name: 'home', component: Home },
         { path: '/video/new', name: 'video-new', component: VideoNew },
-        { path: '/video/:id', name: 'video', component: Video },
+        { path: '/video/:id', name: 'video', component: Video }, // change this route name to project?
         { path: '/uploads', name: 'uploads', component: Uploads }
     ]
 });

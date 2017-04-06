@@ -27,9 +27,9 @@ router.get('/slideshows', (req, res, next) => {
 });
 
 /**
- * GET: Create a new slideshow
+ * POST: Create a new slideshow
  */
-router.get('/slideshows/create', [amp.authenticate], (req, res, next) => {
+router.post('/slideshows/create', [amp.authenticate], (req, res, next) => {
   slideshowController.create(req, res, next);
 });
 

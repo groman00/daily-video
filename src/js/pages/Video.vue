@@ -2,7 +2,7 @@
 <template>
     <div class="video-page page-wrapper">
         <app-bar :config="{ buttonLeft: 'back', title: slideshow.title }" v-on:titleUpdated="titleUpdated" :onBackButton="goBack"></app-bar>
-        <div class="flex-columns flex-grow-1">
+        <div v-if="slideshow" class="flex-columns flex-grow-1">
             <div class="panels-top flex-rows flex-grow-1">
                 <div class="panel-left">
                     <video-editor :slides="slides" :templates="templates"></video-editor>
@@ -15,6 +15,7 @@
                 <video-toolbar ref="videoToolbar" :onSubmit="renderProject" :onSave="saveProject" :slideshow="slideshow"></video-toolbar>
             </div>
         </div>
+        <loading-indicator v-else></loading-indicator>
     </div>
 </template>
 <script>

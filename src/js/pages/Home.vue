@@ -8,20 +8,19 @@
                     <thumbnail size="large" :title="slideshow.title" :image="slideshow.image_url_thumb"></thumbnail>
                 </router-link>
             </div>
-            <!--  -->
-            <!--
-                We should be triggering an api call here to create a new slideshow.
-                Get the slideshow id and then navigating to the editor.  The editor should essentially control the
-                slideshow data in amp.
-            -->
-            <!--  -->
             <div class="cell-m-4" >
-                <router-link :to="{ name: 'video-new'}" exact>
+                <a href="#" @click.prevent="createNew">
                     <thumbnail size="large" title="Create New" image=""></thumbnail>
-                </router-link>
+                </a>
             </div>
         </div>
         <loading-indicator v-else></loading-indicator>
+        <overlay :open="isCreatingNew">
+            <template slot="overlay-content">
+                <br><br>
+                <h2 class="text-center">Creating New Project</h2>
+            </template>
+        </overlay>
     </div>
 </template>
 <script>
@@ -30,7 +29,8 @@
     export default {
         data() {
             return {
-                slideshows: []
+                slideshows: [],
+                isCreatingNew: false
             }
         },
         created() {
@@ -43,6 +43,15 @@
                         this.slideshows = response.body.results;
                     }, (response) => {
                         // console.log('error', response);
+                    });
+            },
+            createNew() {
+                this.isCreatingNew = true;
+                this.$http.post(api.route('create-project'))
+                    .then((response) => {
+                         this.$router.push({ name: 'video', params: { id: response.body.id }});
+                    }, (error) => {
+                        alert('Something went wrong.  Please refresh and try again.');
                     });
             }
         }
