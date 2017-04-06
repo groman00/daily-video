@@ -12,19 +12,10 @@
                 isOpen: false
             }
         },
-        created() {
-            //this.isOpen = this.open;
-            // this.eventHub.$on('open-overlay', this.open);
-            // this.eventHub.$on('close-overlay', this.close);
-        },
         watch: {
             open(bool) {
                 this.isOpen = bool;
             }
-        },
-        beforeDestroy() {
-            // this.eventHub.$off('open-overlay', this.open);
-            // this.eventHub.$off('close-overlay', this.close);
         },
         methods: {
             open() {

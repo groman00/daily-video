@@ -8,11 +8,11 @@
                     <video-editor :slides="slides" :templates="templates"></video-editor>
                 </div>
                 <div class="panel-right">
-                    <slide-preview></slide-preview>
+                    <!-- <slide-preview></slide-preview> -->
                 </div>
             </div>
             <div class="panels-bottom flex-shrink-1">
-                <video-toolbar ref="videoToolbar" :onSubmit="renderProject" :onSave="saveProject" :slideshow="slideshow"></video-toolbar>
+                <!-- <video-toolbar ref="videoToolbar" :onSubmit="renderProject" :onSave="saveProject" :slideshow="slideshow"></video-toolbar> -->
             </div>
         </div>
         <loading-indicator v-else></loading-indicator>
@@ -55,6 +55,7 @@
              * Merge bumpers, dates, etc into slide data for upload
              * @return {Array}
              */
+            /*
             mergeDefaultSlides() {
                 const templates = this.templates;
                 const slides = [];
@@ -82,6 +83,8 @@
                 });
                 return slides;
             },
+            */
+            /*
             getFormData(settings) {
                 let frames;
                 const formData = new FormData();
@@ -109,6 +112,8 @@
                 }
                 return formData;
             },
+            */
+            /*
             renderProject(settings) {
                 this.$http.post(api.route('render-project'), this.getFormData(settings))
                     .then((response) => {
@@ -118,6 +123,8 @@
                     });
                 return false;
             },
+            */
+            /*
             saveProject(settings) {
                 this.$http.post(api.route('save-project'), this.getFormData(settings))
                     .then((response) => {
@@ -126,7 +133,9 @@
                     }, (response) => {
                         console.log('error saving', response);
                     });
+
             }
+            */
         }
     }
 </script>
