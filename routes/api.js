@@ -41,6 +41,20 @@ router.post('/slideshows/slide/add', [amp.authenticate], (req, res, next) => {
 });
 
 /**
+ * POST: Save a slide
+ */
+router.post('/slideshows/slide/save', [amp.authenticate], (req, res, next) => {
+  slideshowController.saveSlide(req, res, next);
+});
+
+/**
+ * POST: Delete a slide
+ */
+router.post('/slideshows/slide/delete', [amp.authenticate], (req, res, next) => {
+  slideshowController.deleteSlide(req, res, next);
+});
+
+/**
  * GET: slideshow by id
  */
 router.get('/slideshows/:id', (req, res, next) => {

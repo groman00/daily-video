@@ -8,7 +8,7 @@
                     <video-editor :slideshowId="slideshow.id" :slides="slides" :slideTypes="slideTypes"></video-editor>
                 </div>
                 <div class="panel-right">
-                    <!-- <slide-preview></slide-preview> -->
+                    <slide-preview></slide-preview>
                 </div>
             </div>
             <div class="panels-bottom flex-shrink-1">
@@ -33,9 +33,11 @@
         created() {
             this.fetchData();
             this.eventHub.$on('slide-added', this.addSlide);
+            this.eventHub.$on('slide-removed', this.removeSlide);
         },
         beforeDestroy() {
             this.eventHub.$off('slide-added', this.addSlide);
+            this.eventHub.$off('slide-removed', this.removeSlide);
         },
         methods: {
             titleUpdated(title) {
@@ -57,6 +59,11 @@
             },
             addSlide(slide) {
                 this.slides.push(slide);
+            },
+            removeSlide(removedSlide) {
+                this.slides = this.slides.filter((slide) => {
+                    return slide.id != removedSlide.id;
+                });
             },
             /**
              * Merge bumpers, dates, etc into slide data for upload
@@ -128,8 +135,8 @@
                 return false;
             },
 
-            /*
             saveProject(settings) {
+                /*
                 this.$http.post(api.route('save-project'), this.getFormData(settings))
                     .then((response) => {
                         console.log('project saved', response);
@@ -137,9 +144,9 @@
                     }, (response) => {
                         console.log('error saving', response);
                     });
-
+                */
             }
-            */
+
         }
     }
 </script>

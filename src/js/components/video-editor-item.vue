@@ -24,9 +24,15 @@
                 {{ slide.caption }}
             </textarea>
         </div>
-        <!-- <div class="form-control">
+        <div class="form-control">
             <button class="button button-blue" :disabled="isDisabled" @click="fetchPreview(slide)">Preview</button>
-        </div> -->
+        </div>
+        <div class="form-control">
+            <button class="button button-blue" :disabled="isDisabled" @click="saveSlide">Save Slide</button>
+        </div>
+        <div class="form-control">
+            <button class="button button-danger" :disabled="isDisabled" @click="deleteSlide">Delete Slide</button>
+        </div>
     </div>
 </template>
 <script>
@@ -106,6 +112,22 @@
             },
             itemUpdated() {
                 this.hasPreview = false;
+            },
+            saveSlide() {
+                this.isDisabled = true;
+                this.$http.post(api.route('slideshows-save-slide'), this.slide)
+                    .then((response) => {
+                        console.log(response);
+                        this.isDisabled = false;
+                    });
+            },
+            deleteSlide() {
+                this.isDisabled = true;
+                this.$http.post(api.route('slideshows-delete-slide'), this.slide)
+                    .then((response) => {
+                        this.eventHub.$emit('slide-removed', this.slide);
+                        this.isDisabled = false;
+                    });
             }
         }
     }

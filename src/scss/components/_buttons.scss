@@ -48,6 +48,17 @@
     }
 }
 
+.button-danger {
+    background-color: $danger;
+    color: $white;
+
+    &:hover:enabled,
+    &:active:enabled,
+    &:focus:enabled {
+        background-color: $danger-active;
+    }
+}
+
 .button-huge {
     border-radius: 10px;
     font-size: 24px;
