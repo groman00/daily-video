@@ -14,7 +14,11 @@ const upload = multer({
   storage: multer.diskStorage({
     destination: './uploads/',
     filename: function (req, file, cb) {
-      cb(null, 'audio' + Date.now() + '.mp3');
+      if (file.mimetype === 'audio/mp3') {
+        cb(null, 'audio' + Date.now() + '.mp3');
+      } else {
+        cb(null, file.originalname);
+      }
     }
   })
 });
@@ -52,6 +56,13 @@ router.post('/slideshows/slide/save', [amp.authenticate], (req, res, next) => {
  */
 router.post('/slideshows/slide/delete', [amp.authenticate], (req, res, next) => {
   slideshowController.deleteSlide(req, res, next);
+});
+
+/**
+ * POST: Upload image and generate crop url
+ */
+router.post('/slideshows/image/upload', upload.single('files'), (req, res, next) => {
+  slideshowController.imageUpload(req, res, next);
 });
 
 /**
@@ -99,6 +110,7 @@ router.get('/vidible-uploads', (req, res, next) => {
 /**
  * GET: Project config json
  */
+/* TODO: REMOVE THIS! */
 router.get('/project-config', (req, res, next) => {
   fs.readFile(appRoot + '/resources/json/config.json', (e, config) => {
     if (e) {
