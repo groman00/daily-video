@@ -1,7 +1,8 @@
 <style scoped></style>
 <template>
     <div class="video-editor-item">
-        <thumbnail :image="slide.image_url_thumb"></thumbnail>
+        <image-cropper v-if="slide.data.slideType === 'image'" :src="slide.image"></image-cropper>
+        <thumbnail v-else :image="slide.image_url_thumb"></thumbnail>
         <div class="form-control">
             <select v-model="slide.data.slideType" @change="itemUpdated">
                 <option v-for="(obj, type) in slideTypes" :value="type">

@@ -1,18 +1,22 @@
 <style scoped></style>
 <template>
-    <div>
-        <img class="avatar" v-bind:src="src"/>
-        <!-- url="http://101.198.151.190/api/crop.php" -->
-        <!-- :isXhr="false" -->
+    <div class="image-cropper">
+        <div class="thumbnail">
+            <img class="thumbnail-image" :src="imageSrc">
+        </div>
         <vue-core-image-upload
             ref="cropper"
             crop-ratio="1:1"
-            :class="['button','button-blue','js-btn-crop']"
+            text=""
+            :class="['upload-button']"
             :crop="true"
             extensions="png,gif,jpeg,jpg"
             input-accept="image/*"
             :url="uploadUrl"
             :headers="{ 'X-Requested-With': 'XMLHttpRequest' }"
+            @imagechanged="imagechanged"
+            @imageuploading="imageuploading"
+            @errorhandle="errorhandle"
             @imageuploaded="imageuploaded"></vue-core-image-upload>
     </div>
 </template>
@@ -20,10 +24,14 @@
     import api from '../routers/api';
 
     export default {
+        props: ['src'],
         data() {
             return {
-                src: ''
+                imageSrc: ''
             }
+        },
+        created() {
+            this.imageSrc = this.src;
         },
         computed: {
             uploadUrl() {
@@ -31,21 +39,24 @@
             }
         },
         methods: {
-            imageuploaded(res) {
-                console.log(res);
-                if (res.errcode == 0) {
-                    this.src = res.data.src;
-                }
+            imageuploaded(response) {
+                this.imageSrc = response.image;
             },
-            // return file object
+            /**
+             * return file object
+             */
             imagechanged(res) {
               console.log(res.name)
             },
-            // uploading image
+            /**
+             * uploading image
+             */
             imageuploading(res) {
               console.info('uploading');
             },
-            // handle some error like ajax not working
+            /**
+             * handle some error like ajax not working
+             */
             errorhandle(e) {
               console.error('error', e);
             }
