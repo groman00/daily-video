@@ -38,6 +38,13 @@ router.post('/slideshows/create', [amp.authenticate], (req, res, next) => {
 });
 
 /**
+ * POST: Save a slideshow
+ */
+router.post('/slideshows/save', [amp.authenticate], (req, res, next) => {
+  slideshowController.save(req, res, next);
+});
+
+/**
  * POST: Create a new slide
  */
 router.post('/slideshows/slide/add', [amp.authenticate], (req, res, next) => {
@@ -105,20 +112,6 @@ router.post('/vidible-upload', (req, res, next) => {
  */
 router.get('/vidible-uploads', (req, res, next) => {
   vidibleController.search(req, res, next);
-});
-
-/**
- * GET: Project config json
- */
-/* TODO: REMOVE THIS! */
-router.get('/project-config', (req, res, next) => {
-  fs.readFile(appRoot + '/resources/json/config.json', (e, config) => {
-    if (e) {
-      res.send({});
-      return;
-    }
-    res.send(JSON.parse(config));
-  });
 });
 
 /**

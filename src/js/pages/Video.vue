@@ -44,6 +44,7 @@
         methods: {
             titleUpdated(title) {
                 this.slideshow.title = title;
+                this.saveSlideshow();
             },
             fetchData() {
                 let body;
@@ -73,6 +74,15 @@
                     return slide.id === updatedSlide.id;
                 });
                 this.$set(this.slides, index, Object.assign({}, this.slides[index], updatedSlide));
+            },
+            saveSlideshow() {
+                console.log(this.slideshow);
+                this.$http.post(api.route('slideshows-save'), this.slideshow)
+                    .then((response) => {
+                        console.log(response);
+                    }, (response) => {
+                        console.log('error', response);
+                    });
             },
             getFormData(settings) {
                 let frames;

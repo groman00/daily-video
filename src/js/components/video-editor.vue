@@ -5,7 +5,7 @@
             <div class="cell-m-4" v-for="slide in slides" key="slide.id">
                 <video-editor-item :slide="slide" :slideTypes="slideTypes"></video-editor-item>
             </div>
-            <slide-new :slideshowId="slideshowId"></slide-new>
+            <slide-new :slideshowId="slideshowId" :slideCount="slides.length"></slide-new>
         </div>
     </div>
 </template>

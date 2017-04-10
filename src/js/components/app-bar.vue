@@ -24,11 +24,13 @@
         props: {
             config: {
                 type: Object,
-                default: {
-                    buttonLeft: null,
-                    title: ''
+                default() {
+                    return {
+                        buttonLeft: null,
+                        title: ''
+                    }
                 },
-                required: true
+                required: false
             }
         },
         methods: {

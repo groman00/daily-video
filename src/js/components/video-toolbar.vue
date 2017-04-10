@@ -57,7 +57,7 @@
                         <label class="checkbox">
                             <input type="checkbox" v-model="isPreview"> Select for low-resolution
                         </label>
-                        <button class="button button-blue button-huge pull-right" @click="save">Save Project</button>
+                        <!-- <button class="button button-blue button-huge pull-right" @click="save">Save Project</button> -->
                     </div>
                     <div class="form-control">
                         <progress-bar :title="slideshow.title"></progress-bar>

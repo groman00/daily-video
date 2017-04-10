@@ -1,8 +1,11 @@
 <style scoped></style>
 <template>
     <div class="video-editor-item">
+        <!--
         <image-cropper v-if="slide.data.slideType === 'image'" :slide="slide"></image-cropper>
         <thumbnail v-else :image="slide.image_url_thumb"></thumbnail>
+        -->
+        <image-cropper v-if="this.fields.includes('image')" :slide="slide"></image-cropper>
         <div class="form-control">
             <select v-model="slide.data.slideType" @change="itemUpdated">
                 <option v-for="(obj, type) in slideTypes" :value="type">
@@ -17,10 +20,10 @@
                 </option>
             </select>
         </div>
-        <div class="form-control">
+        <div v-if="this.fields.includes('title')" class="form-control">
             <input v-model="slide.title" placeholder="Add a title" :value="slide.title" type="text" @change="itemUpdated">
         </div>
-        <div class="form-control">
+        <div v-if="this.fields.includes('caption')" class="form-control">
             <textarea v-model="slide.caption" placeholder="Add a caption" @change="itemUpdated">
                 {{ slide.caption }}
             </textarea>
@@ -44,6 +47,7 @@
         data() {
             return {
                 templates: {},
+                fields: [],
                 hasPreview: false,
                 isDisabled: false,
                 preview: {
@@ -64,12 +68,12 @@
             this.$root.socket.off('preview-error', this.setEnabled);
         },
         watch: {
-            slide() {
-                console.log('watch event', arguments);
-            },
             'slide.data.slideType'(type) {
                 this.templates = Object.assign({}, this.slideTypes[type].templates);
                 this.setDefaultSlideTemplate(this.templates);
+            },
+            'slide.data.slideTemplate'(template) {
+                this.fields = template.fields;
             }
         },
         methods: {
@@ -81,6 +85,7 @@
                 if (!slideTemplate) {
                     this.setDefaultSlideTemplate(templates);
                 }
+                this.fields = this.slide.data.slideTemplate.fields;
             },
             setDefaultSlideTemplate(templates) {
                 // default to first template in this type
