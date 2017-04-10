@@ -74,40 +74,6 @@
                 });
                 this.$set(this.slides, index, Object.assign({}, this.slides[index], updatedSlide));
             },
-            /**
-             * Merge bumpers, dates, etc into slide data for upload
-             * @return {Array}
-             */
-            /*
-            mergeDefaultSlides() {
-                const templates = this.templates;
-                const slides = [];
-                const now = new Date();
-                Object.assign([], this.slides).forEach((slide, index) => {
-                    if (slide.bumper) {
-                        slides.push({
-                            template: templates['bumper']
-                        });
-                    }
-                    if (slide.template.name === 'joke') {
-                        slides.push({
-                            template: templates['bumper_joke']
-                        });
-                    }
-                    slides.push(slide);
-                });
-                slides.splice(1, 0, {
-                    template: templates['date'],
-                    title: now.getDate().toString(),
-                    caption: now.getMonthText().toUpperCase(),
-                });
-                slides.push({
-                    template: templates['share']
-                });
-                return slides;
-            },
-            */
-
             getFormData(settings) {
                 let frames;
                 const formData = new FormData();
@@ -132,8 +98,6 @@
                 }
                 return formData;
             },
-
-
             renderProject(settings) {
                 this.$http.post(api.route('render-project'), this.getFormData(settings))
                     .then((response) => {
@@ -143,7 +107,6 @@
                     });
                 return false;
             },
-
             saveProject(settings) {
                 /*
                 this.$http.post(api.route('save-project'), this.getFormData(settings))

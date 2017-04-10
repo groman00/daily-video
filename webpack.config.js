@@ -20,6 +20,7 @@ module.exports = {
     plugins: [
         new webpack.EnvironmentPlugin({
             NODE_ENV: 'production'
+            // NODE_ENV: 'development'
         }),
         new webpack.optimize.UglifyJsPlugin({
             compress: {
