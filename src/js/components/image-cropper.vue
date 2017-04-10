@@ -6,7 +6,7 @@
         </div>
         <vue-core-image-upload
             ref="cropper"
-            crop-ratio="1:1"
+            crop-ratio="1920:1080"
             text=""
             :class="['upload-button']"
             :crop="true"
@@ -24,14 +24,14 @@
     import api from '../routers/api';
 
     export default {
-        props: ['src'],
+        props: ['slide'],
         data() {
             return {
                 imageSrc: ''
             }
         },
         created() {
-            this.imageSrc = this.src;
+            this.imageSrc = this.slide.image_url_thumb;
         },
         computed: {
             uploadUrl() {
@@ -40,7 +40,8 @@
         },
         methods: {
             imageuploaded(response) {
-                this.imageSrc = response.image;
+                this.imageSrc = response.images.image_url_thumb;
+                this.eventHub.$emit('slide-updated', Object.assign(this.slide, response.images, Object.assign(this.slide.data, { crop: response.crop })));
             },
             /**
              * return file object

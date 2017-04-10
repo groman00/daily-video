@@ -1,7 +1,7 @@
 <style scoped></style>
 <template>
     <div class="video-editor-item">
-        <image-cropper v-if="slide.data.slideType === 'image'" :src="slide.image"></image-cropper>
+        <image-cropper v-if="slide.data.slideType === 'image'" :slide="slide"></image-cropper>
         <thumbnail v-else :image="slide.image_url_thumb"></thumbnail>
         <div class="form-control">
             <select v-model="slide.data.slideType" @change="itemUpdated">
@@ -64,6 +64,9 @@
             this.$root.socket.off('preview-error', this.setEnabled);
         },
         watch: {
+            slide() {
+                console.log('watch event', arguments);
+            },
             'slide.data.slideType'(type) {
                 this.templates = Object.assign({}, this.slideTypes[type].templates);
                 this.setDefaultSlideTemplate(this.templates);

@@ -1,7 +1,7 @@
 <style scoped></style>
 <template>
     <div class="video-page page-wrapper">
-        <app-bar :config="{ buttonLeft: 'back', title: slideshow.title }" v-on:titleUpdated="titleUpdated" :onBackButton="goBack"></app-bar>
+        <app-bar :config="{ buttonLeft: 'back', title: slideshow.title }" v-on:titleUpdated="titleUpdated"></app-bar>
         <div v-if="slideshow" class="flex-columns flex-grow-1">
             <div class="panels-top flex-rows flex-grow-1">
                 <div class="panel-left">
@@ -34,10 +34,12 @@
             this.fetchData();
             this.eventHub.$on('slide-added', this.addSlide);
             this.eventHub.$on('slide-removed', this.removeSlide);
+            this.eventHub.$on('slide-updated', this.updateSlide);
         },
         beforeDestroy() {
             this.eventHub.$off('slide-added', this.addSlide);
             this.eventHub.$off('slide-removed', this.removeSlide);
+            this.eventHub.$off('slide-updated', this.updateSlide);
         },
         methods: {
             titleUpdated(title) {
@@ -64,6 +66,13 @@
                 this.slides = this.slides.filter((slide) => {
                     return slide.id != removedSlide.id;
                 });
+            },
+            updateSlide(updatedSlide) {
+                console.log('about to update slide', updatedSlide);
+                const index = this.slides.findIndex((slide) => {
+                    return slide.id === updatedSlide.id;
+                });
+                this.$set(this.slides, index, Object.assign({}, this.slides[index], updatedSlide));
             },
             /**
              * Merge bumpers, dates, etc into slide data for upload
