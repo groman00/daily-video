@@ -80,19 +80,20 @@ var UTILS = {
      */
     buildCompFromTemplate: function (videoFolder, slide, i) {
         var slideData = slide.data;
-        var templateName = slideData.slideType + '_' + slideData.slideTemplate.name;
+        var slideType = slideData.slideType;
+        var templateName = slideType + '_' + slideData.slideTemplate.name;
         var characters = slideData.slideTemplate.characters;
         var comp = UTILS.findCompByName(UTILS.getFolderByName('Prefabs'), templateName).duplicate();
         var image;
         comp.name = 'Comp_' + i;
         if (!/bumper|share/.test(templateName)) {
             caption = slide.caption.substr(0, characters.caption);
-            if (templateName === 'quote') {
+            if (slideType === 'quotation') {
                 caption = '"' + caption + '"';
             }
             comp.layer(1).sourceText.setValue(caption); // Set text layer sourceText
         }
-        if(templateName === 'image') {
+        if(slideType === 'image') {
             image = project.importFile(new ImportOptions(File(slide.image)));
             image.parentFolder = videoFolder;
             comp.layer(2).replaceSource(image, true); // Set image source
@@ -104,9 +105,9 @@ var UTILS = {
                 comp.layer(2).timeRemap.expression = "loopOut('cycle');";
             }
         }
-        if (/^joke|quote|date/.test(templateName)) {
+        if (/^joke|quotation|date/.test(templateName)) {
             title = slide.title.substr(0, characters.title);
-            if (templateName === 'quote') {
+            if (slideType === 'quotation') {
                 title = '- ' + title;
             }
             comp.layer(2).sourceText.setValue(title); // Set text layer sourceText
