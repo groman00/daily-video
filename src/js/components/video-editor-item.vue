@@ -43,7 +43,7 @@
     import api from '../routers/api';
 
     export default {
-        props: ['slide', 'slideshowId', 'slideTypes', 'slideIndex', 'slideCount'],
+        props: ['slide', 'slideshowId', 'slideTypes', 'slideIndex', 'slideCount', 'theme'],
         data() {
             return {
                 templates: {},
@@ -98,6 +98,7 @@
                 }
                 this.eventHub.$emit('fetching-preview');
                 this.$http.post(api.route('preview-slide'), {
+                    'theme': this.theme,
                     'slide': slide,
                     'socket_id': this.$root.socket_id
                 })

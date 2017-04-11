@@ -1,18 +1,18 @@
 <style scoped></style>
 <template>
     <div class="video-page page-wrapper">
-        <app-bar :config="{ buttonLeft: 'back', title: slideshow.title }" v-on:titleUpdated="titleUpdated"></app-bar>
+        <app-bar :config="{ buttonLeft: 'back', title: slideshow.title }" @titleUpdated="titleUpdated"></app-bar>
         <div v-if="slideshow" class="flex-columns flex-grow-1">
             <div class="panels-top flex-rows flex-grow-1">
                 <div class="panel-left">
-                    <video-editor :slideshowId="slideshow.id" :slides="slides" :slideTypes="slideTypes"></video-editor>
+                    <video-editor :slideshowId="slideshow.id" :slides="slides" :slideTypes="slideTypes" :theme="theme"></video-editor>
                 </div>
                 <div class="panel-right">
                     <slide-preview></slide-preview>
                 </div>
             </div>
             <div class="panels-bottom flex-shrink-1">
-                <video-toolbar ref="videoToolbar" :onSubmit="renderProject" :onSave="saveProject" :slideshow="slideshow"></video-toolbar>
+                <video-toolbar ref="videoToolbar" :onSubmit="renderProject" :onSave="saveProject" :slideshow="slideshow" :themes="themes" @themeUpdated="themeUpdated"></video-toolbar>
             </div>
         </div>
         <loading-indicator v-else></loading-indicator>
@@ -24,6 +24,8 @@
     export default {
         data() {
             return {
+                theme: '',
+                themes: ['AOL', 'HuffingtonPost'],
                 slides: [],
                 fps: 0,
                 slideTypes: {},
@@ -47,6 +49,10 @@
             titleUpdated(title) {
                 this.slideshow.title = title;
                 this.saveSlideshow();
+            },
+            themeUpdated(theme) {
+                this.theme = theme;
+                console.log('theme updated', theme);
             },
             fetchData() {
                 let body;
@@ -108,6 +114,7 @@
                 formData.append('audioTrack', settings.audioTrack);
                 formData.append('audioTrackLevel', settings.audioTrackLevel);
                 formData.append('narrationTrackLevel', settings.narrationTrackLevel);
+                formData.append('theme', this.theme);
                 if (narrationTrack){
                     formData.append('narrationTrack', narrationTrack, narrationTrack.name);
                 }

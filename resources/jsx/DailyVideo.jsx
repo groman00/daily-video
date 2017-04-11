@@ -14,7 +14,6 @@ function DailyVideo(id) {
     var config, narrationTrack, audioTrack, renderQueue, renderQueueItem;
 
     try {
-
         DIR.temp = DIR.temp + id;
         config = this.config = UTILS.getJSON(DIR.temp + '/json/config.json');
 
@@ -22,6 +21,11 @@ function DailyVideo(id) {
             // Config JSON not found, exit job.
             project.close(CloseOptions.DO_NOT_SAVE_CHANGES);
         }
+
+        app.saveProjectOnCrash = false;
+        app.onError = function (errString) {};
+        app.open(new File(DIR.resources + "aep/" + config.theme + ".aep"));
+        project = app.project;
 
         // Clone Project in temp folder
         project.save(new File(DIR.temp + '/aep/DailyVideo.aep'));
@@ -130,9 +134,5 @@ function main(jobId, dir) {
         exports: dir + '/public/exports/',
         fixtures: dir + '/public/fixtures/'
     };
-    app.saveProjectOnCrash = false;
-    app.onError = function (errString) {};
-    app.open(new File(DIR.resources + "aep/DailyVideo.aep"));
-    project = app.project;
     video = new DailyVideo(jobId);
 }

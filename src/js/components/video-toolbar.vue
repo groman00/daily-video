@@ -53,6 +53,14 @@
             <div class="control">
                 <div class="control-body">
                     <div class="form-control">
+                        <label>Theme</label>
+                        <select v-model="theme" style="margin-top:6px;" @change="themeUpdated($event.target.value)">
+                            <option v-for="t in themes" :value="t">
+                                {{ t }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-control">
                         <button class="button button-blue button-huge" :disabled="isDisabled" @click="submit">Generate Video</button>
                         <label class="checkbox">
                             <input type="checkbox" v-model="isPreview"> Select for low-resolution
@@ -83,10 +91,15 @@
             slideshow: {
                 type: Object,
                 required: true
+            },
+            themes: {
+                type: Array,
+                required: true
             }
         },
         data() {
             return {
+                theme: '',
                 isPreview: true,
                 isPlayingAudio: false,
                 isDisabled: false,
@@ -103,6 +116,8 @@
         },
         created() {
             this.eventHub.$on('render-complete', this.renderComplete);
+            this.theme = this.themes[0];
+            this.themeUpdated(this.theme);
         },
         beforeDestroy() {
             this.eventHub.$off('render-complete', this.renderComplete);
@@ -124,6 +139,9 @@
             }
         },
         methods: {
+            themeUpdated(theme) {
+                this.$emit('themeUpdated', theme);
+            },
             submit() {
                 this.isDisabled = true;
                 this.onSubmit(this.getSettings());
