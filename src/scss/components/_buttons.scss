@@ -29,6 +29,13 @@
     }
 }
 
+.button-small {
+    font-size: $font-size-tiny;
+    height: 20px;
+    line-height: 20px;
+    padding: 0 $gutter-narrow;
+}
+
 .button-default {
     &:hover:enabled,
     &:active:enabled,

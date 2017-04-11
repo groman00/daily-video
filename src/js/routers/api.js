@@ -14,6 +14,7 @@ function Api() {
             { path: host + '/slideshows/slide/add', name: 'slideshows-add-slide' },
             { path: host + '/slideshows/slide/save', name: 'slideshows-save-slide' },
             { path: host + '/slideshows/slide/delete', name: 'slideshows-delete-slide' },
+            { path: host + '/slideshows/slide/move', name: 'slideshows-move-slide' },
             { path: host + '/slideshows/image/upload', name: 'slideshows-image-upload' },
             { path: host + '/slideshows/:id', name: 'slideshow' },
             { path: host + '/preview-slide', name: 'preview-slide' },

@@ -35,11 +35,13 @@
             this.eventHub.$on('slide-added', this.addSlide);
             this.eventHub.$on('slide-removed', this.removeSlide);
             this.eventHub.$on('slide-updated', this.updateSlide);
+            this.eventHub.$on('slide-moved', this.moveSlide);
         },
         beforeDestroy() {
             this.eventHub.$off('slide-added', this.addSlide);
             this.eventHub.$off('slide-removed', this.removeSlide);
             this.eventHub.$off('slide-updated', this.updateSlide);
+            this.eventHub.$off('slide-moved', this.moveSlide);
         },
         methods: {
             titleUpdated(title) {
@@ -67,6 +69,9 @@
                 this.slides = this.slides.filter((slide) => {
                     return slide.id != removedSlide.id;
                 });
+            },
+            moveSlide(from, to) {
+                this.slides.splice(to, 0, this.slides.splice(from, 1)[0] );
             },
             updateSlide(updatedSlide) {
                 console.log('about to update slide', updatedSlide);

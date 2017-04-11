@@ -1,10 +1,10 @@
 <style scoped></style>
 <template>
     <div class="video-editor-item">
-        <!--
-        <image-cropper v-if="slide.data.slideType === 'image'" :slide="slide"></image-cropper>
-        <thumbnail v-else :image="slide.image_url_thumb"></thumbnail>
-        -->
+        <div class="form-control clearfix">
+            <button v-if="slideIndex !== 0" class="button button-small button-blue pull-left" @click="moveSlide(-1)">&lt;</button>
+            <button v-if="slideIndex < (slideCount - 1)" class="button button-small button-blue pull-right" @click="moveSlide(1)">&gt;</button>
+        </div>
         <image-cropper v-if="this.fields.includes('image')" :slide="slide"></image-cropper>
         <div class="form-control">
             <select v-model="slide.data.slideType" @change="itemUpdated">
@@ -43,7 +43,7 @@
     import api from '../routers/api';
 
     export default {
-        props: ['slide', 'slideTypes'],
+        props: ['slide', 'slideshowId', 'slideTypes', 'slideIndex', 'slideCount'],
         data() {
             return {
                 templates: {},
@@ -121,6 +121,7 @@
             },
             itemUpdated() {
                 this.hasPreview = false;
+                // we should just autosave here
             },
             saveSlide() {
                 this.isDisabled = true;
@@ -137,6 +138,16 @@
                         this.eventHub.$emit('slide-removed', this.slide);
                         this.isDisabled = false;
                     });
+            },
+            moveSlide(direction) {
+                const to = this.slideIndex + direction;
+                const from = this.slideIndex;
+                this.eventHub.$emit('slide-moved', from, to);
+                this.$http.post(api.route('slideshows-move-slide'), {
+                    slideshowId: this.slideshowId,
+                    slideId: this.slide.id,
+                    index: to
+                });
             }
         }
     }

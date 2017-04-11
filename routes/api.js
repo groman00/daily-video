@@ -66,6 +66,13 @@ router.post('/slideshows/slide/delete', [amp.authenticate], (req, res, next) => 
 });
 
 /**
+ * POST: Move a slide
+ */
+router.post('/slideshows/slide/move', [amp.authenticate], (req, res, next) => {
+  slideshowController.moveSlide(req, res, next);
+});
+
+/**
  * POST: Upload image and generate crop url
  */
 router.post('/slideshows/image/upload', upload.single('files'), (req, res, next) => {
