@@ -31,11 +31,14 @@
         <div class="form-control">
             <button class="button button-blue" :disabled="isDisabled" @click="fetchPreview(slide)">Preview</button>
         </div>
-        <div class="form-control">
+        <!-- <div class="form-control">
             <button class="button button-blue" :disabled="isDisabled" @click="saveSlide">Save Slide</button>
-        </div>
+        </div> -->
         <div class="form-control">
             <button class="button button-danger" :disabled="isDisabled" @click="deleteSlide">Delete Slide</button>
+        </div>
+        <div class="form-control">
+            <label class="text-center">{{ isSaving ? 'Saving...' : '&nbsp;' }}</label>
         </div>
     </div>
 </template>
@@ -50,6 +53,7 @@
                 fields: [],
                 hasPreview: false,
                 isDisabled: false,
+                isSaving: false,
                 preview: {
                     previewId: 0,
                     files: []
@@ -68,6 +72,9 @@
             this.$root.socket.off('preview-error', this.setEnabled);
         },
         watch: {
+            slide() {
+                this.saveSlide();
+            },
             'slide.data.slideType'(type) {
                 this.templates = Object.assign({}, this.slideTypes[type].templates);
                 this.setDefaultSlideTemplate(this.templates);
@@ -122,14 +129,14 @@
             },
             itemUpdated() {
                 this.hasPreview = false;
-                // we should just autosave here
+                this.saveSlide();
             },
             saveSlide() {
-                this.isDisabled = true;
+                this.isSaving = true;
                 this.$http.post(api.route('slideshows-save-slide'), this.slide)
                     .then((response) => {
                         console.log(response);
-                        this.isDisabled = false;
+                        this.isSaving = false;
                     });
             },
             deleteSlide() {
@@ -147,7 +154,7 @@
                 this.$http.post(api.route('slideshows-move-slide'), {
                     slideshowId: this.slideshowId,
                     slideId: this.slide.id,
-                    index: to
+                    index: (to + 1) // index is 1 based, not 0
                 });
             }
         }

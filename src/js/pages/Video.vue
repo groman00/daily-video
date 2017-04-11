@@ -80,7 +80,6 @@
                 this.slides.splice(to, 0, this.slides.splice(from, 1)[0] );
             },
             updateSlide(updatedSlide) {
-                console.log('about to update slide', updatedSlide);
                 const index = this.slides.findIndex((slide) => {
                     return slide.id === updatedSlide.id;
                 });
