@@ -2,8 +2,7 @@
     @include cover-parent(fixed);
     background: rgba(0, 0, 0, .9);
     z-index: 100;
-    // overflow-y: auto;
-    overflow: hidden;
+    overflow-y: auto;
     transform: translate3d(0, 100%, 0);
     transition: transform 300ms ease-in-out;
 
