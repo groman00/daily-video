@@ -75,7 +75,7 @@ router.post('/slideshows/slide/move', [amp.authenticate], (req, res, next) => {
 /**
  * POST: Upload image and generate crop url
  */
-router.post('/slideshows/image/upload', upload.single('files'), (req, res, next) => {
+router.post('/slideshows/image/upload', upload.single('file'), (req, res, next) => {
   slideshowController.imageUpload(req, res, next);
 });
 

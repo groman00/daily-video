@@ -2,8 +2,8 @@
 <template>
     <div class="video-editor-item">
         <div class="form-control clearfix">
-            <button v-if="slideIndex !== 0" class="button button-small button-blue pull-left" @click="moveSlide(-1)">&lt;</button>
-            <button v-if="slideIndex < (slideCount - 1)" class="button button-small button-blue pull-right" @click="moveSlide(1)">&gt;</button>
+            <button v-if="slideIndex !== 0" class="button button-small button-default pull-left" @click="moveSlide(-1)">&lt;</button>
+            <button v-if="slideIndex < (slideCount - 1)" class="button button-small button-default pull-right" @click="moveSlide(1)">&gt;</button>
         </div>
         <image-cropper v-if="this.fields.includes('image')" :slide="slide"></image-cropper>
         <div class="form-control">

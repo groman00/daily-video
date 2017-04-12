@@ -15,7 +15,7 @@ import videoEditorItem from './components/video-editor-item.vue';
 import videoToolbar from './components/video-toolbar.vue';
 import overlay from './components/overlay.vue';
 import slideNew from './components/slide-new.vue';
-import VueCoreImageUpload  from 'vue-core-image-upload';
+// import VueCoreImageUpload  from 'vue-core-image-upload';
 import imageCropper from './components/image-cropper.vue';
 
 const eventHub = Vue.prototype.eventHub = new Vue(); // Create a new instance of Vue to use as an event hub.
@@ -36,7 +36,7 @@ Vue.component('video-editor-item', videoEditorItem);
 Vue.component('video-toolbar', videoToolbar);
 Vue.component('overlay', overlay);
 Vue.component('slide-new', slideNew);
-Vue.component('vue-core-image-upload', VueCoreImageUpload);
+// Vue.component('vue-core-image-upload', VueCoreImageUpload);
 Vue.component('image-cropper', imageCropper);
 
 

@@ -1,16 +1,16 @@
 .image-cropper{
     position: relative;
 
-    .upload-button {
-        @include cover-parent(absolute);
-
-        form {
-            height: 100% !important;
-            width: 100% !important;
-        }
-
-        input {
-            cursor: pointer;
-        }
+    .thumbnail {
+        cursor: pointer;
     }
+}
+
+.image-cropper-overlay-heading {
+    background: $black;
+    padding: $gutter $gutter-narrow;
+}
+
+.image-cropper-overlay-content {
+    margin: 0 auto;
 }

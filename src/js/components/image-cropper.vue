@@ -2,64 +2,98 @@
 <template>
     <div class="image-cropper">
         <div class="thumbnail">
-            <img class="thumbnail-image" :src="imageSrc">
+            <img class="thumbnail-image" :src="imageSrc" @click="triggerFileUpload">
         </div>
-        <vue-core-image-upload
-            ref="cropper"
-            crop-ratio="1920:1080"
-            text=""
-            :class="['upload-button']"
-            :crop="true"
-            extensions="png,gif,jpeg,jpg"
-            input-accept="image/*"
-            :url="uploadUrl"
-            :headers="{ 'X-Requested-With': 'XMLHttpRequest' }"
-            @imagechanged="imagechanged"
-            @imageuploading="imageuploading"
-            @errorhandle="errorhandle"
-            @imageuploaded="imageuploaded"></vue-core-image-upload>
+        <overlay :open="isCropping" class="image-cropper-overlay">
+            <div slot="overlay-content">
+                <div class="image-cropper-overlay-heading clearfix">
+                    <div class="button-group pull-right">
+                        <button class="button button-default" @click="cropReset">Cancel</button>
+                        <button class="button button-blue" @click="uploadImage(false)">Add without cropping</button>
+                        <button class="button button-blue" @click="uploadImage(true)">Crop and Add</button>
+                    </div>
+                </div>
+                <div :style="{ width: imageToCropWidth + 'px' }" class="image-cropper-overlay-content">
+                    <img ref="cropperImage" :src="imageToCrop">
+                </div>
+           </div>
+        </overlay>
+        <input ref="fileInput" style="display: none;" type="file" accept="image/*" @change="fileChanged">
     </div>
 </template>
 <script>
+    import Cropper from 'cropperjs';
     import api from '../routers/api';
 
     export default {
         props: ['slide'],
         data() {
             return {
-                imageSrc: ''
+                imageSrc: '',
+                imageToCrop: '',
+                imageToCropHeight: 0,
+                imageToCropWidth: 0,
+                isCropping: false,
+                cropper: undefined
             }
         },
         created() {
             this.imageSrc = this.slide.image_url_thumb;
         },
-        computed: {
-            uploadUrl() {
-                return api.route('slideshows-image-upload');
+        watch: {
+            imageToCrop(src) {
+                this.cropper.replace(src);
             }
         },
+        mounted() {
+            this.cropper = new Cropper(this.$refs.cropperImage, {
+              aspectRatio: 1920 / 1080
+            });
+        },
         methods: {
-            imageuploaded(response) {
-                this.imageSrc = response.images.image_url_thumb;
-                this.eventHub.$emit('slide-updated', Object.assign(this.slide, response.images, Object.assign(this.slide.data, { crop: response.crop })));
+            triggerFileUpload() {
+                this.$refs.fileInput.click();
             },
-            /**
-             * return file object
-             */
-            imagechanged(res) {
-              console.log(res.name)
+            fileChanged(e) {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                const image = new Image();
+                let imageWidth;
+                let clientWidth;
+                reader.onload = (e) => {
+                    image.src= e.target.result;
+                }
+                image.onload = (e) => {
+                    clientWidth = document.documentElement.clientWidth;
+                    imageWidth = image.naturalWidth;
+                    this.imageToCropWidth = imageWidth < clientWidth ? imageWidth : clientWidth;
+                    this.imageToCrop = image.src;
+                    this.isCropping = true;
+                }
+                reader.readAsDataURL(file);
             },
-            /**
-             * uploading image
-             */
-            imageuploading(res) {
-              console.info('uploading');
+            cropReset() {
+                this.isCropping = false;
+                this.imageToCrop = '';
+                this.$refs.fileInput.value = '';
             },
-            /**
-             * handle some error like ajax not working
-             */
-            errorhandle(e) {
-              console.error('error', e);
+            uploadImage(shouldCrop) {
+                // todo: Still need to support GIF
+                const file = this.$refs.fileInput.files[0];
+                const formData = new FormData();
+                const cropData = this.cropper.getData(true);
+                formData.append('cropHeight', cropData.height);
+                formData.append('cropWidth', cropData.width);
+                formData.append('cropX', cropData.x);
+                formData.append('cropY', cropData.y);
+                formData.append('file', file, file.name);
+                this.$http.post(api.route('slideshows-image-upload'), formData)
+                    .then((response) => {
+                        console.log(response)
+                        this.imageSrc = response.body.images.image_url_thumb;
+                        this.eventHub.$emit('slide-updated', Object.assign(this.slide, response.body.images, Object.assign(this.slide.data, { crop: response.body.crop })));
+                        this.cropReset();
+                    });
             }
         }
     }

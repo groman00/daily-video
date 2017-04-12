@@ -1,6 +1,6 @@
 .button {
-    color: $grey;
-    background-color: $white;
+    color: $hot-blue;
+    background-color: transparent;
     height: 30px;
     line-height: 30px;
     font-weight: $font-weight-regular;
@@ -30,7 +30,7 @@
 }
 
 .button-small {
-    font-size: $font-size-tiny;
+    // font-size: $font-size-smallest;
     height: 20px;
     line-height: 20px;
     padding: 0 $gutter-narrow;
@@ -40,7 +40,7 @@
     &:hover:enabled,
     &:active:enabled,
     &:focus:enabled {
-        background-color: $grey-light;
+        background-color: rgba(0, 0, 0, .15);
     }
 }
 
