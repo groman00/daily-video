@@ -70,9 +70,11 @@ var UTILS = {
         var scaleHeight = ((100 * 1080) / h);
         var scale = [100, 100];
         if (h >= w) {
-            scale = [((w * scaleHeight) / h), scaleHeight];
+            // scale = [((w * scaleHeight) / h), scaleHeight];
+            scale = [scaleHeight, scaleHeight];
         } else {
-            scale = [scaleWidth, ((h * scaleWidth) / w)];
+            // scale = [scaleWidth, ((h * scaleWidth) / w)];
+            scale = [scaleWidth, scaleWidth];
         }
         layer.scale.setValue(scale);
     },
@@ -100,11 +102,14 @@ var UTILS = {
             image.parentFolder = videoFolder;
             comp.layer(2).replaceSource(image, true); // Set image source
 
+            try {
+                // need to resize the image beforehand.
+                // this does not work if the comp has a scale transform already applied.
+            this.fitLayerToComp(comp, comp.layer(2), image);
+            } catch(e) {$.writeln(e);}
+
             // GIF Handling
             if (slide.image_type === 'gif') {
-                try{
-                    this.fitLayerToComp(comp, comp.layer(2), image);
-                } catch(e) {$.writeln(e);}
                 comp.layer(2).timeRemapEnabled = true;
                 comp.layer(2).timeRemap.expression = "loopOut('cycle');";
             }

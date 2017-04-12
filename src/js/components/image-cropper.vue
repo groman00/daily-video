@@ -43,6 +43,9 @@
         watch: {
             imageToCrop(src) {
                 this.cropper.replace(src);
+            },
+            slide(s) {
+                this.imageSrc = s.image_url_thumb;
             }
         },
         mounted() {
