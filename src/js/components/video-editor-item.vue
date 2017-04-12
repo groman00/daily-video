@@ -7,7 +7,7 @@
         </div>
         <image-cropper v-if="this.fields.includes('image')" :slide="slide"></image-cropper>
         <div class="form-control">
-            <select v-model="slide.data.slideType" @change="itemUpdated">
+            <select v-model="slide.data.slideType">
                 <option v-for="(obj, type) in slideTypes" :value="type">
                     {{ type }}
                 </option>
@@ -81,6 +81,7 @@
             'slide.data.slideType'(type) {
                 this.templates = Object.assign({}, this.slideTypes[type].templates);
                 this.setDefaultSlideTemplate(this.templates);
+                this.itemUpdated();
             },
             'slide.data.slideTemplate'(template) {
                 this.fields = template.fields;
