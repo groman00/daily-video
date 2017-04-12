@@ -11,7 +11,7 @@
                 <input v-if="config.title" v-model="config.title" type="text" @blur="titleUpdated($event.target.value)">
             </h1>
             <div class="button-group flex-shrink-1">
-                <a class="button button-blue" href="https://s3.amazonaws.com/alpha-global-origin/daily-video/Video_Tool_Tutorial.mp4" target="_blank">View Tutorial</a>
+                <!-- <a class="button button-blue" href="https://s3.amazonaws.com/alpha-global-origin/daily-video/Video_Tool_Tutorial.mp4" target="_blank">View Tutorial</a> -->
                 <router-link :to="{ name: 'uploads' }" exact class="button button-blue">
                     Uploads
                 </router-link>

@@ -21,6 +21,7 @@ a:hover .thumbnail {
 .thumbnail-large {
 
     .thumbnail-image {
+        max-width: 275px;
         border-radius: 44px;
         margin-bottom: $gutter;
     }

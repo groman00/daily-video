@@ -1,4 +1,4 @@
-.overlay{
+.overlay {
     @include cover-parent(fixed);
     background: rgba(0, 0, 0, .9);
     z-index: 100;
@@ -6,7 +6,7 @@
     transform: translate3d(0, 100%, 0);
     transition: transform 300ms ease-in-out;
 
-    &.open{
+    &.open {
         transform: translate3d(0, 0, 0);
     }
 }

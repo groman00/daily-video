@@ -12,12 +12,19 @@
     position: relative;
     height: 100%;
     border: solid 1px rgba(255, 255, 255, .14);
-    padding: 18px;
+    padding: 44px 18px 18px;
     border-radius: 10px;
     background: $grey-dark;
     color: $white;
 
     textarea {
         resize: none;
+    }
+
+    .move-buttons {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        right: 12px;
     }
 }

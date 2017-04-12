@@ -1,7 +1,7 @@
 <style scoped></style>
 <template>
     <div class="video-editor-item">
-        <div class="form-control clearfix">
+        <div class="move-buttons clearfix">
             <button v-if="slideIndex !== 0" class="button button-small button-default pull-left" @click="moveSlide(-1)">&lt;</button>
             <button v-if="slideIndex < (slideCount - 1)" class="button button-small button-default pull-right" @click="moveSlide(1)">&gt;</button>
         </div>
@@ -29,16 +29,19 @@
             </textarea>
         </div>
         <div class="form-control">
-            <button class="button button-blue" :disabled="isDisabled" @click="fetchPreview(slide)">Preview</button>
+            <div class="button-bar">
+                <button class="button button-blue" :disabled="isDisabled" @click="fetchPreview(slide)">Preview</button>
+                <button class="button button-danger" :disabled="isDisabled" @click="deleteSlide">Delete</button>
+            </div>
         </div>
         <!-- <div class="form-control">
             <button class="button button-blue" :disabled="isDisabled" @click="saveSlide">Save Slide</button>
         </div> -->
         <div class="form-control">
-            <button class="button button-danger" :disabled="isDisabled" @click="deleteSlide">Delete Slide</button>
+
         </div>
-        <div class="form-control">
-            <label class="text-center">{{ isSaving ? 'Saving...' : '&nbsp;' }}</label>
+        <div class="form-control text-center">
+            <label>{{ isSaving ? 'Saving...' : '&nbsp;' }}</label>
         </div>
     </div>
 </template>
@@ -73,7 +76,7 @@
         },
         watch: {
             slide() {
-                this.saveSlide();
+                this.itemUpdated();
             },
             'slide.data.slideType'(type) {
                 this.templates = Object.assign({}, this.slideTypes[type].templates);
@@ -115,7 +118,7 @@
                 });
             },
             previewReady(preview) {
-                if (preview.previewId === this.preview.previewId) {
+                if (preview.previewId === this.preview.previewId && preview.files) {
                     this.preview = Object.assign({}, preview);
                     this.dispatchPreview();
                 }

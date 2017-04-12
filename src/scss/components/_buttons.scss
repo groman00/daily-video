@@ -1,3 +1,4 @@
+$border_radius: 5px;
 .button {
     color: $hot-blue;
     background-color: transparent;
@@ -6,7 +7,7 @@
     font-weight: $font-weight-regular;
     font-size: $font-size-smaller;
     border: none;
-    border-radius: 5px;
+    border-radius: $border_radius;
     position: relative;
     margin: 0;
     padding: 0 $gutter;
@@ -81,6 +82,27 @@
         margin: 0 ($gutter-narrow / 2);
     }
 }
+
+
+.button-bar {
+
+    .button {
+        border-radius: 0;
+        width: 50%;
+        padding: 0;
+        float: left;
+
+        &:first-child {
+          border-radius: $border_radius 0 0 $border_radius;
+        }
+
+        &:last-child {
+          border-radius: 0 $border_radius $border_radius 0;
+        }
+    }
+
+}
+
 
 .button-input {
     position: relative;

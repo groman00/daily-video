@@ -82,16 +82,22 @@
                 const file = this.$refs.fileInput.files[0];
                 const formData = new FormData();
                 const cropData = this.cropper.getData(true);
-                formData.append('cropHeight', cropData.height);
-                formData.append('cropWidth', cropData.width);
-                formData.append('cropX', cropData.x);
-                formData.append('cropY', cropData.y);
+                formData.append('crop', (shouldCrop ? JSON.stringify({
+                    h: cropData.height,
+                    w: cropData.width,
+                    x: cropData.x,
+                    y: cropData.y
+                }) : null));
                 formData.append('file', file, file.name);
                 this.$http.post(api.route('slideshows-image-upload'), formData)
                     .then((response) => {
                         console.log(response)
                         this.imageSrc = response.body.images.image_url_thumb;
-                        this.eventHub.$emit('slide-updated', Object.assign(this.slide, response.body.images, Object.assign(this.slide.data, { crop: response.body.crop })));
+                        this.eventHub.$emit('slide-updated', Object.assign(
+                            this.slide,
+                            response.body.images,
+                            Object.assign(this.slide.data, { crop: response.body.crop, 'image_type': file.type.split('/')[1] })
+                        ));
                         this.cropReset();
                     });
             }

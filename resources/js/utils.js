@@ -66,11 +66,13 @@ var UTILS = {
         var w = avItem.width;
         var compHeight = comp.height;
         var compWidth = comp.width;
+        var scaleWidth = ((100 * 1920) / w);
+        var scaleHeight = ((100 * 1080) / h);
         var scale = [100, 100];
         if (h >= w) {
-            scale = [((w * scaleHeight) / h), ((100 * 1080) / h)];
+            scale = [((w * scaleHeight) / h), scaleHeight];
         } else {
-            scale = [((100 * 1920) / w), ((h * scaleWidth) / w)];
+            scale = [scaleWidth, ((h * scaleWidth) / w)];
         }
         layer.scale.setValue(scale);
     },
@@ -100,7 +102,9 @@ var UTILS = {
 
             // GIF Handling
             if (slide.image_type === 'gif') {
-                this.fitLayerToComp(comp, comp.layer(2), image);
+                try{
+                    this.fitLayerToComp(comp, comp.layer(2), image);
+                } catch(e) {$.writeln(e);}
                 comp.layer(2).timeRemapEnabled = true;
                 comp.layer(2).timeRemap.expression = "loopOut('cycle');";
             }

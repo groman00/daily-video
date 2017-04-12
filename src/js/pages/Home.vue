@@ -10,7 +10,7 @@
             </div>
             <div class="cell-m-4" >
                 <a href="#" @click.prevent="createNew">
-                    <thumbnail size="large" title="Create New" image=""></thumbnail>
+                    <thumbnail size="large" title="Create New" image="https://s3.amazonaws.com/alpha-global-origin/daily-video/add-new.png"></thumbnail>
                 </a>
             </div>
         </div>
