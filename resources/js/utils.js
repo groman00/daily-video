@@ -1,4 +1,14 @@
+var fps = 29.97;
 var UTILS = {
+
+    /**
+     * Convert number of frames to seconds
+     * @param  {int} frames
+     * @return {Number}
+     */
+    framesToSeconds: function (frames) {
+        return ( frames / fps );
+    },
 
     /**
      * Read json file and parse to object;
@@ -108,20 +118,27 @@ var UTILS = {
         var comp = UTILS.findCompByName(UTILS.getFolderByName('Prefabs'), templateName).duplicate();
         var image;
         var imageLayer;
+        var video;
+        var videoLayer;
+        var duration;
         comp.name = 'Comp_' + i;
+
+
+        /**
+         * We may be able to simplifiy the following logic now that we have a "fields" array
+         */
+
         if (!/bumper|share/.test(templateName)) {
             caption = slide.caption.substr(0, characters.caption);
             if (slideType === 'quotation') {
                 caption = '"' + caption + '"';
             }
-            // comp.layer(1).sourceText.setValue(caption); // Set text layer sourceText
             UTILS.findLayerByName(comp, 'caption').sourceText.setValue(caption);
         }
         if (slideType === 'image') {
             image = project.importFile(new ImportOptions(File(slide.image)));
             image.parentFolder = videoFolder;
             imageLayer = UTILS.findLayerByName(comp, 'image');
-            // comp.layer(2).replaceSource(image, true); // Set image source
             imageLayer.replaceSource(image, true); // Set image source
 
             // GIF Handling
@@ -133,8 +150,6 @@ var UTILS = {
                 } catch(e) {
                     //$.writeln(e);
                 }
-                // comp.layer(2).timeRemapEnabled = true;
-                // comp.layer(2).timeRemap.expression = "loopOut('cycle');";
                 imageLayer.timeRemapEnabled = true;
                 imageLayer.timeRemap.expression = "loopOut('cycle');";
             }
@@ -144,26 +159,20 @@ var UTILS = {
             if (slideType === 'quotation') {
                 title = '- ' + title;
             }
-            //comp.layer(2).sourceText.setValue(title); // Set text layer sourceText
             UTILS.findLayerByName(comp, 'title').sourceText.setValue(title);
         }
         if (slideType === 'video') {
-            /*
-            var fps = 29.97;
-            var transitionFrames = 10;
-            var transitionDuration = transitionFrames / fps;
-            var project = app.project;
-            var prefabFolder = UTILS.getFolderByName('Prefabs');
-            var comp = UTILS.findCompByName(prefabFolder, 'video_template_1');
-            var video = project.importFile(new ImportOptions(File('/Library/WebServer/Documents/alpha/daily-video/resources/jsx/test.MOV')));
-            var duration = video.duration;
-            var videoLayer = comp.layer(2);
-            videoLayer.replaceSource(video, false);
-            comp.duration = duration;
-            videoLayer.outPoint = duration;
-
-            var positionProperty = videoLayer.position;
+            var positionProperty;
             var keyValues = [];
+            var transitionDuration = slideData.slideTemplate.frames.out / fps;
+            video = project.importFile(new ImportOptions(File('/Library/WebServer/Documents/alpha/daily-video/resources/jsx/test.MOV')));
+            duration = video.duration;
+            comp.duration = duration;
+            videoLayer = UTILS.findLayerByName(comp, 'video');
+            videoLayer.replaceSource(video, false);
+            videoLayer.outPoint = duration;
+            UTILS.findLayerByName(comp, 'caption').outPoint = duration;
+            positionProperty = videoLayer.position;
             for (var i = 0, max = positionProperty.numKeys; i < max; i++) {
                 keyValues.push(positionProperty.keyValue(i + 1));
             };
@@ -171,7 +180,6 @@ var UTILS = {
             positionProperty.removeKey(3);
             positionProperty.setValueAtTime(duration - transitionDuration, keyValues[2]);
             positionProperty.setValueAtTime(duration, keyValues[3]);
-            */
         }
         return comp;
     }

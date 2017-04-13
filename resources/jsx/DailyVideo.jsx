@@ -2,13 +2,12 @@
 #include "../js/utils.js"
 
 var project;
-var fps = 30;
+//var fps = 30;
+// var fps = 29.97;
 var DIR;
-var utils = {
-    framesToSeconds: function (frames) {
-        return ( frames / fps );
-    }
-}
+// var utils = {
+
+// }
 
 function DailyVideo(id) {
     var config, narrationTrack, audioTrack, renderQueue, renderQueueItem;
@@ -117,11 +116,11 @@ DailyVideo.prototype = {
         var layer, i, duration, frames;
         for(i = 0, max = comps.length; i < max; i++){
             frames = slides[i].data.slideTemplate.frames;
-            duration = utils.framesToSeconds(frames.total);
+            duration = UTILS.framesToSeconds(frames.total);
             layer = this.masterComp.layers.add(comps[i], duration);
             layer.moveToEnd();
             layer.startTime = currentPosition;
-            currentPosition = currentPosition + (duration - utils.framesToSeconds(frames.out));
+            currentPosition = currentPosition + (duration - UTILS.framesToSeconds(frames.out));
         }
     }
 };
