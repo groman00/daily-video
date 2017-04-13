@@ -61,6 +61,24 @@ var UTILS = {
         return folder;
     },
 
+    /**
+     * Find comp within parent by name
+     * @param  {CompItem} comp
+     * @param  {String} layer name
+     * @return {layer}
+     */
+    findLayerByName: function (comp, name) {
+        var layers = comp.layers,
+            layer, i;
+        for (i = 1; i <= layers.length; i ++) {
+            if (comp.layer(i).name === name) {
+                layer = comp.layer(i);
+                break;
+            }
+        }
+        return layer;
+    },
+
     fitLayerToComp: function (comp, layer, avItem) {
         var h = avItem.height;
         var w = avItem.width;
@@ -89,18 +107,22 @@ var UTILS = {
         var characters = slideData.slideTemplate.characters;
         var comp = UTILS.findCompByName(UTILS.getFolderByName('Prefabs'), templateName).duplicate();
         var image;
+        var imageLayer;
         comp.name = 'Comp_' + i;
         if (!/bumper|share/.test(templateName)) {
             caption = slide.caption.substr(0, characters.caption);
             if (slideType === 'quotation') {
                 caption = '"' + caption + '"';
             }
-            comp.layer(1).sourceText.setValue(caption); // Set text layer sourceText
+            // comp.layer(1).sourceText.setValue(caption); // Set text layer sourceText
+            UTILS.findLayerByName(comp, 'caption').sourceText.setValue(caption);
         }
         if (slideType === 'image') {
             image = project.importFile(new ImportOptions(File(slide.image)));
             image.parentFolder = videoFolder;
-            comp.layer(2).replaceSource(image, true); // Set image source
+            imageLayer = UTILS.findLayerByName(comp, 'image');
+            // comp.layer(2).replaceSource(image, true); // Set image source
+            imageLayer.replaceSource(image, true); // Set image source
 
             // GIF Handling
             if (slide.image_type === 'gif') {
@@ -111,8 +133,10 @@ var UTILS = {
                 } catch(e) {
                     //$.writeln(e);
                 }
-                comp.layer(2).timeRemapEnabled = true;
-                comp.layer(2).timeRemap.expression = "loopOut('cycle');";
+                // comp.layer(2).timeRemapEnabled = true;
+                // comp.layer(2).timeRemap.expression = "loopOut('cycle');";
+                imageLayer.timeRemapEnabled = true;
+                imageLayer.timeRemap.expression = "loopOut('cycle');";
             }
         }
         if (/^joke|quotation|date/.test(templateName)) {
@@ -120,7 +144,8 @@ var UTILS = {
             if (slideType === 'quotation') {
                 title = '- ' + title;
             }
-            comp.layer(2).sourceText.setValue(title); // Set text layer sourceText
+            //comp.layer(2).sourceText.setValue(title); // Set text layer sourceText
+            UTILS.findLayerByName(comp, 'title').sourceText.setValue(title);
         }
         if (slideType === 'video') {
             /*
