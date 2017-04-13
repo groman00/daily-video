@@ -97,7 +97,7 @@ var UTILS = {
             }
             comp.layer(1).sourceText.setValue(caption); // Set text layer sourceText
         }
-        if(slideType === 'image') {
+        if (slideType === 'image') {
             image = project.importFile(new ImportOptions(File(slide.image)));
             image.parentFolder = videoFolder;
             comp.layer(2).replaceSource(image, true); // Set image source
@@ -121,6 +121,32 @@ var UTILS = {
                 title = '- ' + title;
             }
             comp.layer(2).sourceText.setValue(title); // Set text layer sourceText
+        }
+        if (slideType === 'video') {
+            /*
+            var fps = 29.97;
+            var transitionFrames = 10;
+            var transitionDuration = transitionFrames / fps;
+            var project = app.project;
+            var prefabFolder = UTILS.getFolderByName('Prefabs');
+            var comp = UTILS.findCompByName(prefabFolder, 'video_template_1');
+            var video = project.importFile(new ImportOptions(File('/Library/WebServer/Documents/alpha/daily-video/resources/jsx/test.MOV')));
+            var duration = video.duration;
+            var videoLayer = comp.layer(2);
+            videoLayer.replaceSource(video, false);
+            comp.duration = duration;
+            videoLayer.outPoint = duration;
+
+            var positionProperty = videoLayer.position;
+            var keyValues = [];
+            for (var i = 0, max = positionProperty.numKeys; i < max; i++) {
+                keyValues.push(positionProperty.keyValue(i + 1));
+            };
+            positionProperty.removeKey(2);
+            positionProperty.removeKey(3);
+            positionProperty.setValueAtTime(duration - transitionDuration, keyValues[2]);
+            positionProperty.setValueAtTime(duration, keyValues[3]);
+            */
         }
         return comp;
     }
