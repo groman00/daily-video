@@ -16,6 +16,7 @@ function Api() {
             { path: host + '/slideshows/slide/delete', name: 'slideshows-delete-slide' },
             { path: host + '/slideshows/slide/move', name: 'slideshows-move-slide' },
             { path: host + '/slideshows/image/upload', name: 'slideshows-image-upload' },
+            { path: host + '/slideshows/video/upload', name: 'slideshows-video-upload' },
             { path: host + '/slideshows/:id', name: 'slideshow' },
             { path: host + '/preview-slide', name: 'preview-slide' },
             { path: host + '/save-project', name: 'save-project' },

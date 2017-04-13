@@ -165,7 +165,8 @@ var UTILS = {
             var positionProperty;
             var keyValues = [];
             var transitionDuration = slideData.slideTemplate.frames.out / fps;
-            video = project.importFile(new ImportOptions(File('/Library/WebServer/Documents/alpha/daily-video/resources/jsx/test.MOV')));
+            //video = project.importFile(new ImportOptions(File('/Library/WebServer/Documents/alpha/daily-video/resources/jsx/test.MOV')));
+            video = project.importFile(new ImportOptions(File(slide.video)));
             duration = video.duration;
             comp.duration = duration;
             videoLayer = UTILS.findLayerByName(comp, 'video');

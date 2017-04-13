@@ -81,7 +81,6 @@
                 this.$refs.fileInput.value = '';
             },
             uploadImage(shouldCrop) {
-                // todo: Still need to support GIF
                 const file = this.$refs.fileInput.files[0];
                 const formData = new FormData();
                 const cropData = this.cropper.getData(true);

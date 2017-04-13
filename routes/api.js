@@ -80,6 +80,13 @@ router.post('/slideshows/image/upload', upload.single('file'), (req, res, next) 
 });
 
 /**
+ * POST: Upload video
+ */
+router.post('/slideshows/video/upload', upload.single('file'), (req, res, next) => {
+  slideshowController.videoUpload(req, res, next);
+});
+
+/**
  * GET: slideshow by id
  */
 router.get('/slideshows/:id', (req, res, next) => {

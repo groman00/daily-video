@@ -6,6 +6,7 @@
             <button v-if="slideIndex < (slideCount - 1)" class="button button-small button-default pull-right" @click="moveSlide(1)">&gt;</button>
         </div>
         <image-cropper v-if="this.fields.includes('image')" :slide="slide"></image-cropper>
+        <video-uploader v-if="this.fields.includes('video')" :slide="slide"></video-uploader>
         <div class="form-control">
             <select v-model="slide.data.slideType">
                 <option v-for="(obj, type) in slideTypes" :value="type">
