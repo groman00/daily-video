@@ -35,9 +35,6 @@
                 <button class="button button-danger" :disabled="isDisabled" @click="deleteSlide">Delete</button>
             </div>
         </div>
-        <!-- <div class="form-control">
-            <button class="button button-blue" :disabled="isDisabled" @click="saveSlide">Save Slide</button>
-        </div> -->
         <div class="form-control">
 
         </div>
