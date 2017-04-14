@@ -4,13 +4,9 @@
     .thumbnail {
         cursor: pointer;
     }
+
+    .image-cropper-crop-wrapper {
+        margin: 0 auto;
+    }
 }
 
-.image-cropper-overlay-heading {
-    background: $black;
-    padding: $gutter $gutter-narrow;
-}
-
-.image-cropper-overlay-content {
-    margin: 0 auto;
-}

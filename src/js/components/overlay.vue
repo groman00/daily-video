@@ -1,7 +1,12 @@
 <style scoped></style>
 <template>
     <div class="overlay" v-bind:class="{ 'open': isOpen }">
-        <slot name="overlay-content"></slot>
+        <div class="overlay-heading clearfix">
+            <slot name="overlay-heading"></slot>
+        </div>
+        <div class="overlay-content">
+            <slot name="overlay-content"></slot>
+        </div>
     </div>
 </template>
 <script>

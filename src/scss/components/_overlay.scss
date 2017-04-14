@@ -9,6 +9,11 @@
     &.open {
         transform: translate3d(0, 0, 0);
     }
+
+    .overlay-heading {
+        background: $black;
+        padding: $gutter $gutter-narrow;
+    }
 }
 
 .upload-dialog {

@@ -172,17 +172,18 @@ var UTILS = {
             var transitionInDuration = slideData.slideTemplate.frames['in'] / fps;
             var transitionOutDuration = slideData.slideTemplate.frames['out'] / fps;
             var captionLayer = UTILS.findLayerByName(comp, 'caption');
-            var inPoint = slide.data.video.inPoint;
-            var outPoint = slide.data.video.outPoint;
+            var inPoint = slideData.video.inPoint;
+            var outPoint = slideData.video.outPoint;
             video = project.importFile(new ImportOptions(File(slide.video)));
             videoLayer = UTILS.findLayerByName(comp, 'video');
             videoLayer.replaceSource(video, false);
-
+            // comp.duration = video.duration;
+            comp.duration = slideData.video.duration;
             duration = outPoint - inPoint;
-
             videoLayer.inPoint = inPoint;
             videoLayer.outPoint = outPoint;
 
+            alert(video.duration)
             captionLayer.inPoint = inPoint;
             captionLayer.outPoint = outPoint;
 
@@ -200,11 +201,14 @@ var UTILS = {
             // Add adjusted keys
             positionProperty.setValueAtTime(inPoint, keyValues[0]);
             positionProperty.setValueAtTime(inPoint + transitionInDuration, keyValues[1]);
-            positionProperty.setValueAtTime(duration - transitionOutDuration, keyValues[2]);
-            positionProperty.setValueAtTime(duration, keyValues[3]);
 
+            positionProperty.setValueAtTime((inPoint + duration) - transitionOutDuration, keyValues[2]);
+            positionProperty.setValueAtTime((inPoint + duration) , keyValues[3]);
+
+            try {
             comp.workAreaStart = inPoint;
-            comp.duration = duration;
+            comp.workAreaDuration = duration;
+        } catch(e) {$.writeln(e)}
 
         }
         return comp;
