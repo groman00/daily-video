@@ -1,7 +1,7 @@
 <style scoped></style>
 <template>
     <div class="video-uploader">
-        <video class="video" ref="video" :src="src" style="width:100%;" @loadedmetadata="videoLoadedMetadata" @click="toggleVideo"></video>
+        <video class="video" ref="video" :src="src" style="width:100%;" @loadedmetadata="videoLoadedMetadata" @click="toggleVideo($event.target)" @timeupdate="checkVideoTime($event.target)"></video>
         <label>Start Time: {{ inPoint }}</label>
         <label>End Time: {{ outPoint }}</label>
         <vue-slider v-model="range" :interval=".1" :min="0" :max="rangeMax" @callback="sliderCallback" @drag-end="sliderDragEnd"></vue-slider>
@@ -70,8 +70,18 @@
                 this.range = [0, this.duration];
                 this.save();
             },
-            toggleVideo() {
-                //
+            toggleVideo(video) {
+                video.currentTime = this.range[0];
+                if (video.paused) {
+                    video.play();
+                    return;
+                }
+                video.pause();
+            },
+            checkVideoTime(video) {
+                if(video.currentTime >= this.range[1]) {
+                    video.pause();
+                }
             }
         }
     }

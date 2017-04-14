@@ -183,7 +183,6 @@ var UTILS = {
             videoLayer.inPoint = inPoint;
             videoLayer.outPoint = outPoint;
 
-            alert(video.duration)
             captionLayer.inPoint = inPoint;
             captionLayer.outPoint = outPoint;
 
