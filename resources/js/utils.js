@@ -126,6 +126,11 @@ var UTILS = {
 
         /**
          * We may be able to simplifiy the following logic now that we have a "fields" array
+         * var fields = slide.data.slideTemplate.fields;
+         * for (var i = 0; i < fields.length; i++) {
+         *    templates[fields[i]](slide, ...other_options);
+         * };
+         *
          */
 
         if (!/bumper|share/.test(templateName)) {
@@ -164,23 +169,43 @@ var UTILS = {
         if (slideType === 'video') {
             var positionProperty;
             var keyValues = [];
-            var transitionDuration = slideData.slideTemplate.frames.out / fps;
-            //video = project.importFile(new ImportOptions(File('/Library/WebServer/Documents/alpha/daily-video/resources/jsx/test.MOV')));
+            var transitionInDuration = slideData.slideTemplate.frames['in'] / fps;
+            var transitionOutDuration = slideData.slideTemplate.frames['out'] / fps;
+            var captionLayer = UTILS.findLayerByName(comp, 'caption');
+            var inPoint = slide.data.video.inPoint;
+            var outPoint = slide.data.video.outPoint;
             video = project.importFile(new ImportOptions(File(slide.video)));
-            duration = video.duration;
-            comp.duration = duration;
             videoLayer = UTILS.findLayerByName(comp, 'video');
             videoLayer.replaceSource(video, false);
-            videoLayer.outPoint = duration;
-            UTILS.findLayerByName(comp, 'caption').outPoint = duration;
+
+            duration = outPoint - inPoint;
+
+            videoLayer.inPoint = inPoint;
+            videoLayer.outPoint = outPoint;
+
+            captionLayer.inPoint = inPoint;
+            captionLayer.outPoint = outPoint;
+
             positionProperty = videoLayer.position;
+
             for (var i = 0, max = positionProperty.numKeys; i < max; i++) {
                 keyValues.push(positionProperty.keyValue(i + 1));
             };
-            positionProperty.removeKey(2);
-            positionProperty.removeKey(3);
-            positionProperty.setValueAtTime(duration - transitionDuration, keyValues[2]);
+
+            // Remove templated keys (in reverse)
+            for (var i = 4; i > 0; i--) {
+                positionProperty.removeKey(i);
+            }
+
+            // Add adjusted keys
+            positionProperty.setValueAtTime(inPoint, keyValues[0]);
+            positionProperty.setValueAtTime(inPoint + transitionInDuration, keyValues[1]);
+            positionProperty.setValueAtTime(duration - transitionOutDuration, keyValues[2]);
             positionProperty.setValueAtTime(duration, keyValues[3]);
+
+            comp.workAreaStart = inPoint;
+            comp.duration = duration;
+
         }
         return comp;
     }

@@ -42,14 +42,21 @@
                         console.log(response)
                         this.src = response.body.source;
                         console.log(this.$refs.video.duration)
+
+                        /*var myVideoPlayer = document.getElementById('video_player');
+                        myVideoPlayer.addEventListener('loadedmetadata', function() {
+                            console.log(myVideoPlayer.duration);
+                        });*/
+
+
                         this.$nextTick(() => {
                             this.eventHub.$emit('slide-updated', Object.assign(
                                 this.slide,
                                 Object.assign(this.slide.data, {
                                     video: {
                                         source: response.body.source,
-                                        inPoint: 0,
-                                        outPoint: 3
+                                        inPoint: 2,
+                                        outPoint: 7
                                         // outPoint: this.$refs.video.duration
                                     }
                                 })
