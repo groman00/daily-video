@@ -73,11 +73,13 @@
             this.$root.socket.off('preview-error', this.setEnabled);
         },
         watch: {
-            slideIndex(index, oldIndex) {
-                console.log('slideIndex Updated', index, oldIndex);
+            // slideIndex(index, oldIndex) {
+            //     console.log('slideIndex Updated', index, oldIndex);
+            // },
+            slide() {
+                this.itemUpdated();
             },
             'slide.data.slideType'(type) {
-                console.log('slidetype updated', arguments);
                 this.templates = Object.assign({}, this.slideTypes[type].templates);
                 this.setDefaultSlideTemplate(this.templates);
                 this.itemUpdated();
