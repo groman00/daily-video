@@ -2,12 +2,7 @@
 #include "../js/utils.js"
 
 var project;
-//var fps = 30;
-// var fps = 29.97;
 var DIR;
-// var utils = {
-
-// }
 
 function DailyVideo(id) {
     var config, narrationTrack, audioTrack, renderQueue, renderQueueItem;
@@ -113,10 +108,11 @@ DailyVideo.prototype = {
     addChildCompsToMaster: function (comps) {
         var slides = this.config.slides;
         var currentPosition = 0;
-        var layer, i, duration, frames;
+        var slideData, layer, i, duration, frames;
         for(i = 0, max = comps.length; i < max; i++){
-            frames = slides[i].data.slideTemplate.frames;
-            duration = UTILS.framesToSeconds(frames.total);
+            slideData = slides[i].data
+            frames = slideData.slideTemplate.frames;
+            duration = slideData.slideType === 'video' ? (slideData.video.outPoint - slideData.video.inPoint) : UTILS.framesToSeconds(frames.total);
             layer = this.masterComp.layers.add(comps[i], duration);
             layer.moveToEnd();
             layer.startTime = currentPosition;

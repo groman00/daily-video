@@ -204,10 +204,12 @@ var UTILS = {
             positionProperty.setValueAtTime((inPoint + duration) - transitionOutDuration, keyValues[2]);
             positionProperty.setValueAtTime((inPoint + duration) , keyValues[3]);
 
-            try {
-            comp.workAreaStart = inPoint;
+            // slide layer inPoints to the beginning of the comp, since there's no way to trim the comp
+            captionLayer.startTime = captionLayer.startTime - inPoint;
+            videoLayer.startTime = videoLayer.startTime - inPoint;
+
+            //comp.workAreaStart = inPoint;
             comp.workAreaDuration = duration;
-        } catch(e) {$.writeln(e)}
 
         }
         return comp;
