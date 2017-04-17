@@ -31,7 +31,7 @@
         </div>
         <div v-if="slide.data.slideType === 'image'" class="form-control">
             <label class="label">Duration in seconds:</label>
-            <input v-model="duration" type="number" min="1" step=".1" @blur="durationUpdated">
+            <input v-model="duration" type="number" min="1" max="20" step=".1" @blur="durationUpdated">
         </div>
         <div class="form-control">
             <div class="button-bar">

@@ -29,8 +29,9 @@ Renderer.prototype.render = function () {
             var videoData = this.data.video;
             var inPoint = videoData.inPoint;
             var outPoint = videoData.outPoint;
-            this.adjustLayer(this.getLayer('video'), inPoint, outPoint, true)
+            this.adjustLayer(this.getLayer('video'), inPoint, outPoint, false)
             this.adjustLayer(this.getLayer('caption'), inPoint, outPoint, false)
+            this.adjustLayer(this.getLayer('transition'), inPoint, outPoint, true)
             this.comp.workAreaDuration = duration;
             break;
         case 'image':
