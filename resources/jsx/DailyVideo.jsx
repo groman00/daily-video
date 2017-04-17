@@ -93,8 +93,10 @@ DailyVideo.prototype = {
         var slides = this.config.slides;
         var comps = [];
         var comp;
+        var renderer;
         for(i = 0, max = slides.length; i < max; i++){
-            comp = UTILS.buildCompFromTemplate(this.videoFolder, slides[i], i);
+            renderer = new Renderer(this.videoFolder, slides[i], 'Comp_' + i);
+            comp = renderer.comp;
             comp.parentFolder = this.videoFolder;
             comps.push(comp);
         }
@@ -112,7 +114,6 @@ DailyVideo.prototype = {
         for(i = 0, max = comps.length; i < max; i++){
             slideData = slides[i].data
             frames = slideData.slideTemplate.frames;
-            // duration = slideData.slideType === 'video' ? (slideData.video.outPoint - slideData.video.inPoint) : UTILS.framesToSeconds(frames.total);
             duration = slideData.duration || UTILS.framesToSeconds(frames.total);
             layer = this.masterComp.layers.add(comps[i], duration);
             layer.moveToEnd();
