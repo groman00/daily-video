@@ -20,6 +20,7 @@
 </template>
 <script>
     import api from '../routers/api';
+    import { framesToSeconds } from '../lib/helpers';
 
     export default {
         data() {
@@ -99,16 +100,16 @@
                 const formData = new FormData();
                 const narrationTrack = settings.narrationTrack;
                 const audioTrack = settings.audioTrack;
-                const totalFrames = this.slides.reduce(function (acc, slide) {
+                const videoDuration = this.slides.reduce(function (acc, slide) {
                     frames = slide.data.slideTemplate.frames;
-                    return acc + (frames.total - frames.out);
+                    return acc + ((slide.data.duration || framesToSeconds(frames.total)) - framesToSeconds(frames.out));
                 }, 0);
                 formData.append('slideshowId', this.$route.params.id);
                 formData.append('title', this.slideshow.title);
                 formData.append('socket_id', this.$root.socket_id);
                 formData.append('fps', this.fps);
                 formData.append('slides', JSON.stringify(this.slides));
-                formData.append('videoDuration', (totalFrames / this.fps));
+                formData.append('videoDuration', videoDuration);
                 formData.append('preview', settings.isPreview);
                 formData.append('audioTrack', settings.audioTrack);
                 formData.append('audioTrackLevel', settings.audioTrackLevel);

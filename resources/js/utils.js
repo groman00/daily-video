@@ -35,7 +35,7 @@ var UTILS = {
      */
     addComp: function (project, name, duration) {
         // (name, width, height, pixelAspect, duration, frameRate)
-        return project.items.addComp(name, 1920, 1080, 1.0, duration, 29.97);
+        return project.items.addComp(name, 1920, 1080, 1.0, duration, fps);
     },
 
     /**
@@ -98,10 +98,8 @@ var UTILS = {
         var scaleHeight = ((100 * 1080) / h);
         var scale = [100, 100];
         if (h >= w) {
-            // scale = [((w * scaleHeight) / h), scaleHeight];
             scale = [scaleHeight, scaleHeight];
         } else {
-            // scale = [scaleWidth, ((h * scaleWidth) / w)];
             scale = [scaleWidth, scaleWidth];
         }
         layer.scale.setValue(scale);

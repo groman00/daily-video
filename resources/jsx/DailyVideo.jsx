@@ -112,7 +112,8 @@ DailyVideo.prototype = {
         for(i = 0, max = comps.length; i < max; i++){
             slideData = slides[i].data
             frames = slideData.slideTemplate.frames;
-            duration = slideData.slideType === 'video' ? (slideData.video.outPoint - slideData.video.inPoint) : UTILS.framesToSeconds(frames.total);
+            // duration = slideData.slideType === 'video' ? (slideData.video.outPoint - slideData.video.inPoint) : UTILS.framesToSeconds(frames.total);
+            duration = slideData.duration || UTILS.framesToSeconds(frames.total);
             layer = this.masterComp.layers.add(comps[i], duration);
             layer.moveToEnd();
             layer.startTime = currentPosition;

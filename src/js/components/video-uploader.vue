@@ -3,7 +3,7 @@
     <div class="video-uploader">
         <div v-show="hasVideo" class="form-control">
             <span class="video-helper-text text-center">( click video to play )</span>
-            <video class="video" ref="video" :src="src" style="width:100%;" @loadedmetadata="videoLoadedMetadata($event.target)" @click="toggleVideo($event.target)" @timeupdate="checkVideoTime($event.target)"></video>
+            <video preload="metadata" class="video" ref="video" :src="src" style="width:100%;" @loadedmetadata="videoLoadedMetadata($event.target)" @click="toggleVideo($event.target)" @timeupdate="checkVideoTime($event.target)"></video>
         </div>
         <div v-show="isLoading" class="form-control">
             <div class="video-placeholder">
@@ -57,15 +57,18 @@
                 this.save();
             },
             save() {
+                const inPoint = this.range[0];
+                const outPoint = this.range[1];
                 this.$nextTick(() => {
                     this.eventHub.$emit('slide-updated', Object.assign(
                         this.slide,
                         Object.assign(this.slide.data, {
+                            duration: outPoint - inPoint,
                             video: {
                                 source: this.src,
                                 duration: this.duration,
-                                inPoint: this.range[0],
-                                outPoint: this.range[1]
+                                inPoint: inPoint,
+                                outPoint: outPoint
                             }
                         })
                     ));

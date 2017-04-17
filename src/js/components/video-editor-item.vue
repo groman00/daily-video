@@ -30,6 +30,10 @@
             </textarea>
         </div>
         <div class="form-control">
+          <!-- Frames: <input v-model="totalFrames" type="number" min="1" @blur="totalFramesUpdated"> -->
+          Seconds: <input v-model="duration" type="number" min="1" step=".1" @blur="durationUpdated">
+        </div>
+        <div class="form-control">
             <div class="button-bar">
                 <button class="button button-blue" :disabled="isDisabled" @click="fetchPreview(slide)">Preview</button>
                 <button class="button button-danger" :disabled="isDisabled" @click="deleteSlide">Delete</button>
@@ -45,6 +49,7 @@
 </template>
 <script>
     import api from '../routers/api';
+    import { framesToSeconds } from '../lib/helpers';
 
     export default {
         props: ['slide', 'slideshowId', 'slideTypes', 'slideIndex', 'slideCount', 'theme'],
@@ -55,6 +60,7 @@
                 hasPreview: false,
                 isDisabled: false,
                 isSaving: false,
+                duration: 0,
                 preview: {
                     previewId: 0,
                     files: []
@@ -73,9 +79,6 @@
             this.$root.socket.off('preview-error', this.setEnabled);
         },
         watch: {
-            // slideIndex(index, oldIndex) {
-            //     console.log('slideIndex Updated', index, oldIndex);
-            // },
             slide() {
                 this.itemUpdated();
             },
@@ -86,18 +89,24 @@
             },
             'slide.data.slideTemplate'(template) {
                 this.fields = template.fields;
+                this.setDuration();
             }
         },
         methods: {
             loadSlideTemplates() {
-                const slideType = this.slide.data.slideType;
-                const slideTemplate = this.slide.data.slideTemplate;
+                const slideData = this.slide.data;
+                const slideType = slideData.slideType;
+                const slideTemplate = slideData.slideTemplate;
                 const templates = this.slideTypes[slideType].templates
                 this.templates = Object.assign({}, templates);
                 if (!slideTemplate) {
                     this.setDefaultSlideTemplate(templates);
                 }
                 this.fields = this.slide.data.slideTemplate.fields;
+                this.setDuration();
+            },
+            setDuration() {
+                this.duration = this.slide.data.duration || Math.floor(framesToSeconds(this.slide.data.slideTemplate.frames.total));
             },
             setDefaultSlideTemplate(templates) {
                 // default to first template in this type
@@ -135,6 +144,14 @@
             itemUpdated() {
                 this.hasPreview = false;
                 this.saveSlide();
+            },
+            durationUpdated() {
+                this.eventHub.$emit('slide-updated', Object.assign(
+                    this.slide,
+                    Object.assign(this.slide.data, {
+                        duration: this.duration
+                    })
+                ));
             },
             saveSlide() {
                 console.log('saving slide: ' + this.slide.id);
