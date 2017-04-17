@@ -46,4 +46,10 @@ select {
         text-align: center;
         margin-top: -1 * ($gutter-narrow / 2);
     }
+
+    .label {
+        display: block;
+        font-size: $font-size-smaller;
+        margin-bottom: $gutter-narrow / 2;
+    }
 }

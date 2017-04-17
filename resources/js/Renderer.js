@@ -16,10 +16,31 @@ Renderer.prototype.getLayer = function (name) {
 }
 
 Renderer.prototype.render = function () {
+    var duration = this.data.duration;
     var fields = this.template.fields;
     var i;
     for (i = 0; i < fields.length; i++) {
         this[fields[i]]();
+    }
+
+    // adjust template layers with transitions
+    switch (this.type) {
+        case 'video':
+            var videoData = this.data.video;
+            var inPoint = videoData.inPoint;
+            var outPoint = videoData.outPoint;
+            this.adjustLayer(this.getLayer('video'), inPoint, outPoint, true)
+            this.adjustLayer(this.getLayer('caption'), inPoint, outPoint, false)
+            this.comp.workAreaDuration = duration;
+            break;
+        case 'image':
+            this.comp.duration = duration;
+            this.adjustLayer(this.getLayer('image'), 0, duration, true);
+            this.adjustLayer(this.getLayer('caption'), 0, duration, true);
+            this.adjustLayer(this.getLayer('transition'), 0, duration, true);
+            this.comp.workAreaDuration = duration;
+            break;
+        default:
     }
 }
 
@@ -58,48 +79,36 @@ Renderer.prototype.image = function () {
     }
 }
 
-Renderer.prototype.video = function () {
-
+Renderer.prototype.adjustLayer = function(layer, inPoint, outPoint, hasTransitions) {
     var duration = this.data.duration;
-    var transitionInDuration = this.template.frames['in'] / fps;
-    var transitionOutDuration = this.template.frames['out'] / fps;
-    var videoData = this.data.video;
-    var inPoint = videoData.inPoint;
-    var outPoint = videoData.outPoint;
-    var video = project.importFile(new ImportOptions(File(this.slide.video)));
-    var videoLayer = this.getLayer('video');
-    var captionLayer = this.getLayer('caption');
-    var positionProperty = videoLayer.position;
+    var inDuration = this.template.frames['in'] / fps;
+    var outDuration = this.template.frames['out'] / fps;
+    var position = layer.position;
     var keyValues = [];
-
-    this.comp.duration = videoData.duration;
-
-    videoLayer.replaceSource(video, false);
-    videoLayer.inPoint = inPoint;
-    videoLayer.outPoint = outPoint;
-    captionLayer.inPoint = inPoint;
-    captionLayer.outPoint = outPoint;
-
-    for (var i = 0, max = positionProperty.numKeys; i < max; i++) {
-        keyValues.push(positionProperty.keyValue(i + 1));
-    };
-
-    // Remove templated keys (in reverse)
-    for (var i = 4; i > 0; i--) {
-        positionProperty.removeKey(i);
+    layer.inPoint = inPoint;
+    layer.outPoint = outPoint;
+    if (hasTransitions) {
+        // Collect templated key values
+        for (var i = 0, max = position.numKeys; i < max; i++) {
+            keyValues.push([position.keyTime(i + 1), position.keyValue(i + 1)]);
+        };
+        // Remove templated keys (in reverse)
+        for (var i = keyValues.length; i > 0; i--) {
+            position.removeKey(i);
+        }
+        if (keyValues.length) {
+            // Add adjusted keys
+            position.setValueAtTime(inPoint, keyValues[0][1]);
+            position.setValueAtTime(inPoint + inDuration, keyValues[1][1]);
+            position.setValueAtTime((inPoint + duration) - outDuration, keyValues[2][1]);
+            position.setValueAtTime(inPoint + duration, keyValues[3][1]);
+        }
     }
+    layer.startTime = layer.startTime - inPoint;
+};
 
-    // Add adjusted keys
-    positionProperty.setValueAtTime(inPoint, keyValues[0]);
-    positionProperty.setValueAtTime(inPoint + transitionInDuration, keyValues[1]);
-
-    positionProperty.setValueAtTime((inPoint + duration) - transitionOutDuration, keyValues[2]);
-    positionProperty.setValueAtTime((inPoint + duration) , keyValues[3]);
-
-    // slide layer inPoints to the beginning of the comp, since there's no way to trim the comp
-    captionLayer.startTime = captionLayer.startTime - inPoint;
-    videoLayer.startTime = videoLayer.startTime - inPoint;
-
-    // this.comp.workAreaStart = inPoint;
-    this.comp.workAreaDuration = duration;
+Renderer.prototype.video = function () {
+    var video = project.importFile(new ImportOptions(File(this.slide.video)));
+    this.getLayer('video').replaceSource(video, false);
+    this.comp.duration = this.data.video.duration;
 }

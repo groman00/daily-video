@@ -21,17 +21,17 @@
                 </option>
             </select>
         </div>
-        <div v-if="this.fields.includes('title')" class="form-control">
+        <div v-if="fields.includes('title')" class="form-control">
             <input v-model="slide.title" placeholder="Add a title" :value="slide.title" type="text" @change="itemUpdated">
         </div>
-        <div v-if="this.fields.includes('caption')" class="form-control">
+        <div v-if="fields.includes('caption')" class="form-control">
             <textarea v-model="slide.caption" placeholder="Add a caption" @change="itemUpdated">
                 {{ slide.caption }}
             </textarea>
         </div>
-        <div class="form-control">
-          <!-- Frames: <input v-model="totalFrames" type="number" min="1" @blur="totalFramesUpdated"> -->
-          Seconds: <input v-model="duration" type="number" min="1" step=".1" @blur="durationUpdated">
+        <div v-if="slide.data.slideType === 'image'" class="form-control">
+            <label class="label">Duration in seconds:</label>
+            <input v-model="duration" type="number" min="1" step=".1" @blur="durationUpdated">
         </div>
         <div class="form-control">
             <div class="button-bar">
