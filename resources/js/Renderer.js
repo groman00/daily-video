@@ -8,6 +8,7 @@ function Renderer(folder, slide, compName) {
     this.characters = this.template.characters
     this.comp = UTILS.findCompByName(UTILS.getFolderByName('Prefabs'), this.templateName).duplicate();
     this.comp.name = compName;
+    this.duration = this.data.duration || UTILS.framesToSeconds(this.template.frames.total)
     this.render();
 }
 
@@ -16,7 +17,7 @@ Renderer.prototype.getLayer = function (name) {
 }
 
 Renderer.prototype.render = function () {
-    var duration = this.data.duration;
+    var duration = this.duration;
     var fields = this.template.fields;
     var i;
     for (i = 0; i < fields.length; i++) {
@@ -81,7 +82,7 @@ Renderer.prototype.image = function () {
 }
 
 Renderer.prototype.adjustLayer = function(layer, inPoint, outPoint, hasTransitions) {
-    var duration = this.data.duration;
+    var duration = this.duration;
     var inDuration = this.template.frames['in'] / fps;
     var outDuration = this.template.frames['out'] / fps;
     var position = layer.position;
