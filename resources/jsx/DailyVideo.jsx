@@ -2,13 +2,7 @@
 #include "../js/utils.js"
 
 var project;
-var fps = 30;
 var DIR;
-var utils = {
-    framesToSeconds: function (frames) {
-        return ( frames / fps );
-    }
-}
 
 function DailyVideo(id) {
     var config, narrationTrack, audioTrack, renderQueue, renderQueueItem;
@@ -99,8 +93,10 @@ DailyVideo.prototype = {
         var slides = this.config.slides;
         var comps = [];
         var comp;
+        var renderer;
         for(i = 0, max = slides.length; i < max; i++){
-            comp = UTILS.buildCompFromTemplate(this.videoFolder, slides[i], i);
+            renderer = new Renderer(this.videoFolder, slides[i], 'Comp_' + i);
+            comp = renderer.comp;
             comp.parentFolder = this.videoFolder;
             comps.push(comp);
         }
@@ -114,14 +110,15 @@ DailyVideo.prototype = {
     addChildCompsToMaster: function (comps) {
         var slides = this.config.slides;
         var currentPosition = 0;
-        var layer, i, duration, frames;
+        var slideData, layer, i, duration, frames;
         for(i = 0, max = comps.length; i < max; i++){
-            frames = slides[i].data.slideTemplate.frames;
-            duration = utils.framesToSeconds(frames.total);
+            slideData = slides[i].data
+            frames = slideData.slideTemplate.frames;
+            duration = slideData.duration || UTILS.framesToSeconds(frames.total);
             layer = this.masterComp.layers.add(comps[i], duration);
             layer.moveToEnd();
             layer.startTime = currentPosition;
-            currentPosition = currentPosition + (duration - utils.framesToSeconds(frames.out));
+            currentPosition = currentPosition + (duration - UTILS.framesToSeconds(frames.out));
         }
     }
 };

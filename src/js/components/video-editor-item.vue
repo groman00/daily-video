@@ -6,6 +6,7 @@
             <button v-if="slideIndex < (slideCount - 1)" class="button button-small button-default pull-right" @click="moveSlide(1)">&gt;</button>
         </div>
         <image-cropper v-if="this.fields.includes('image')" :slide="slide"></image-cropper>
+        <video-uploader v-if="this.fields.includes('video')" :slide="slide"></video-uploader>
         <div class="form-control">
             <select v-model="slide.data.slideType">
                 <option v-for="(obj, type) in slideTypes" :value="type">
@@ -20,13 +21,17 @@
                 </option>
             </select>
         </div>
-        <div v-if="this.fields.includes('title')" class="form-control">
+        <div v-if="fields.includes('title')" class="form-control">
             <input v-model="slide.title" placeholder="Add a title" :value="slide.title" type="text" @change="itemUpdated">
         </div>
-        <div v-if="this.fields.includes('caption')" class="form-control">
+        <div v-if="fields.includes('caption')" class="form-control">
             <textarea v-model="slide.caption" placeholder="Add a caption" @change="itemUpdated">
                 {{ slide.caption }}
             </textarea>
+        </div>
+        <div v-if="slide.data.slideType === 'image'" class="form-control">
+            <label class="label">Duration in seconds:</label>
+            <input v-model="duration" type="number" min="1" max="20" step=".1" @blur="durationUpdated">
         </div>
         <div class="form-control">
             <div class="button-bar">
@@ -34,9 +39,6 @@
                 <button class="button button-danger" :disabled="isDisabled" @click="deleteSlide">Delete</button>
             </div>
         </div>
-        <!-- <div class="form-control">
-            <button class="button button-blue" :disabled="isDisabled" @click="saveSlide">Save Slide</button>
-        </div> -->
         <div class="form-control">
 
         </div>
@@ -47,6 +49,7 @@
 </template>
 <script>
     import api from '../routers/api';
+    import { framesToSeconds } from '../lib/helpers';
 
     export default {
         props: ['slide', 'slideshowId', 'slideTypes', 'slideIndex', 'slideCount', 'theme'],
@@ -57,6 +60,7 @@
                 hasPreview: false,
                 isDisabled: false,
                 isSaving: false,
+                duration: 0,
                 preview: {
                     previewId: 0,
                     files: []
@@ -85,18 +89,24 @@
             },
             'slide.data.slideTemplate'(template) {
                 this.fields = template.fields;
+                this.setDuration();
             }
         },
         methods: {
             loadSlideTemplates() {
-                const slideType = this.slide.data.slideType;
-                const slideTemplate = this.slide.data.slideTemplate;
+                const slideData = this.slide.data;
+                const slideType = slideData.slideType;
+                const slideTemplate = slideData.slideTemplate;
                 const templates = this.slideTypes[slideType].templates
                 this.templates = Object.assign({}, templates);
                 if (!slideTemplate) {
                     this.setDefaultSlideTemplate(templates);
                 }
                 this.fields = this.slide.data.slideTemplate.fields;
+                this.setDuration();
+            },
+            setDuration() {
+                this.duration = this.slide.data.duration || Math.floor(framesToSeconds(this.slide.data.slideTemplate.frames.total));
             },
             setDefaultSlideTemplate(templates) {
                 // default to first template in this type
@@ -135,7 +145,16 @@
                 this.hasPreview = false;
                 this.saveSlide();
             },
+            durationUpdated() {
+                this.eventHub.$emit('slide-updated', Object.assign(
+                    this.slide,
+                    Object.assign(this.slide.data, {
+                        duration: this.duration
+                    })
+                ));
+            },
             saveSlide() {
+                console.log('saving slide: ' + this.slide.id);
                 this.isSaving = true;
                 this.$http.post(api.route('slideshows-save-slide'), this.slide)
                     .then((response) => {

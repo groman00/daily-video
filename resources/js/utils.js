@@ -1,4 +1,14 @@
+var fps = 29.97;
 var UTILS = {
+
+    /**
+     * Convert number of frames to seconds
+     * @param  {int} frames
+     * @return {Number}
+     */
+    framesToSeconds: function (frames) {
+        return ( frames / fps );
+    },
 
     /**
      * Read json file and parse to object;
@@ -25,7 +35,7 @@ var UTILS = {
      */
     addComp: function (project, name, duration) {
         // (name, width, height, pixelAspect, duration, frameRate)
-        return project.items.addComp(name, 1920, 1080, 1.0, duration, 29.97);
+        return project.items.addComp(name, 1920, 1080, 1.0, duration, fps);
     },
 
     /**
@@ -88,66 +98,11 @@ var UTILS = {
         var scaleHeight = ((100 * 1080) / h);
         var scale = [100, 100];
         if (h >= w) {
-            // scale = [((w * scaleHeight) / h), scaleHeight];
             scale = [scaleHeight, scaleHeight];
         } else {
-            // scale = [scaleWidth, ((h * scaleWidth) / w)];
             scale = [scaleWidth, scaleWidth];
         }
         layer.scale.setValue(scale);
-    },
-
-    /**
-     * Build comp using variables from template and slide config
-     */
-    buildCompFromTemplate: function (videoFolder, slide, i) {
-        var slideData = slide.data;
-        var slideType = slideData.slideType;
-        var templateName = slideType + '_' + slideData.slideTemplate.name;
-        var characters = slideData.slideTemplate.characters;
-        var comp = UTILS.findCompByName(UTILS.getFolderByName('Prefabs'), templateName).duplicate();
-        var image;
-        var imageLayer;
-        comp.name = 'Comp_' + i;
-        if (!/bumper|share/.test(templateName)) {
-            caption = slide.caption.substr(0, characters.caption);
-            if (slideType === 'quotation') {
-                caption = '"' + caption + '"';
-            }
-            // comp.layer(1).sourceText.setValue(caption); // Set text layer sourceText
-            UTILS.findLayerByName(comp, 'caption').sourceText.setValue(caption);
-        }
-        if(slideType === 'image') {
-            image = project.importFile(new ImportOptions(File(slide.image)));
-            image.parentFolder = videoFolder;
-            imageLayer = UTILS.findLayerByName(comp, 'image');
-            // comp.layer(2).replaceSource(image, true); // Set image source
-            imageLayer.replaceSource(image, true); // Set image source
-
-            // GIF Handling
-            if (slide.image_type === 'gif') {
-                try {
-                    // need to resize the image beforehand.
-                    // this does not work if the comp has a scale transform already applied.
-                    this.fitLayerToComp(comp, comp.layer(2), image);
-                } catch(e) {
-                    //$.writeln(e);
-                }
-                // comp.layer(2).timeRemapEnabled = true;
-                // comp.layer(2).timeRemap.expression = "loopOut('cycle');";
-                imageLayer.timeRemapEnabled = true;
-                imageLayer.timeRemap.expression = "loopOut('cycle');";
-            }
-        }
-        if (/^joke|quotation|date/.test(templateName)) {
-            title = slide.title.substr(0, characters.title);
-            if (slideType === 'quotation') {
-                title = '- ' + title;
-            }
-            //comp.layer(2).sourceText.setValue(title); // Set text layer sourceText
-            UTILS.findLayerByName(comp, 'title').sourceText.setValue(title);
-        }
-        return comp;
     }
 
 };

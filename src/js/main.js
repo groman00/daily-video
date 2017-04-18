@@ -5,6 +5,7 @@ import VueResource from 'vue-resource';
 import router from './routers/app';
 
 // Components
+import vueSlider from 'vue-slider-component';
 import appBar from './components/app-bar.vue';
 import thumbnail from './components/thumbnail.vue';
 import loadingIndicator from './components/loading-indicator.vue';
@@ -15,15 +16,10 @@ import videoEditorItem from './components/video-editor-item.vue';
 import videoToolbar from './components/video-toolbar.vue';
 import overlay from './components/overlay.vue';
 import slideNew from './components/slide-new.vue';
-// import VueCoreImageUpload  from 'vue-core-image-upload';
 import imageCropper from './components/image-cropper.vue';
+import videoUploader from './components/video-uploader.vue';
 
 const eventHub = Vue.prototype.eventHub = new Vue(); // Create a new instance of Vue to use as an event hub.
-
-Date.prototype.getMonthText = function() {
-    var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    return months[this.getMonth()];
-}
 
 // Register Components
 Vue.component('app-bar', appBar);
@@ -36,9 +32,9 @@ Vue.component('video-editor-item', videoEditorItem);
 Vue.component('video-toolbar', videoToolbar);
 Vue.component('overlay', overlay);
 Vue.component('slide-new', slideNew);
-// Vue.component('vue-core-image-upload', VueCoreImageUpload);
 Vue.component('image-cropper', imageCropper);
-
+Vue.component('video-uploader', videoUploader);
+Vue.component('vue-slider', vueSlider);
 
 Vue.use(VueResource);
 

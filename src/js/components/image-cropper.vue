@@ -5,18 +5,18 @@
             <img class="thumbnail-image" :src="imageSrc" @click="triggerFileUpload">
         </div>
         <overlay :open="isCropping" class="image-cropper-overlay">
-            <div slot="overlay-content">
-                <div class="image-cropper-overlay-heading clearfix">
-                    <div class="button-group pull-right">
-                        <button class="button button-default" @click="cropReset">Cancel</button>
-                        <button class="button button-blue" @click="uploadImage(false)">Add without cropping</button>
-                        <button class="button button-blue" @click="uploadImage(true)">Crop and Add</button>
-                    </div>
+            <template slot="overlay-heading">
+                <div class="button-group pull-right">
+                    <button class="button button-default" @click="cropReset">Cancel</button>
+                    <button class="button button-blue" @click="uploadImage(false)">Add without cropping</button>
+                    <button class="button button-blue" @click="uploadImage(true)">Crop and Add</button>
                 </div>
-                <div :style="{ width: imageToCropWidth + 'px' }" class="image-cropper-overlay-content">
+            </template>
+            <template slot="overlay-content">
+                <div :style="{ width: imageToCropWidth + 'px' }" class="image-cropper-crop-wrapper">
                     <img ref="cropperImage" :src="imageToCrop">
                 </div>
-           </div>
+           </template>
         </overlay>
         <input ref="fileInput" style="display: none;" type="file" accept="image/*" @change="fileChanged">
     </div>
@@ -81,7 +81,6 @@
                 this.$refs.fileInput.value = '';
             },
             uploadImage(shouldCrop) {
-                // todo: Still need to support GIF
                 const file = this.$refs.fileInput.files[0];
                 const formData = new FormData();
                 const cropData = this.cropper.getData(true);

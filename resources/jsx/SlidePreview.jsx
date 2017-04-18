@@ -1,11 +1,12 @@
 #include "../js/json2.js"
+#include "../js/Renderer.js"
 #include "../js/utils.js"
 
 var project;
 var DIR;
 
 function Preview(id) {
-    var config, slide, comp;
+    var config, slide, comp, renderer;
 
     try {
         DIR.temp = DIR.temp + id;
@@ -30,7 +31,8 @@ function Preview(id) {
         this.videoFolder = this.itemCollection.addFolder('Video_' + id);
 
         slide = config.slide;
-        comp = UTILS.buildCompFromTemplate(this.videoFolder, slide, 0);
+        renderer = new Renderer(this.videoFolder, slide, 'Comp_0');
+        comp = renderer.comp;
         comp.parentFolder = this.videoFolder;
 
         renderQueue = project.renderQueue;
@@ -49,7 +51,6 @@ function Preview(id) {
             }
         });
         renderQueue.render();
-
     } catch(e) {
         // alert(e);
     }
