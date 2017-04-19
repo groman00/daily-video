@@ -3,7 +3,7 @@
     <div class="video-uploader">
         <div v-show="hasVideo" class="form-control">
             <span class="video-helper-text text-center">( click video to play )</span>
-            <video preload="metadata" class="video" ref="video" :src="src" style="width:100%;" @loadedmetadata="videoLoadedMetadata($event.target)" @click="toggleVideo($event.target)" @timeupdate="checkVideoTime($event.target)"></video>
+            <video preload="metadata" class="video" ref="video" :src="src" style="width:100%;" @loadedmetadata="videoLoadedMetadata($event.target)" @click="toggleVideo($event.target)" @timeupdate="checkVideoTime($event.target)" @error="videoError"></video>
         </div>
         <div v-show="isLoading" class="form-control">
             <div class="video-placeholder">
@@ -116,6 +116,13 @@
                 }
                 this.isLoading = false;
                 this.hasVideo = true;
+            },
+            videoError() {
+                if (this.src) {
+                    alert('Error loading video');
+                    this.resetDefaults();
+                    this.isLoading = false;
+                }
             },
             toggleVideo(video) {
                 video.currentTime = this.range[0];
