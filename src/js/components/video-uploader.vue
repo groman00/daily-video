@@ -135,7 +135,7 @@
             },
             newSrcSelected() {
                 const match = this.newSrc.match(/.*\.mp4/);
-                if (!match.length) {
+                if (!match) {
                     alert('Please enter a link for mp4 video');
                     return;
                 }
