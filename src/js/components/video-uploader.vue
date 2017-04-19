@@ -14,12 +14,30 @@
             <vue-slider v-model="range" :interval=".1" :min="0" :max="rangeMax" :formatter="timeFormat" @callback="sliderCallback" @drag-end="sliderDragEnd"></vue-slider>
         </div>
         <div class="form-control text-center">
-            <label class="button button-blue button-input" :disabled="isLoading">
-                <!-- <input ref="fileInput" type="file" accept="video/*" @change="fileChanged"> -->
-                <input ref="fileInput" :disabled="isLoading" type="file" accept="video/mp4" @change="fileChanged">
-                {{ isLoading ? 'Uploading...' : 'Upload Video' }}
-            </label>
+            <button class="button button-blue" :disabled="isLoading" @click="openVideoOverlay">Add Video</button>
         </div>
+        <overlay :open="isSelecting">
+            <template slot="overlay-content">
+                <div class="centered" style="width: 50%;">
+                    <div class="form-control text-center">
+                        <label class="button button-blue button-input" :disabled="isLoading">
+                            <input ref="fileInput" :disabled="isLoading" type="file" accept="video/mp4" @change="fileChanged">
+                            {{ isLoading ? 'Uploading...' : 'Upload File' }}
+                        </label>
+                    </div>
+                    <div class="form-control text-center">
+                        <h4>- OR -</h4>
+                    </div>
+                    <div class="form-control text-center">
+                        <input v-model="newSrc" type="text" placeholder="Enter link to mp4 video"/>
+                    </div>
+                    <div class="form-control text-center">
+                        <div class="button button-default" @click="resetOverlay">Cancel</div>
+                        <div class="button button-blue" @click="newSrcSelected">Add</div>
+                    </div>
+                </div>
+           </template>
+        </overlay>
     </div>
 </template>
 <script>
@@ -34,6 +52,8 @@
                 isLoading: false,
                 hasVideo: false,
                 src: '',
+                newSrc: '',
+                isSelecting: false,
                 range: defaultRange,
                 rangeMax: defaultRange[1],
                 duration: 0
@@ -51,7 +71,7 @@
         },
         methods: {
             timeFormat(seconds) {
-                return Math.floor(seconds / 60) + ':' + (seconds % 60);
+                return Math.floor(seconds / 60) + ':' + (Math.round(100 * (seconds % 60)) / 100);
             },
             sliderDragEnd() {
                 this.save();
@@ -77,14 +97,9 @@
             fileChanged(e) {
                 const file = e.target.files[0];
                 const formData = new FormData();
-                this.hasVideo = false;
                 this.isLoading = true;
-
-                // reset any existing values;
-                this.src = '';
-                this.duration = 0;
-                this.range = defaultRange;
-                this.rangeMax = defaultRange[1];
+                this.resetDefaults();
+                this.resetOverlay();
                 formData.append('file', file, file.name);
                 this.$http.post(api.route('slideshows-video-upload'), formData)
                     .then((response) => {
@@ -101,7 +116,6 @@
                 }
                 this.isLoading = false;
                 this.hasVideo = true;
-
             },
             toggleVideo(video) {
                 video.currentTime = this.range[0];
@@ -115,6 +129,33 @@
                 if(video.currentTime >= this.range[1]) {
                     video.pause();
                 }
+            },
+            openVideoOverlay() {
+                this.isSelecting = true;
+            },
+            newSrcSelected() {
+                const match = this.newSrc.match(/.*\.mp4/);
+                if (!match.length) {
+                    alert('Please enter a link for mp4 video');
+                    return;
+                }
+                this.isLoading = true;
+                this.resetDefaults();
+                this.$nextTick(() => {
+                    this.src = match[0];
+                    this.resetOverlay();
+                });
+            },
+            resetDefaults() {
+                this.hasVideo = false;
+                this.src = '';
+                this.duration = 0;
+                this.range = defaultRange;
+                this.rangeMax = defaultRange[1];
+            },
+            resetOverlay() {
+                this.isSelecting = false;
+                this.newSrc = '';
             }
         }
     }

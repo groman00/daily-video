@@ -39,9 +39,7 @@
                 <button class="button button-danger" :disabled="isDisabled" @click="deleteSlide">Delete</button>
             </div>
         </div>
-        <div class="form-control">
-
-        </div>
+        <div class="form-control"></div>
         <div class="form-control text-center">
             <label>{{ isSaving ? 'Saving...' : '&nbsp;' }}</label>
         </div>

@@ -91,6 +91,10 @@
     border: 0;
 }
 
+.centered {
+    @include centered();
+}
+
 @include media-tablet {
 
     .invisible-mobile{
