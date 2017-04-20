@@ -11,7 +11,7 @@
             </div>
         </div>
         <div v-show="hasVideo" class="form-control">
-            <vue-slider v-model="range" :interval=".1" :min="0" :max="rangeMax" :formatter="timeFormat" @callback="sliderCallback" @drag-end="sliderDragEnd"></vue-slider>
+            <vue-slider v-model="range" :tooltip-dir="['top', 'bottom']" :interval=".1" :min="0" :max="rangeMax" :formatter="timeFormat" @callback="sliderCallback" @drag-end="sliderDragEnd"></vue-slider>
         </div>
         <div class="form-control text-center">
             <button class="button button-blue" :disabled="isLoading" @click="openVideoOverlay">Add Video</button>
