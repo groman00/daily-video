@@ -72,7 +72,7 @@ Renderer.prototype.image = function () {
         try {
             // need to resize the image beforehand.
             // this does not work if the comp has a scale transform already applied.
-            this.fitLayerToComp(this.comp, this.comp.layer(2), image);
+            UTILS.fitLayerToComp(this.comp, layer, image);
         } catch(e) {
             //$.writeln(e);
         }
@@ -111,6 +111,8 @@ Renderer.prototype.adjustLayer = function(layer, inPoint, outPoint, hasTransitio
 
 Renderer.prototype.video = function () {
     var video = project.importFile(new ImportOptions(File(this.slide.video)));
-    this.getLayer('video').replaceSource(video, false);
+    var layer = this.getLayer('video');
+    layer.replaceSource(video, false);
     this.comp.duration = this.data.video.duration;
+    UTILS.fitLayerToComp(this.comp, layer, video);
 }
