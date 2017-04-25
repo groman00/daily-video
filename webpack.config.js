@@ -15,7 +15,7 @@ module.exports = {
     entry: src.js + '/main.js',
     output: {
         filename: 'bundle.js',
-        path: dist.js
+        path: path.join(__dirname, dist.js)
     },
     plugins: [
         new webpack.EnvironmentPlugin({
