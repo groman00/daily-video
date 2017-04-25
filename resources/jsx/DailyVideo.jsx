@@ -1,4 +1,5 @@
 #include "../js/json2.js"
+#include "../js/Renderer.js"
 #include "../js/utils.js"
 
 var project;
