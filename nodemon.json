@@ -1,4 +1,3 @@
-// Check out "forever" to restart after application crashes: https://nodemon.codeplex.com/
 {
   "verbose": true,
   "ignore": ["resources/*", "src/*", "public/*", "temp/*", "uploads/*"]
