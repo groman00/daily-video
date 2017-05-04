@@ -7,7 +7,7 @@ var UTILS = {
      * @return {Number}
      */
     framesToSeconds: function (frames) {
-        return ( frames / fps );
+        return Math.round(100 * (frames / fps)) / 100;
     },
 
     /**
