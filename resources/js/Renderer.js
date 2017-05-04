@@ -42,6 +42,12 @@ Renderer.prototype.render = function () {
             this.adjustLayer(this.getLayer('transition'), 0, duration, true);
             this.comp.workAreaDuration = duration;
             break;
+        case 'title':
+            this.comp.duration = duration;
+            this.adjustLayer(this.getLayer('caption'), 0, duration, false);
+            this.adjustLayer(this.getLayer('transition'), 0, duration, true);
+            this.comp.workAreaDuration = duration;
+            break;
         default:
     }
 }
