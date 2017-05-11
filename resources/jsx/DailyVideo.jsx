@@ -79,7 +79,9 @@ function DailyVideo(id) {
         // Immediately render comp using Adobe Media Encoder (required for mp4 exports)
         // renderQueue.queueInAME(true);
 
-    } catch(e) {}
+    } catch(e) {
+        // alert(e);
+    }
 
     project.close(CloseOptions.SAVE_CHANGES);
 }

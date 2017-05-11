@@ -79,11 +79,13 @@ Renderer.prototype.image = function () {
             // need to resize the image beforehand.
             // this does not work if the comp has a scale transform already applied.
             UTILS.fitLayerToComp(this.comp, layer, image);
+            if (layer.canSetTimeRemapEnabled) {
+                layer.timeRemapEnabled = true;
+                layer.timeRemap.expression = "loopOut('cycle');";
+            }
         } catch(e) {
             //$.writeln(e);
         }
-        layer.timeRemapEnabled = true;
-        layer.timeRemap.expression = "loopOut('cycle');";
     }
 }
 
