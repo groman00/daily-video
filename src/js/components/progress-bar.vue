@@ -53,9 +53,8 @@
         },
         methods: {
             showProgress(data) {
-                // console.log(this.progress);
                 this.label = data.message;
-                this.progress = data.progress ? data.progress : 1;
+                this.progress = isNaN(data.progress) ? 1 : data.progress;
             },
             showComplete(data) {
                 this.label = 'Render Complete';
