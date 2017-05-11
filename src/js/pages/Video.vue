@@ -26,7 +26,7 @@
         data() {
             return {
                 theme: '',
-                themes: ['AOL', 'AOLComms', 'HuffingtonPost', 'Moviefone'],
+                themes: ['AOL', 'AOLComms', 'HuffingtonPost', 'Moviefone', 'Alpha'],
                 slides: [],
                 fps: 0,
                 slideTypes: {},
