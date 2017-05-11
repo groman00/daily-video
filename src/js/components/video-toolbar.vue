@@ -110,7 +110,11 @@
                 audioTracks: [
                     'Frosted_Glass.mp3',
                     'Gentle_Marimbas.mp3',
-                    'Orange_Juicier.mp3'
+                    'Orange_Juicier.mp3',
+                    'Solar_Dance.mp3',
+                    'Together_Soon.mp3',
+                    'Under_The_Lights.mp3',
+                    'Were_The_Ones.mp3'
                 ]
             }
         },
