@@ -58,13 +58,17 @@ var UTILS = {
     /**
      * Find root folder by name
      * @param  {String} name
+     * @param  {FolderItem} parent
      * @return {FolderItem}
      */
-    getFolderByName: function (name) {
+    getFolderByName: function (name, parent) {
         var folder, i;
-        for (i = 1; i <= project.numItems; i ++) {
-            if ((project.item(i) instanceof FolderItem) && (project.item(i).name === name)) {
-                folder = project.item(i);
+        if (!parent) {
+            parent = project;
+        }
+        for (i = 1; i <= parent.numItems; i ++) {
+            if ((parent.item(i) instanceof FolderItem) && (parent.item(i).name === name)) {
+                folder = parent.item(i);
                 break;
             }
         }

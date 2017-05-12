@@ -19,7 +19,8 @@ function DailyVideo(id) {
 
         app.saveProjectOnCrash = false;
         app.onError = function (errString) {};
-        app.open(new File(DIR.resources + "aep/" + config.theme + ".aep"));
+        // app.open(new File(DIR.resources + "aep/" + config.theme + ".aep"));
+        app.open(new File(DIR.resources + "aep/MASTER.aep"));
         project = app.project;
 
         // Clone Project in temp folder
@@ -27,7 +28,7 @@ function DailyVideo(id) {
 
         // Assign references for top level items and folders
         this.itemCollection = project.items;
-        this.prefabFolder = UTILS.getFolderByName('Prefabs');
+        // this.prefabFolder = UTILS.getFolderByName('Prefabs');
         this.videoFolder = this.itemCollection.addFolder('Video_' + id);
 
         // Create master comp and insert into working folder
@@ -51,39 +52,11 @@ function DailyVideo(id) {
             this.masterComp.layer(1).audioLevels.setValue([config.audioTrackLevel, config.audioTrackLevel]);
         }
 
-        /**
-         *
-         * Should the master comp be moved to the project root so we can utilize watch folders in aerender?
-         *
-         */
-
-        /*
-        // Add master comp to render queue
-        renderQueue = project.renderQueue;
-        renderQueueItem = renderQueue.items.add(this.masterComp);
-        renderQueueItem.outputModule(1).setSettings({
-            'Output File Info': {
-                'Full Flat Path': DIR.exports + 'DailyVideo' + timestamp
-            }
-        });
-
-        // Listen to render queue events (Not working: https://forums.adobe.com/message/9318251#9318251)
-        renderQueueItem.onStatusChanged = function () {
-            $.writeln(renderQueueItem.status);
-        };
-
-        renderQueue.render();
-        */
-
-
-        // Immediately render comp using Adobe Media Encoder (required for mp4 exports)
-        // renderQueue.queueInAME(true);
-
     } catch(e) {
-        // alert(e);
+        alert(e);
     }
 
-    project.close(CloseOptions.SAVE_CHANGES);
+    // project.close(CloseOptions.SAVE_CHANGES);
 }
 
 DailyVideo.prototype = {
@@ -97,8 +70,15 @@ DailyVideo.prototype = {
         var comps = [];
         var comp;
         var renderer;
-        for(i = 0, max = slides.length; i < max; i++){
-            renderer = new Renderer(this.videoFolder, slides[i], 'Comp_' + i);
+        var folders = {
+            video: this.videoFolder,
+            comps: UTILS.getFolderByName('Comps'),
+            preComps: UTILS.getFolderByName('Precomps')
+        };
+
+        // for(i = 0, max = slides.length; i < max; i++){
+        for(i = 0; i < 1; i++){
+            renderer = new Renderer(folders, slides[i], 'Comp_' + i, this.config.theme);
             comp = renderer.comp;
             comp.parentFolder = this.videoFolder;
             comps.push(comp);
