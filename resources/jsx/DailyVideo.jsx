@@ -126,7 +126,7 @@ DailyVideo.prototype = {
     }
 };
 
-function main(jobId, dir) {
+function main(id, dir) {
     var video;
     DIR = {
         resources: dir + '/resources/',
@@ -134,5 +134,5 @@ function main(jobId, dir) {
         exports: dir + '/public/exports/',
         fixtures: dir + '/public/fixtures/'
     };
-    video = new DailyVideo(jobId);
+    video = new DailyVideo(id);
 }
