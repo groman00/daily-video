@@ -6,7 +6,7 @@ var project;
 var DIR;
 
 function DailyVideo(id) {
-    var config, narrationTrack, audioTrack, renderQueue, renderQueueItem;
+    var config, renderQueue, renderQueueItem;
 
     try {
         DIR.temp = DIR.temp + id;
@@ -37,20 +37,9 @@ function DailyVideo(id) {
 
         // Create child comps and add to master comp as layers
         this.addChildCompsToMaster(this.generateChildComps());
+        this.addNarrationTrack();
+        this.addAudioTrack();
 
-        // Add narrationTrack and create narrationTrack layer in master comp
-        narrationTrack = project.importFile(new ImportOptions(File(config.narrationTrack)));
-        narrationTrack.parentFolder = this.videoFolder;
-        this.masterComp.layers.add(narrationTrack, config.videoDuration);
-        this.masterComp.layer(1).audioLevels.setValue([config.narrationTrackLevel, config.narrationTrackLevel]);
-
-        // Add audioTrack, if configured
-        if (config.audioTrack) {
-            audioTrack = project.importFile(new ImportOptions(File(DIR.fixtures + config.audioTrack)));
-            audioTrack.parentFolder = this.videoFolder;
-            this.masterComp.layers.add(audioTrack, config.videoDuration);
-            this.masterComp.layer(1).audioLevels.setValue([config.audioTrackLevel, config.audioTrackLevel]);
-        }
 
     } catch(e) {
         alert(e.fileName + ' (Line ' + e.line + '): ' + e.message);
@@ -60,6 +49,37 @@ function DailyVideo(id) {
 }
 
 DailyVideo.prototype = {
+
+    /**/
+    addNarrationTrack: function () {
+        var config = this.config;
+        var narrationTrack = project.importFile(new ImportOptions(File(config.narrationTrack)));
+        var level = config.narrationTrackLevel;
+        narrationTrack.parentFolder = this.videoFolder;
+        layer = this.masterComp.layers.add(narrationTrack, config.videoDuration);
+        layer.audioLevels.setValue([level, level]);
+    },
+
+    /**/
+    addAudioTrack: function () {
+        var config = this.config;
+        var duration = config.videoDuration;
+        var level = config.audioTrackLevel;
+        var audioTrack;
+        var layer;
+        var audioLevels;
+
+        if (config.audioTrack) {
+            audioTrack = project.importFile(new ImportOptions(File(DIR.fixtures + config.audioTrack)));
+            audioTrack.parentFolder = this.videoFolder;
+            layer = this.masterComp.layers.add(audioTrack, duration);
+            layer.audioLevels.setValue([level, level]);
+            // Fade out audio track
+            audioLevels = layer.audioLevels;
+            audioLevels.setValueAtTime(duration - 3, [level, level]);
+            audioLevels.setValueAtTime(duration, [-50, -50]);
+        }
+    },
 
     /**
      * Create child comps by cloning prefab templates.  Insert into working folder.
