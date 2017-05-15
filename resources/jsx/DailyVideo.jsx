@@ -53,7 +53,7 @@ function DailyVideo(id) {
         }
 
     } catch(e) {
-        alert(e);
+        alert(e.fileName + ' (Line ' + e.line + '): ' + e.message);
     }
 
     // project.close(CloseOptions.SAVE_CHANGES);
@@ -76,8 +76,7 @@ DailyVideo.prototype = {
             preComps: UTILS.getFolderByName('Precomps')
         };
 
-        // for(i = 0, max = slides.length; i < max; i++){
-        for(i = 0; i < 1; i++){
+        for(i = 0, max = slides.length; i < max; i++){
             renderer = new Renderer(folders, slides[i], 'Comp_' + i, this.config.theme);
             comp = renderer.comp;
             comp.parentFolder = this.videoFolder;

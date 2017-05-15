@@ -38,7 +38,12 @@ Renderer.prototype.replacePreComp = function() {
 
 /**/
 Renderer.prototype.getLayer = function (name) {
-    return UTILS.findLayerByName(this.preComp, name);
+    // The layer with variable content can exist in the precomp OR the comp
+    var layer = UTILS.findLayerByName(this.preComp, name);
+    if (!layer) {
+        return UTILS.findLayerByName(this.comp, name);
+    }
+    return layer;
 }
 
 /**/
@@ -53,35 +58,8 @@ Renderer.prototype.render = function () {
     }
 
     this.adjustDuration(this.preComp);
-
-
-    // adjust template layers with transitions
-    switch (this.type) {
-        case 'video':
-            // var videoData = this.data.video;
-            // var inPoint = videoData.inPoint;
-            // var outPoint = videoData.outPoint;
-            // this.adjustLayer(this.getLayer('video'), inPoint, outPoint, false)
-            // this.adjustLayer(this.getLayer('caption'), inPoint, outPoint, false)
-            // this.adjustLayer(this.getLayer('transition'), inPoint, outPoint, true)
-            // this.comp.workAreaDuration = duration;
-            break;
-        case 'image':
-            // this.comp.duration = duration;
-            // this.adjustLayer(this.getLayer('image'), 0, duration, true);
-            // this.adjustLayer(this.getLayer('caption'), 0, duration, true);
-            // this.adjustLayer(this.getLayer('transition'), 0, duration, true);
-            // this.comp.workAreaDuration = duration;
-            break;
-        case 'title':
-            this.adjustTransition(0, duration);
-            // this.comp.duration = duration;
-            // this.adjustLayer(this.getLayer('caption'), 0, duration, false);
-            // this.adjustLayer(this.getLayer('transition'), 0, duration, true);
-            // this.comp.workAreaDuration = duration;
-            break;
-        default:
-    }
+    this.adjustDuration(this.comp);
+    this.adjustTransition();
 }
 
 /**/
@@ -144,17 +122,15 @@ Renderer.prototype.adjustDuration = function(comp) {
     }
 }
 
-/**
- */
-Renderer.prototype.adjustTransition = function(inPoint, outPoint) {
+/**/
+Renderer.prototype.adjustTransition = function() {
     var layer = this.transitionLayer
     var duration = this.duration;
     var inDuration = this.template.frames['in'] / fps;
     var outDuration = this.template.frames['out'] / fps;
     var position = layer.position;
     var keyValues = [];
-    layer.inPoint = inPoint;
-    layer.outPoint = outPoint;
+
     // Collect templated key values
     for (var i = 0, max = position.numKeys; i < max; i++) {
         keyValues.push([position.keyTime(i + 1), position.keyValue(i + 1)]);
@@ -165,49 +141,27 @@ Renderer.prototype.adjustTransition = function(inPoint, outPoint) {
     }
     if (keyValues.length) {
         // Add adjusted keys
-        position.setValueAtTime(inPoint, keyValues[0][1]);
-        position.setValueAtTime(inPoint + inDuration, keyValues[1][1]);
-        position.setValueAtTime((inPoint + duration) - outDuration, keyValues[2][1]);
-        position.setValueAtTime(inPoint + duration, keyValues[3][1]);
+        position.setValueAtTime(0, keyValues[0][1]);
+        position.setValueAtTime(0 + inDuration, keyValues[1][1]);
+        position.setValueAtTime(duration - outDuration, keyValues[2][1]);
+        position.setValueAtTime(duration, keyValues[3][1]);
     }
-    layer.startTime = layer.startTime - inPoint;
 }
-
-
-/**/
-/*Renderer.prototype.adjustLayer = function(layer, inPoint, outPoint, hasTransitions) {
-    var duration = this.duration;
-    var inDuration = this.template.frames['in'] / fps;
-    var outDuration = this.template.frames['out'] / fps;
-    var position = layer.position;
-    var keyValues = [];
-    layer.inPoint = inPoint;
-    layer.outPoint = outPoint;
-    if (hasTransitions) {
-        // Collect templated key values
-        for (var i = 0, max = position.numKeys; i < max; i++) {
-            keyValues.push([position.keyTime(i + 1), position.keyValue(i + 1)]);
-        };
-        // Remove templated keys (in reverse)
-        for (var i = keyValues.length; i > 0; i--) {
-            position.removeKey(i);
-        }
-        if (keyValues.length) {
-            // Add adjusted keys
-            position.setValueAtTime(inPoint, keyValues[0][1]);
-            position.setValueAtTime(inPoint + inDuration, keyValues[1][1]);
-            position.setValueAtTime((inPoint + duration) - outDuration, keyValues[2][1]);
-            position.setValueAtTime(inPoint + duration, keyValues[3][1]);
-        }
-    }
-    layer.startTime = layer.startTime - inPoint;
-};*/
 
 /**/
 Renderer.prototype.video = function () {
-    var video = project.importFile(new ImportOptions(File(this.slide.video)));
     var layer = this.getLayer('video');
+    var video = project.importFile(new ImportOptions(File(this.slide.video)));
+    var videoData = this.data.video;
+    var inPoint = videoData.inPoint;
+    var outPoint = videoData.outPoint;
+
     layer.replaceSource(video, false);
     this.comp.duration = this.data.video.duration;
     UTILS.fitLayerToComp(this.comp, layer, video);
+
+    // trim video based on in/out values
+    layer.inPoint = inPoint;
+    layer.outPoint = outPoint;
+    layer.startTime = layer.startTime - inPoint;
 }
