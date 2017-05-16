@@ -107,6 +107,23 @@ var UTILS = {
             scale = [scaleWidth, scaleWidth];
         }
         layer.scale.setValue(scale);
+    },
+
+    /**
+     * For brands with watermarks, apply the watermark comp to the final video comp.
+     * @param  {CompItem} comp
+     * @param  {String} brand
+     * @param  {Number} duration
+     */
+    applyWatermark: function (comp, brand, duration) {
+        var watermarkFolder = this.getFolderByName('watermark', this.getFolderByName('Precomps'));
+        var watermark = this.findCompByName(watermarkFolder, brand)
+        if (watermark) {
+            watermark.duration = duration;
+            watermark.layer(1).outPoint = duration;
+            comp.layers.add(watermark);
+            watermark.duration = duration;
+        }
     }
 
 };

@@ -37,6 +37,7 @@ function DailyVideo(id) {
 
         // Create child comps and add to master comp as layers
         this.addChildCompsToMaster(this.generateChildComps());
+        UTILS.applyWatermark(this.masterComp, config.theme, config.videoDuration);
         this.addNarrationTrack();
         this.addAudioTrack();
 
