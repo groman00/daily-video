@@ -61,7 +61,8 @@ Renderer.prototype.caption = function () {
 }
 
 Renderer.prototype.title = function () {
-    const title = this.slide.title.substr(0, this.characters.title);
+    const title = this.slide.title;
+    // .substr(0, this.characters.title);
     if (this.type === 'quotation') {
         title = '- ' + title;
     }
