@@ -53,7 +53,8 @@ Renderer.prototype.render = function () {
 }
 
 Renderer.prototype.caption = function () {
-    var caption = this.slide.caption.substr(0, this.characters.caption);
+    var caption = this.slide.caption;
+    //.substr(0, this.characters.caption);
     if (this.type === 'quotation') {
         caption = '"' + caption + '"';
     }
