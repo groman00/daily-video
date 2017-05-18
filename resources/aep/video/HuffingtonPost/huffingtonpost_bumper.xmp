@@ -5,11 +5,11 @@
     xmlns:xmpMM="http://ns.adobe.com/xap/1.0/mm/"
     xmlns:stEvt="http://ns.adobe.com/xap/1.0/sType/ResourceEvent#"
     xmlns:xmp="http://ns.adobe.com/xap/1.0/"
-   xmpMM:InstanceID="xmp.iid:88789716-aab6-4150-bb43-2533d7aa3c5f"
+   xmpMM:InstanceID="xmp.iid:896b8d1a-0777-423e-92e4-597b5e2d5bf5"
    xmpMM:DocumentID="xmp.did:c22b8cd5-2868-45c1-864f-3d90983f474f"
    xmpMM:OriginalDocumentID="xmp.did:c22b8cd5-2868-45c1-864f-3d90983f474f"
-   xmp:MetadataDate="2017-05-16T14:03:52-04:00"
-   xmp:ModifyDate="2017-05-16T14:03:51-04:00">
+   xmp:MetadataDate="2017-05-17T20:54:11-04:00"
+   xmp:ModifyDate="2017-05-17T20:54:10-04:00">
    <xmpMM:History>
     <rdf:Seq>
      <rdf:li
@@ -37,6 +37,21 @@
       stEvt:action="saved"
       stEvt:instanceID="xmp.iid:88789716-aab6-4150-bb43-2533d7aa3c5f"
       stEvt:when="2017-05-16T14:03:52-04:00"
+      stEvt:softwareAgent="Adobe After Effects CC 2017 (Macintosh)"
+      stEvt:changed="/metadata"/>
+     <rdf:li
+      stEvt:action="modified"
+      stEvt:parameters="unknown modifications"/>
+     <rdf:li
+      stEvt:action="saved"
+      stEvt:instanceID="xmp.iid:1e63e1e7-d8ec-4927-a544-68f11703f8df"
+      stEvt:when="2017-05-17T20:54:10-04:00"
+      stEvt:softwareAgent="Adobe After Effects CC 2017 (Macintosh)"
+      stEvt:changed="/"/>
+     <rdf:li
+      stEvt:action="saved"
+      stEvt:instanceID="xmp.iid:896b8d1a-0777-423e-92e4-597b5e2d5bf5"
+      stEvt:when="2017-05-17T20:54:11-04:00"
       stEvt:softwareAgent="Adobe After Effects CC 2017 (Macintosh)"
       stEvt:changed="/metadata"/>
     </rdf:Seq>
