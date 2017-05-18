@@ -64,7 +64,8 @@ Renderer.prototype.render = function () {
 
 /**/
 Renderer.prototype.caption = function () {
-    var caption = this.slide.caption.substr(0, this.characters.caption);
+    var caption = this.slide.caption;
+    //.substr(0, this.characters.caption);
     if (this.type === 'quotation') {
         caption = '"' + caption + '"';
     }
@@ -73,7 +74,8 @@ Renderer.prototype.caption = function () {
 
 /**/
 Renderer.prototype.title = function () {
-    var title = this.slide.title.substr(0, this.characters.title);
+    var title = this.slide.title;
+    // .substr(0, this.characters.title);
     if (this.type === 'quotation') {
         title = '- ' + title;
     }
