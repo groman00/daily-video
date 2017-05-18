@@ -45,7 +45,7 @@ function DailyVideo(id) {
         alert(e.fileName + ' (Line ' + e.line + '): ' + e.message);
     }
 
-    // project.close(CloseOptions.SAVE_CHANGES);
+    project.close(CloseOptions.SAVE_CHANGES);
 }
 
 DailyVideo.prototype = {

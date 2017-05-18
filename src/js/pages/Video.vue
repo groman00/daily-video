@@ -102,6 +102,7 @@
                 const audioTrack = settings.audioTrack;
                 const videoDuration = this.slides.reduce(function (acc, slide) {
                     frames = slide.data.slideTemplate.frames;
+                    // Is this not including the duration of the last slide's transition out?
                     return acc + ((slide.data.duration || framesToSeconds(frames.total)) - framesToSeconds(frames.out));
                 }, 0);
                 formData.append('slideshowId', this.$route.params.id);
