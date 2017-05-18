@@ -19,7 +19,6 @@ function DailyVideo(id) {
 
         app.saveProjectOnCrash = false;
         app.onError = function (errString) {};
-        // app.open(new File(DIR.resources + "aep/" + config.theme + ".aep"));
         app.open(new File(DIR.resources + "aep/MASTER.aep"));
         project = app.project;
 
