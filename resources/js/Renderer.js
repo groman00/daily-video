@@ -102,6 +102,7 @@ Renderer.prototype.image = function () {
             //$.writeln(e);
         }
     }
+    UTILS.applyPanZoom(this.comp, layer, this.duration, 'OUT');
 }
 
 /**
