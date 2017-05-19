@@ -1,3 +1,7 @@
+#include "./effects.js"
+
+var FX = new Effects();
+
 /**/
 function Renderer(folders, slide, compName, theme) {
 
@@ -102,7 +106,7 @@ Renderer.prototype.image = function () {
             //$.writeln(e);
         }
     }
-    UTILS.applyPanZoom(this.comp, layer, this.duration, 'OUT');
+    FX.applyEffect(this.data.image.effect || 0, layer, this.duration);
 }
 
 /**

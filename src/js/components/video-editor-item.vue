@@ -21,6 +21,14 @@
                 </option>
             </select>
         </div>
+        <div v-if="fields.includes('image')" class="form-control">
+            <select v-model="slide.data.image.effect" @change="itemUpdated">
+                <option disabled :value="undefined">Select Effect</option>
+                <option value="0">None</option>
+                <option value="1">Pan/Zoom IN</option>
+                <option value="2">Pan/Zoom OUT</option>
+            </select>
+        </div>
         <div v-if="fields.includes('title')" class="form-control">
             <input v-model="slide.title" placeholder="Add a title" :value="slide.title" type="text" @change="itemUpdated">
         </div>
