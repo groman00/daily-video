@@ -27,11 +27,14 @@ function Preview(id) {
 
         // Assign references for top level items and folders
         this.itemCollection = project.items;
-        this.prefabFolder = UTILS.getFolderByName('Prefabs');
         this.videoFolder = this.itemCollection.addFolder('Video_' + id);
 
         slide = config.slide;
-        renderer = new Renderer(this.videoFolder, slide, 'Comp_0');
+        renderer = new Renderer({
+            video: this.videoFolder,
+            comps: UTILS.getFolderByName('Comps'),
+            preComps: UTILS.getFolderByName('Precomps')
+        }, slide, 'Comp_0', config.theme);
         comp = renderer.comp;
         comp.parentFolder = this.videoFolder;
 
