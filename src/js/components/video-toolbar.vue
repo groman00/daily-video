@@ -114,7 +114,9 @@
                     'Solar_Dance.mp3',
                     'Together_Soon.mp3',
                     'Under_The_Lights.mp3',
-                    'Were_The_Ones.mp3'
+                    'Were_The_Ones.mp3',
+                    'Nerves.mp3'
+                    'Evenplus.mp3'
                 ]
             }
         },
