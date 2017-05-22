@@ -98,7 +98,7 @@
                         this.eventHub.$emit('slide-updated', Object.assign(
                             this.slide,
                             response.body.images,
-                            Object.assign(this.slide.data, { crop: response.body.crop, 'image_type': file.type.split('/')[1] })
+                            { data: Object.assign(this.slide.data, { crop: response.body.crop, 'image_type': file.type.split('/')[1] }) }
                         ));
                         this.cropReset();
                     });
