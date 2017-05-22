@@ -7,6 +7,9 @@
         </div>
         <image-cropper v-if="this.fields.includes('image')" :slide="slide"></image-cropper>
         <video-uploader v-if="this.fields.includes('video')" :slide="slide"></video-uploader>
+        <div v-if="fields.includes('image')" class="form-control">
+            <input v-model="slide.credit" placeholder="Image Credit" :value="slide.credit" type="text" @change="itemUpdated">
+        </div>
         <div class="form-control">
             <select v-model="slide.data.slideType">
                 <option v-for="(obj, type) in slideTypes" :value="type">

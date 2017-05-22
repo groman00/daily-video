@@ -61,13 +61,26 @@
                 this.$http.get(api.route('slideshow', { id: this.$route.params.id }))
                     .then((response) => {
                         body = response.body;
-                        this.slideshow = body.slideshow;
                         this.slideTypes = body.config.slideTypes;
                         this.fps = body.config.fps;
+                        this.slideshow = this.parseSlideshow(body.slideshow);
                         this.slides = this.slideshow.slides;
                     }, (response) => {
                         // console.log('error', response);
                     });
+            },
+            parseSlideshow(slideshow) {
+                let data;
+                let type;
+                let template;
+                // Merge template config into slide data
+                slideshow.slides.forEach((slide) => {
+                    data = slide.data;
+                    type = data.slideType;
+                    template = data.slideTemplate.name;
+                    slide.data.slideTemplate = this.slideTypes[type].templates[template];
+                });
+                return slideshow;
             },
             addSlide(slide) {
                 this.slides.push(slide);

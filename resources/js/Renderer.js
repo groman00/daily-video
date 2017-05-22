@@ -77,6 +77,11 @@ Renderer.prototype.caption = function () {
 }
 
 /**/
+Renderer.prototype.credit = function () {
+    this.getLayer('credit').sourceText.setValue(this.slide.credit);
+}
+
+/**/
 Renderer.prototype.title = function () {
     var title = this.slide.title;
     // .substr(0, this.characters.title);
