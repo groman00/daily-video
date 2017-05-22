@@ -42,8 +42,17 @@ body,
     align-items: stretch;
 }
 
+.flex-overflow {
+    overflow-y: auto;
+
+    > div {
+        max-height: 0;
+    }
+}
+
 .home-page {
     color: $white;
+    background-color: $grey-darker;
 }
 
 .video-page {

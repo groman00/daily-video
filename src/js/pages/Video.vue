@@ -1,7 +1,7 @@
 <style scoped></style>
 <template>
     <div class="video-page page-wrapper">
-        <app-bar :config="{ buttonLeft: 'back', title: slideshow.title }" @titleUpdated="titleUpdated"></app-bar>
+        <app-bar :config="{ buttonLeft: 'back', dynamicTitle: true, title: slideshow.title }" @titleUpdated="titleUpdated"></app-bar>
         <div v-if="slideshow" class="flex-columns flex-grow-1">
             <div class="panels-top flex-rows flex-grow-1">
                 <div class="panel-left">

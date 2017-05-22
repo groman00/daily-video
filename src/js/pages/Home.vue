@@ -1,17 +1,33 @@
 <style scoped></style>
 <template>
     <div class="home-page page-wrapper">
-        <app-bar></app-bar>
-        <div v-if="slideshows.length" class="grid flex-grow-1">
-            <div class="cell-m-4" v-for="slideshow in slideshows" key="slideshow.id">
-                <router-link v-if="slideshow" :to="{ name: 'video', params: { id: slideshow.id } }" exact>
-                    <thumbnail size="large" :title="slideshow.title" :image="slideshow.image_url_thumb"></thumbnail>
-                </router-link>
-            </div>
-            <div class="cell-m-4" >
-                <a href="#" @click.prevent="createNew">
-                    <thumbnail size="large" title="Create New" image="https://s3.amazonaws.com/alpha-global-origin/daily-video/add-new.png"></thumbnail>
-                </a>
+        <app-bar :config="{ title: 'Projects' }"></app-bar>
+        <div v-if="slideshows.length" class="flex-grow-1 flex-overflow">
+            <div class="grid">
+                <div class="media media-bordered cell-m-12">
+                    <div class="media-left">
+                        <a href="#" @click.prevent="createNew">
+                            <img src="https://s3.amazonaws.com/alpha-global-origin/daily-video/add-new.png" class="media-image"/>
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <a href="#" @click.prevent="createNew">
+                            Create New
+                        </a>
+                    </div>
+                </div>
+                <div class="media cell-m-6" v-for="slideshow in slideshows" key="slideshow.id">
+                    <div class="media-left">
+                        <router-link v-if="slideshow" :to="{ name: 'video', params: { id: slideshow.id } }" exact>
+                            <img :src="slideshow.image_url_thumb" class="media-image"/>
+                        </router-link>
+                    </div>
+                    <div class="media-body">
+                        <router-link v-if="slideshow" :to="{ name: 'video', params: { id: slideshow.id } }" exact>
+                            {{ slideshow.title }}
+                        </router-link>
+                    </div>
+                </div>
             </div>
         </div>
         <loading-indicator v-else></loading-indicator>

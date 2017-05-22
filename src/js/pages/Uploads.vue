@@ -1,11 +1,8 @@
 <style scoped></style>
 <template>
     <div class="uploads-page page-wrapper">
-        <app-bar :config="{ buttonLeft: 'back', title: title }" :onBackButton="goBack"></app-bar>
+        <app-bar :config="{ buttonLeft: 'back', title: 'Uploaded Videos' }" :onBackButton="goBack"></app-bar>
         <div v-if="videos.length" class="grid">
-            <div class="cell-m-12 fg-white">
-                <h1>Uploaded Videos</h1>
-            </div>
             <div class="cell-m-12" v-for="video in videos" key="video.id">
                 <div class="list-group">
                     <div class="list-group-header">

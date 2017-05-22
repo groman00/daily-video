@@ -8,7 +8,10 @@
                 </router-link>
             </div>
             <h1 class="app-bar-title form-control text-center flex-grow-1">
-                <input v-if="config.title" v-model="config.title" type="text" @blur="titleUpdated($event.target.value)">
+                <template v-if="config.title">
+                    <input v-if="config.dynamicTitle" v-model="config.title" type="text" @blur="titleUpdated($event.target.value)">
+                    <span v-else>{{ config.title }}</span>
+                </template>
             </h1>
             <div class="button-group flex-shrink-1">
                 <!-- <a class="button button-blue" href="https://s3.amazonaws.com/alpha-global-origin/daily-video/Video_Tool_Tutorial.mp4" target="_blank">View Tutorial</a> -->
@@ -27,6 +30,7 @@
                 default() {
                     return {
                         buttonLeft: null,
+                        dynamicTitle: false,
                         title: ''
                     }
                 },
