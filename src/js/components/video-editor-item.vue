@@ -154,9 +154,7 @@
             durationUpdated() {
                 this.eventHub.$emit('slide-updated', Object.assign(
                     this.slide,
-                    Object.assign(this.slide.data, {
-                        duration: this.duration
-                    })
+                    { data: Object.assign(this.slide.data, { duration: this.duration }) }
                 ));
             },
             saveSlide() {
