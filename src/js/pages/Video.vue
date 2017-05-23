@@ -75,10 +75,12 @@
                 let template;
                 // Merge template config into slide data
                 slideshow.slides.forEach((slide) => {
-                    data = slide.data;
-                    type = data.slideType;
-                    template = data.slideTemplate.name;
-                    slide.data.slideTemplate = this.slideTypes[type].templates[template];
+                    if (slide.data.slideTemplate) {
+                        data = slide.data;
+                        type = data.slideType;
+                        template = data.slideTemplate.name;
+                        slide.data.slideTemplate = this.slideTypes[type].templates[template];
+                    }
                 });
                 return slideshow;
             },
