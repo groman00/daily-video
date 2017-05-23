@@ -1,5 +1,5 @@
-require('./db');
 require('dotenv').config();
+require('./db');
 
 var express = require('express');
 var path = require('path');
@@ -10,13 +10,37 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var apiRoutes = require('./routes/api');
 var io = require('./io');
+const helpers = require('./lib/helpers');
 var app = express();
 
 /* Socket.io */
 app.io = require('socket.io')()
 app.io.on('connection', function(socket){
-    // Send socket id to client
-    socket.emit('register', socket.id);
+
+    socket
+        // Send socket id to client
+        .emit('register', socket.id)
+        // allow the client to register to a room
+        .on('room', (room) => {
+            socket.join(room);
+        })
+
+        // proxy progress and completion data back to the client
+        .on('progressProxy', (...data) => {
+            const clientSocket = io().sockets.connected[data[0].socketId];
+            data.unshift('progress');
+            helpers.emit(clientSocket, data);
+        })
+        .on('completeProxy', (...data) => {
+            const clientSocket = io().sockets.connected[data[0].socketId];
+            data.unshift('complete');
+            helpers.emit(clientSocket, data);
+        })
+        .on('preview-readyProxy', (...data) => {
+            const clientSocket = io().sockets.connected[data[0].socketId];
+            data.unshift('preview-ready');
+            helpers.emit(clientSocket, data);
+        })
 });
 io(app.io);
 
