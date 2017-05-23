@@ -46,6 +46,11 @@ function Preview(id) {
         });
         renderQueueItem.outputModule(1).applyTemplate('Preview_Sequence');
         renderQueueItem.outputModule(1).setSettings({
+            'Crop': true,
+            'Crop Top': 0,
+            'Crop Right': 0,
+            'Crop Bottom': 105, // AfterFX has a bug that swaps the bottom value with the right value...
+            'Crop Left': 105,
             'Output File Info': {
                 // 'Full Flat Path': DIR.exports + 'preview_' + config._id
                 'Base Path': DIR.exports,

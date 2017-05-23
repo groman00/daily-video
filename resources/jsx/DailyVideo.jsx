@@ -19,7 +19,7 @@ function DailyVideo(id) {
 
         app.saveProjectOnCrash = false;
         app.onError = function (errString) {};
-        app.open(new File(DIR.resources + "aep/MASTER.aep"));
+        app.open(new File(DIR.resources + "aep/MASTER_WORKING.aep"));
         project = app.project;
 
         // Clone Project in temp folder
@@ -31,21 +31,20 @@ function DailyVideo(id) {
         this.videoFolder = this.itemCollection.addFolder('Video_' + id);
 
         // Create master comp and insert into working folder
-        this.masterComp = UTILS.addComp(project, 'Master_' + id, config.videoDuration);
-        this.masterComp.parentFolder = this.videoFolder;
+        this.createMasterComp(id);
 
         // Create child comps and add to master comp as layers
         this.addChildCompsToMaster(this.generateChildComps());
-        UTILS.applyWatermark(this.masterComp, config.theme, config.videoDuration);
+        // UTILS.applyWatermark(this.masterComp, config.theme, config.videoDuration);
         this.addNarrationTrack();
         this.addAudioTrack();
 
 
     } catch(e) {
-        // alert(e.fileName + ' (Line ' + e.line + '): ' + e.message);
+        alert(e.fileName + ' (Line ' + e.line + '): ' + e.message);
     }
 
-    project.close(CloseOptions.SAVE_CHANGES);
+    // project.close(CloseOptions.SAVE_CHANGES);
 }
 
 DailyVideo.prototype = {
@@ -86,7 +85,8 @@ DailyVideo.prototype = {
      * @return {CompItem[]}
      */
     generateChildComps: function () {
-        var slides = this.config.slides;
+        var config = this.config;
+        var slides = config.slides;
         var comps = [];
         var comp;
         var renderer;
@@ -96,9 +96,10 @@ DailyVideo.prototype = {
             preComps: UTILS.getFolderByName('Precomps')
         };
 
-        for(i = 0, max = slides.length; i < max; i++){
-            renderer = new Renderer(folders, slides[i], 'Comp_' + i, this.config.theme);
-            comp = renderer.comp;
+        // for(i = 0, max = slides.length; i < max; i++){
+        for(i = 0, max = 1; i < max; i++){
+            renderer = new Renderer(folders, slides[i], 'Comp_' + i, config);
+            comp = renderer.formattedComp;
             comp.parentFolder = this.videoFolder;
             comps.push(comp);
         }
@@ -122,6 +123,19 @@ DailyVideo.prototype = {
             layer.startTime = currentPosition;
             currentPosition = currentPosition + (duration - UTILS.framesToSeconds(frames.out));
         }
+    },
+
+    /**
+     * Create a master comp and adjust comp size to selected format
+     * @param  {Number} id project id
+     */
+    createMasterComp: function (id) {
+        var dimensions = [1920, 1080];
+        if (this.config.format === 'square') {
+            dimensions[0] = 1080;
+        }
+        this.masterComp = project.items.addComp('Master_' + id, dimensions[1], dimensions[0], 1.0, this.config.videoDuration, fps);
+        this.masterComp.parentFolder = this.videoFolder;
     }
 };
 

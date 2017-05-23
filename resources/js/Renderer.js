@@ -3,24 +3,31 @@
 var FX = new Effects();
 
 /**/
-function Renderer(folders, slide, compName, theme) {
-
+function Renderer(folders, slide, compName, config) {
     this.folder = folders.video;
     this.slide = slide;
-    this.theme = theme;
+    this.theme = config.theme;
+    this.format = config.format;
+    this.isSquare = this.format === 'square';
     this.data = slide.data;
     this.type = this.data.slideType;
     this.template = this.data.slideTemplate;
     this.templateName = this.type + '_' + this.template.name;
     this.characters = this.template.characters
 
+    // Create a comp that fits the selected format (square or landscape)
+    this.formattedComp = UTILS.findCompByName(folders.comps, 'format_' + this.format).duplicate();
+    this.formattedComp.name = 'formatted' + compName;
+
+    // Create a comp for the current slide type
     this.comp = UTILS.findCompByName(folders.comps, this.templateName).duplicate();
     this.comp.name = compName;
 
-    this.preComp = UTILS.findCompByName(UTILS.getFolderByName(this.templateName, folders.preComps), theme).duplicate();
+    // Create a comp for the current theme
+    this.preComp = UTILS.findCompByName(UTILS.getFolderByName(this.templateName, folders.preComps), this.theme).duplicate();
     this.preComp.name = 'pre' + compName;
 
-    this.transitionLayer = UTILS.findLayerByName(this.comp, 'transition');
+    // this.transitionLayer = UTILS.findLayerByName(this.comp, 'transition');
     this.replacePreComp();
 
     this.duration = this.data.duration || UTILS.framesToSeconds(this.template.frames.total)
@@ -34,8 +41,8 @@ Renderer.prototype.replacePreComp = function() {
     var comp = this.comp;
     var precompTemplate = UTILS.findLayerByName(this.comp, this.theme)
     var layer = comp.layers.add(this.preComp)
-    layer.parent = this.transitionLayer;
-    layer.position.setValue([0, 0]);
+    // layer.parent = this.transitionLayer;
+    // layer.position.setValue([0, 0]);
     layer.moveBefore(precompTemplate);
     precompTemplate.remove();
 };
@@ -63,8 +70,46 @@ Renderer.prototype.render = function () {
 
     this.adjustDuration(this.preComp);
     this.adjustDuration(this.comp);
-    this.adjustTransition();
+
+    if (this.isSquare) {
+        this.formatSquare();
+    }
+
+    this.addTransition();
+    // this.adjustTransition();
 }
+
+/**
+ *
+ */
+Renderer.prototype.formatSquare = function() {
+    var comp = this.comp;
+    var layer;
+
+    // crop comp and position layers to center
+    comp.width = 1080
+    layer = comp.layers.addNull();
+    layer.position.setValue([0, 540]);
+    for(var i = 2, max = comp.numLayers; i <= max; i++){
+        comp.layer(i).parent = layer;
+    }
+    layer.position.setValue([-420, 540]);
+}
+
+Renderer.prototype.addTransition = function() {
+    var formattedComp = this.formattedComp;
+    var compLayer = formattedComp.layers.add(this.comp)
+    var transitionLayer = UTILS.findLayerByName(formattedComp, 'transition');
+    var position = transitionLayer.position;
+    var transitionDuration = UTILS.framesToSeconds(10);
+
+    var basePosition = 1080 / 2;
+    compLayer.parent = transitionLayer;
+    position.setValueAtTime(0, [basePosition + 1080, basePosition]);
+    position.setValueAtTime(transitionDuration, [basePosition, basePosition]);
+    position.setValueAtTime(this.duration - transitionDuration, [basePosition, basePosition]);
+    position.setValueAtTime(this.duration, [basePosition * -1, basePosition]);
+};
 
 /**/
 Renderer.prototype.caption = function () {
@@ -111,7 +156,7 @@ Renderer.prototype.image = function () {
             //$.writeln(e);
         }
     }
-    FX.applyEffect(this.data.image.effect || 0, layer, this.duration);
+    // FX.applyEffect(this.data.image.effect || 0, layer, this.duration);
 }
 
 /**
@@ -135,6 +180,7 @@ Renderer.prototype.adjustDuration = function(comp) {
 }
 
 /**/
+/*
 Renderer.prototype.adjustTransition = function() {
     var layer = this.transitionLayer
     var duration = this.duration;
@@ -159,6 +205,7 @@ Renderer.prototype.adjustTransition = function() {
         position.setValueAtTime(duration, keyValues[3][1]);
     }
 }
+*/
 
 /**/
 Renderer.prototype.video = function () {

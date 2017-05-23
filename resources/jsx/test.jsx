@@ -1,8 +1,28 @@
 // https://github.com/BenZed/after-effects
 
 #include "DailyVideo.jsx"
+main('592450c341d929492ff29427', '/Library/WebServer/Documents/alpha/daily-video/');
 
-main('59160493df60b82e8025261a', '/Library/WebServer/Documents/alpha/daily-video/');
+
+/*
+var comp = app.project.activeItem;
+var layers = comp.layers;
+comp.width = 1080;
+var layer = layers.addNull();
+layer.position.setValue([0, 540]);
+
+for(var i = 2, max = comp.numLayers; i <= max; i++){
+    comp.layer(i).parent = layer;
+}
+
+layer.position.setValue([-420, 540]);
+
+
+*/
+
+
+
+// $.writeln(app.project.activeItem.selectedProperties)
 
 // #include "../js/json2.js"
 // #include "../js/utils.js"

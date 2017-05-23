@@ -28,17 +28,6 @@ var UTILS = {
     },
 
     /**
-     * Create new comp and add it to top level of the project
-     * @param {String} name
-     * @param {Number} duration
-     * @return {CompItem}
-     */
-    addComp: function (project, name, duration) {
-        // (name, width, height, pixelAspect, duration, frameRate)
-        return project.items.addComp(name, 1920, 1080, 1.0, duration, fps);
-    },
-
-    /**
      * Find comp within parent by name
      * @param  {FolderItem|CompItem} parent
      * @param  {String} name
