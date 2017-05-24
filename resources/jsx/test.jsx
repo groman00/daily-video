@@ -1,7 +1,7 @@
 // https://github.com/BenZed/after-effects
 
 #include "DailyVideo.jsx"
-main('592450c341d929492ff29427', '/Library/WebServer/Documents/alpha/daily-video/');
+main('5925990e4f265d160d87a442', '/Library/WebServer/Documents/alpha/daily-video/');
 
 
 /*

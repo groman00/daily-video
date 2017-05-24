@@ -19,7 +19,7 @@ function DailyVideo(id) {
 
         app.saveProjectOnCrash = false;
         app.onError = function (errString) {};
-        app.open(new File(DIR.resources + "aep/MASTER_WORKING.aep"));
+        app.open(new File(DIR.resources + "aep/MASTER.aep"));
         project = app.project;
 
         // Clone Project in temp folder
@@ -96,8 +96,8 @@ DailyVideo.prototype = {
             preComps: UTILS.getFolderByName('Precomps')
         };
 
-        // for(i = 0, max = slides.length; i < max; i++){
-        for(i = 0, max = 1; i < max; i++){
+        for(i = 0, max = slides.length; i < max; i++){
+        // for(i = 2, max = 3; i < max; i++){
             renderer = new Renderer(folders, slides[i], 'Comp_' + i, config);
             comp = renderer.comp;
             comp.parentFolder = this.videoFolder;
