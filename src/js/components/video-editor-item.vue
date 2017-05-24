@@ -17,13 +17,13 @@
                 </option>
             </select>
         </div>
-        <div class="form-control">
+        <!-- <div class="form-control">
             <select v-model="slide.data.slideTemplate" @change="itemUpdated">
                 <option v-for="template in templates" :value="template">
                     {{ template.title }}
                 </option>
             </select>
-        </div>
+        </div> -->
         <div v-if="fields.includes('image')" class="form-control">
             <select v-model="slide.data.image.effect" @change="itemUpdated">
                 <option disabled :value="undefined">Select Effect</option>
@@ -64,7 +64,7 @@
         props: ['slide', 'slideshowId', 'slideTypes', 'slideIndex', 'slideCount', 'theme'],
         data() {
             return {
-                templates: {},
+                // templates: {},
                 fields: [],
                 hasPreview: false,
                 isDisabled: false,
@@ -77,7 +77,8 @@
             }
         },
         created() {
-            this.loadSlideTemplates();
+            // this.loadSlideTemplates();
+            this.initSlide();
             this.eventHub.$on('fetching-preview', this.setDisabled);
             this.$root.socket.on('preview-ready', this.previewReady);
             this.$root.socket.on('preview-error', this.setEnabled);
@@ -89,12 +90,13 @@
         },
         watch: {
             slide() {
-                this.itemUpdated();
+                // this.itemUpdated();
             },
             'slide.data.slideType'(type) {
-                this.templates = Object.assign({}, this.slideTypes[type].templates);
-                this.setDefaultSlideTemplate(this.templates);
-                this.itemUpdated();
+                // this.templates = Object.assign({}, this.slideTypes[type].templates);
+                // this.setDefaultSlideTemplate(this.templates);
+                // this.itemUpdated();
+                this.slide.data.slideTemplate = this.slideTypes[type];
             },
             'slide.data.slideTemplate'(template) {
                 this.fields = template.fields;
@@ -102,7 +104,29 @@
             }
         },
         methods: {
+            initSlide() {
+                const slideTypes = this.slideTypes;
+                const slideData = this.slide.data;
+                const slideType = slideData.slideType;
+                // const slideTemplate = slideData.slideTemplate;
+                let template;
+
+                if (!slideTypes.hasOwnProperty(slideData.slideType)) {
+                    this.slide.data.slideType = 'image';
+                }
+
+                // template = slideTypes[this.slide.data.slideType];
+                this.slide.data.slideTemplate = slideTypes[this.slide.data.slideType];
+
+
+                // this.fields = template.fields;
+
+
+                this.setDuration();
+
+            },
             loadSlideTemplates() {
+                /*
                 const slideData = this.slide.data;
                 const slideType = slideData.slideType;
                 const slideTemplate = slideData.slideTemplate;
@@ -113,9 +137,10 @@
                 }
                 this.fields = this.slide.data.slideTemplate.fields;
                 this.setDuration();
+                */
             },
             setDuration() {
-                this.duration = this.slide.data.duration || Math.floor(framesToSeconds(this.slide.data.slideTemplate.frames.total));
+                this.duration = this.slide.data.duration || Math.floor(framesToSeconds(this.slide.data.slideTemplate.frames));
             },
             setDefaultSlideTemplate(templates) {
                 // default to first template in this type
@@ -164,12 +189,12 @@
             },
             saveSlide() {
                 console.log('saving slide: ' + this.slide.id);
-                this.isSaving = true;
+                /*this.isSaving = true;
                 this.$http.post(api.route('slideshows-save-slide'), this.slide)
                     .then((response) => {
                         console.log(response);
                         this.isSaving = false;
-                    });
+                    });*/
             },
             deleteSlide() {
                 this.isDisabled = true;

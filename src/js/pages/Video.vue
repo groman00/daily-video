@@ -80,6 +80,7 @@
                 let type;
                 let template;
                 // Merge template config into slide data
+                return slideshow;
                 slideshow.slides.forEach((slide) => {
                     if (slide.data.slideTemplate) {
                         data = slide.data;
