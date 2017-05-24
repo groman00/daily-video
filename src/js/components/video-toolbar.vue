@@ -52,13 +52,23 @@
             <div class="section-header">export</div>
             <div class="control">
                 <div class="control-body">
-                    <div class="form-control">
-                        <label>Theme</label>
-                        <select v-model="theme" style="margin-top:6px;" @change="themeUpdated($event.target.value)">
-                            <option v-for="t in themes" :value="t">
-                                {{ t }}
-                            </option>
-                        </select>
+                    <div class="form-control clearfix">
+                        <div class="pull-left" style="width:48%;">
+                            <label>Theme</label>
+                            <select v-model="theme" style="margin-top:6px;" @change="themeUpdated($event.target.value)">
+                                <option v-for="t in themes" :value="t">
+                                    {{ t }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="pull-right" style="width:48%;">
+                            <label>Format</label>
+                            <select style="margin-top:6px;" @change="formatUpdated($event.target.value)">
+                                <option v-for="f in formats" :value="f">
+                                    {{ f }}
+                                </option>
+                            </select>
+                        </div>
                     </div>
                     <div class="form-control">
                         <button class="button button-blue button-huge" :disabled="isDisabled" @click="submit">Generate Video</button>
@@ -95,40 +105,37 @@
             themes: {
                 type: Array,
                 required: true
+            },
+            audioTracks: {
+                type: Array,
+                required: true
             }
         },
         data() {
             return {
                 theme: '',
+                // format: 'square',
+                formats: ['square', 'landscape'],
                 isPreview: true,
                 isPlayingAudio: false,
                 isDisabled: false,
                 audioTrack: '',
                 audioTrackLevel: '0',
                 narrationTrackLevel: '0',
-                narrationTrack: '',
-                audioTracks: [
-                    'Frosted_Glass.mp3',
-                    'Gentle_Marimbas.mp3',
-                    'Orange_Juicier.mp3',
-                    'Solar_Dance.mp3',
-                    'Together_Soon.mp3',
-                    'Under_The_Lights.mp3',
-                    'Were_The_Ones.mp3',
-                    'Nerves.mp3',
-                    'Evenplus.mp3'
-                ]
+                narrationTrack: ''
             }
         },
         created() {
             this.eventHub.$on('render-complete', this.renderComplete);
-            this.theme = this.themes[0];
-            this.themeUpdated(this.theme);
         },
         beforeDestroy() {
             this.eventHub.$off('render-complete', this.renderComplete);
         },
         watch: {
+            themes(themeArray) {
+                this.theme = themeArray[0];
+                this.themeUpdated(this.theme);
+            },
             audioTrack() {
                 this.isPlayingAudio = false;
             },
@@ -147,6 +154,9 @@
         methods: {
             themeUpdated(theme) {
                 this.$emit('themeUpdated', theme);
+            },
+            formatUpdated(format) {
+                this.$emit('formatUpdated', format);
             },
             submit() {
                 this.isDisabled = true;

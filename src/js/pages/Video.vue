@@ -12,7 +12,7 @@
                 </div>
             </div>
             <div class="panels-bottom flex-shrink-1">
-                <video-toolbar ref="videoToolbar" :onSubmit="renderProject" :onSave="saveProject" :slideshow="slideshow" :themes="themes" @themeUpdated="themeUpdated"></video-toolbar>
+                <video-toolbar ref="videoToolbar" :onSubmit="renderProject" :onSave="saveProject" :slideshow="slideshow" :themes="themes" :audioTracks="audioTracks" @formatUpdated="formatUpdated" @themeUpdated="themeUpdated"></video-toolbar>
             </div>
         </div>
         <loading-indicator v-else></loading-indicator>
@@ -25,8 +25,10 @@
     export default {
         data() {
             return {
+                format: 'square',
                 theme: '',
-                themes: ['AOL', 'AOLComms', 'HuffingtonPost', 'Moviefone', 'Alpha', 'Engadget'],
+                themes: [],
+                audioTracks: [],
                 slides: [],
                 fps: 0,
                 slideTypes: {},
@@ -53,7 +55,9 @@
             },
             themeUpdated(theme) {
                 this.theme = theme;
-                console.log('theme updated', theme);
+            },
+            formatUpdated(format) {
+                this.format = format;
             },
             fetchData() {
                 let body;
@@ -62,6 +66,8 @@
                     .then((response) => {
                         body = response.body;
                         this.slideTypes = body.config.slideTypes;
+                        this.themes = body.config.themes;
+                        this.audioTracks = body.config.audioTracks;
                         this.fps = body.config.fps;
                         this.slideshow = this.parseSlideshow(body.slideshow);
                         this.slides = this.slideshow.slides;
@@ -115,11 +121,17 @@
                 const formData = new FormData();
                 const narrationTrack = settings.narrationTrack;
                 const audioTrack = settings.audioTrack;
+
                 const videoDuration = this.slides.reduce(function (acc, slide) {
                     frames = slide.data.slideTemplate.frames;
+
                     // Is this not including the duration of the last slide's transition out?
-                    return acc + ((slide.data.duration || framesToSeconds(frames.total)) - framesToSeconds(frames.out));
+                    // return acc + ((slide.data.duration || framesToSeconds(frames.total)) - framesToSeconds(frames.out));
+
+                    return acc + parseFloat(slide.data.duration || framesToSeconds(frames.total))
                 }, 0);
+
+
                 formData.append('slideshowId', this.$route.params.id);
                 formData.append('title', this.slideshow.title);
                 formData.append('socket_id', this.$root.socket_id);
@@ -131,6 +143,7 @@
                 formData.append('audioTrackLevel', settings.audioTrackLevel);
                 formData.append('narrationTrackLevel', settings.narrationTrackLevel);
                 formData.append('theme', this.theme);
+                formData.append('format', this.format);
                 if (narrationTrack){
                     formData.append('narrationTrack', narrationTrack, narrationTrack.name);
                 }

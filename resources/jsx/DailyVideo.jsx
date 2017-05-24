@@ -25,6 +25,9 @@ function DailyVideo(id) {
         // Clone Project in temp folder
         project.save(new File(DIR.temp + '/aep/DailyVideo.aep'));
 
+        // Round up video duration.  The video will be cut to precise time after slides are assembled
+        this.config.videoDuration = Math.ceil(config.videoDuration)
+
         // Assign references for top level items and folders
         this.itemCollection = project.items;
         // this.prefabFolder = UTILS.getFolderByName('Prefabs');
@@ -55,14 +58,14 @@ DailyVideo.prototype = {
         var narrationTrack = project.importFile(new ImportOptions(File(config.narrationTrack)));
         var level = config.narrationTrackLevel;
         narrationTrack.parentFolder = this.videoFolder;
-        layer = this.masterComp.layers.add(narrationTrack, config.videoDuration);
+        layer = this.masterComp.layers.add(narrationTrack, this.masterComp.workAreaDuration);
         layer.audioLevels.setValue([level, level]);
     },
 
     /**/
     addAudioTrack: function () {
         var config = this.config;
-        var duration = config.videoDuration;
+        var duration = this.masterComp.workAreaDuration;
         var level = config.audioTrackLevel;
         var audioTrack;
         var layer;
@@ -111,18 +114,33 @@ DailyVideo.prototype = {
      * @param {[type]} comps [description]
      */
     addChildCompsToMaster: function (comps) {
+
         var slides = this.config.slides;
+
         var currentPosition = 0;
+
         var slideData, layer, i, duration, frames;
+
         for(i = 0, max = comps.length; i < max; i++){
+
             slideData = slides[i].data
+
             frames = slideData.slideTemplate.frames;
-            duration = slideData.duration || UTILS.framesToSeconds(frames.total);
+
+            duration = parseFloat(slideData.duration) || UTILS.framesToSeconds(frames.total);
+
             layer = this.masterComp.layers.add(comps[i], duration);
+
             layer.moveToEnd();
+
             layer.startTime = currentPosition;
-            currentPosition = currentPosition + (duration - UTILS.framesToSeconds(frames.out));
+
+            // currentPosition = currentPosition + (duration - UTILS.framesToSeconds(frames.out));
+
+            currentPosition = currentPosition + duration;
+
         }
+        this.masterComp.workAreaDuration = currentPosition;
     },
 
     /**

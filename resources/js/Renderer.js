@@ -4,19 +4,15 @@ var FX = new Effects();
 
 /**/
 function Renderer(folders, slide, compName, config) {
-
     this.folder = folders.video;
     this.slide = slide;
     this.theme = config.theme;
     this.format = config.format;
-    this.isSquare = this.format === 'square';
     this.data = slide.data;
     this.type = this.data.slideType;
     this.template = this.data.slideTemplate;
     this.templateName = this.type + '_' + this.template.name;
     this.characters = this.template.characters
-
-
 
     // Create a comp that fits the selected format (square or landscape)
     this.comp = UTILS.findCompByName(folders.comps, 'format_' + this.format).duplicate();
