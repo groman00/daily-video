@@ -30,7 +30,6 @@ function DailyVideo(id) {
 
         // Assign references for top level items and folders
         this.itemCollection = project.items;
-        // this.prefabFolder = UTILS.getFolderByName('Prefabs');
         this.videoFolder = this.itemCollection.addFolder('Video_' + id);
 
         // Create master comp and insert into working folder
@@ -114,31 +113,19 @@ DailyVideo.prototype = {
      * @param {[type]} comps [description]
      */
     addChildCompsToMaster: function (comps) {
-
         var slides = this.config.slides;
-
         var currentPosition = 0;
-
         var slideData, layer, i, duration, frames;
 
         for(i = 0, max = comps.length; i < max; i++){
-
             slideData = slides[i].data
-
             frames = slideData.slideTemplate.frames;
-
             duration = parseFloat(slideData.duration) || UTILS.framesToSeconds(frames.total);
-
             layer = this.masterComp.layers.add(comps[i], duration);
-
             layer.moveToEnd();
-
             layer.startTime = currentPosition;
-
             // currentPosition = currentPosition + (duration - UTILS.framesToSeconds(frames.out));
-
             currentPosition = currentPosition + duration;
-
         }
         this.masterComp.workAreaDuration = currentPosition;
     },
