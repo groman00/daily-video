@@ -129,7 +129,7 @@
                     // Is this not including the duration of the last slide's transition out?
                     // return acc + ((slide.data.duration || framesToSeconds(frames.total)) - framesToSeconds(frames.out));
 
-                    return acc + parseFloat(slide.data.duration || framesToSeconds(frames.total))
+                    return acc + parseFloat(slide.data.duration || framesToSeconds(frames))
                 }, 0);
 
 

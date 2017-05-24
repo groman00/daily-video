@@ -9,9 +9,11 @@ function Renderer(folders, slide, compName, config) {
     this.theme = config.theme;
     this.format = config.format;
     this.data = slide.data;
+
     this.type = this.data.slideType;
     this.template = this.data.slideTemplate;
-    this.templateName = this.type + '_' + this.template.name;
+    // this.templateName = this.type + '_' + this.template.name;
+
     this.characters = this.template.characters
 
     // Create a comp that fits the selected format (square or landscape)
@@ -23,7 +25,7 @@ function Renderer(folders, slide, compName, config) {
     // this.comp.name = compName;
 
     // Create a comp for the current theme
-    this.preComp = UTILS.findCompByName(UTILS.getFolderByName(this.templateName, folders.preComps), this.theme).duplicate();
+    this.preComp = UTILS.findCompByName(UTILS.getFolderByName(this.type, folders.preComps), this.theme).duplicate();
     this.preComp.name = 'pre' + compName;
 
 
@@ -31,7 +33,7 @@ function Renderer(folders, slide, compName, config) {
     // this.replacePreComp();
     // this.addPreComp();
 
-    this.duration = this.data.duration || UTILS.framesToSeconds(this.template.frames.total)
+    this.duration = this.data.duration || UTILS.framesToSeconds(this.template.frames)
     this.render();
 }
 
@@ -60,12 +62,7 @@ Renderer.prototype.replacePreComp = function() {
 
 /**/
 Renderer.prototype.getLayer = function (name) {
-    // The layer with variable content can exist in the precomp OR the comp
-    var layer = UTILS.findLayerByName(this.preComp, name);
-    if (!layer) {
-        return UTILS.findLayerByName(this.comp, name);
-    }
-    return layer;
+    return UTILS.findLayerByName(this.preComp, name);
 }
 
 /**/

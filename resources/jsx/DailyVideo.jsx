@@ -115,12 +115,11 @@ DailyVideo.prototype = {
     addChildCompsToMaster: function (comps) {
         var slides = this.config.slides;
         var currentPosition = 0;
-        var slideData, layer, i, duration, frames;
+        var slideData, layer, i, duration;
 
         for(i = 0, max = comps.length; i < max; i++){
             slideData = slides[i].data
-            frames = slideData.slideTemplate.frames;
-            duration = parseFloat(slideData.duration) || UTILS.framesToSeconds(frames.total);
+            duration = parseFloat(slideData.duration) || UTILS.framesToSeconds(slideData.slideTemplate.frames);
             layer = this.masterComp.layers.add(comps[i], duration);
             layer.moveToEnd();
             layer.startTime = currentPosition;
