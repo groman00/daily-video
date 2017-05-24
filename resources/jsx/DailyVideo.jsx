@@ -99,7 +99,7 @@ DailyVideo.prototype = {
         // for(i = 0, max = slides.length; i < max; i++){
         for(i = 0, max = 1; i < max; i++){
             renderer = new Renderer(folders, slides[i], 'Comp_' + i, config);
-            comp = renderer.formattedComp;
+            comp = renderer.comp;
             comp.parentFolder = this.videoFolder;
             comps.push(comp);
         }

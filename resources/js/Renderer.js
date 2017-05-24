@@ -4,6 +4,7 @@ var FX = new Effects();
 
 /**/
 function Renderer(folders, slide, compName, config) {
+
     this.folder = folders.video;
     this.slide = slide;
     this.theme = config.theme;
@@ -15,29 +16,42 @@ function Renderer(folders, slide, compName, config) {
     this.templateName = this.type + '_' + this.template.name;
     this.characters = this.template.characters
 
+
+
     // Create a comp that fits the selected format (square or landscape)
-    this.formattedComp = UTILS.findCompByName(folders.comps, 'format_' + this.format).duplicate();
-    this.formattedComp.name = 'formatted' + compName;
+    this.comp = UTILS.findCompByName(folders.comps, 'format_' + this.format).duplicate();
+    this.comp.name = compName;
 
     // Create a comp for the current slide type
-    this.comp = UTILS.findCompByName(folders.comps, this.templateName).duplicate();
-    this.comp.name = compName;
+    // this.comp = UTILS.findCompByName(folders.comps, this.templateName).duplicate();
+    // this.comp.name = compName;
 
     // Create a comp for the current theme
     this.preComp = UTILS.findCompByName(UTILS.getFolderByName(this.templateName, folders.preComps), this.theme).duplicate();
     this.preComp.name = 'pre' + compName;
 
-    // this.transitionLayer = UTILS.findLayerByName(this.comp, 'transition');
-    this.replacePreComp();
+
+    this.transitionLayer = UTILS.findLayerByName(this.comp, 'transition');
+    // this.replacePreComp();
+    // this.addPreComp();
 
     this.duration = this.data.duration || UTILS.framesToSeconds(this.template.frames.total)
     this.render();
 }
 
+
 /**
  * Replace the existing pre-comp template with the duplicate version
  */
+/*
 Renderer.prototype.replacePreComp = function() {
+
+
+     // WE CAN REMOVE ALL COMPS, add images/video/etc directly to brand precomp.
+     // The only comps needed are format comps.  Add layer to brand precomp that can be used to "center" contents inside
+     // of the comp after it's cropped.
+
+
     var comp = this.comp;
     var precompTemplate = UTILS.findLayerByName(this.comp, this.theme)
     var layer = comp.layers.add(this.preComp)
@@ -46,6 +60,7 @@ Renderer.prototype.replacePreComp = function() {
     layer.moveBefore(precompTemplate);
     precompTemplate.remove();
 };
+*/
 
 /**/
 Renderer.prototype.getLayer = function (name) {
@@ -71,21 +86,28 @@ Renderer.prototype.render = function () {
     this.adjustDuration(this.preComp);
     this.adjustDuration(this.comp);
 
-    if (this.isSquare) {
-        this.formatSquare();
+    // if (this.isSquare) {
+        // this.formatSquare();
+    // }
+
+    switch (this.format) {
+        case 'square':
+            this.formatSquare();
+            break;
+        case 'landscape':
+            break;
+        default:
     }
+    // this.applyFormat(this.config.format);
 
     this.addTransition();
     // this.adjustTransition();
 }
 
-/**
- *
- */
+/**/
 Renderer.prototype.formatSquare = function() {
-    var comp = this.comp;
+    var comp = this.preComp;
     var layer;
-
     // crop comp and position layers to center
     comp.width = 1080
     layer = comp.layers.addNull();
@@ -96,14 +118,20 @@ Renderer.prototype.formatSquare = function() {
     layer.position.setValue([-420, 540]);
 }
 
+/**/
+// Renderer.prototype.addPreComp = function() {
+//     var layer = this.comp.layers.add(this.preComp);
+//     layer.parent = this.transitionLayer;
+// }
+
+/**/
 Renderer.prototype.addTransition = function() {
-    var formattedComp = this.formattedComp;
-    var compLayer = formattedComp.layers.add(this.comp)
-    var transitionLayer = UTILS.findLayerByName(formattedComp, 'transition');
+    var compLayer = this.comp.layers.add(this.preComp)
+    var transitionLayer = this.transitionLayer;
     var position = transitionLayer.position;
     var transitionDuration = UTILS.framesToSeconds(10);
-
     var basePosition = 1080 / 2;
+
     compLayer.parent = transitionLayer;
     position.setValueAtTime(0, [basePosition + 1080, basePosition]);
     position.setValueAtTime(transitionDuration, [basePosition, basePosition]);
