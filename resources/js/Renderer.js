@@ -23,7 +23,7 @@ function Renderer(folders, slide, compName, config) {
     this.preComp.name = 'pre' + compName;
 
     this.transitionLayer = UTILS.findLayerByName(this.comp, 'transition');
-    this.duration = this.data.duration || UTILS.framesToSeconds(this.template.frames)
+    this.duration = this.data.duration = this.data.duration || UTILS.framesToSeconds(this.template.frames)
     this.render();
 }
 
@@ -58,8 +58,8 @@ Renderer.prototype.render = function () {
     // Add precomp to formatted comp, and parent it inside of the transition layer
     this.comp.layers.add(this.preComp).parent = this.transitionLayer;
 
-    // Apply programmed transition
-    transitions.apply(this);
+    // Apply programmed transition and assign transition time values
+    this.data.transition = transitions.apply(this);
 }
 
 /**/

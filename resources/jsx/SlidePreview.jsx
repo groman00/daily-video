@@ -1,6 +1,6 @@
 #include "../js/json2.js"
-#include "../js/Renderer.js"
 #include "../js/utils.js"
+#include "../js/Renderer.js"
 
 var project;
 var DIR;

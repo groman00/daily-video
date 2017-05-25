@@ -1,6 +1,6 @@
 #include "../js/json2.js"
-#include "../js/Renderer.js"
 #include "../js/utils.js"
+#include "../js/Renderer.js"
 
 var project;
 var DIR;
@@ -115,16 +115,16 @@ DailyVideo.prototype = {
     addChildCompsToMaster: function (comps) {
         var slides = this.config.slides;
         var currentPosition = 0;
-        var slideData, layer, i, duration;
+        var slideData, layer, duration, transitionOut;
 
-        for(i = 0, max = comps.length; i < max; i++){
+        for(var i = 0, max = comps.length; i < max; i++){
             slideData = slides[i].data
-            duration = parseFloat(slideData.duration) || UTILS.framesToSeconds(slideData.slideTemplate.frames);
+            duration = parseFloat(slideData.duration);
+            transitionOut = (i === max - 1) ? 0 : slideData.transition.out; // ignore transitionOut on the last slide
             layer = this.masterComp.layers.add(comps[i], duration);
             layer.moveToEnd();
             layer.startTime = currentPosition;
-            // currentPosition = currentPosition + (duration - UTILS.framesToSeconds(frames.out));
-            currentPosition = currentPosition + duration;
+            currentPosition = currentPosition + (duration - transitionOut);
         }
         this.masterComp.workAreaDuration = currentPosition;
     },
