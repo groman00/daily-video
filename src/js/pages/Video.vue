@@ -106,20 +106,13 @@
                     });
             },
             getFormData(settings) {
-                let frames;
                 const formData = new FormData();
                 const narrationTrack = settings.narrationTrack;
                 const audioTrack = settings.audioTrack;
-
+                // Accumulate all of the slide durations
                 const videoDuration = this.slides.reduce(function (acc, slide) {
-                    frames = slide.data.slideTemplate.frames;
-
-                    // Is this not including the duration of the last slide's transition out?
-                    // return acc + ((slide.data.duration || framesToSeconds(frames.total)) - framesToSeconds(frames.out));
-
-                    return acc + parseFloat(slide.data.duration || framesToSeconds(frames))
+                    return acc + parseFloat(slide.data.duration || framesToSeconds(slide.data.slideTemplate.frames))
                 }, 0);
-
 
                 formData.append('slideshowId', this.$route.params.id);
                 formData.append('title', this.slideshow.title);

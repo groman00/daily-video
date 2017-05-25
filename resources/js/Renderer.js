@@ -1,6 +1,8 @@
-#include "./effects.js"
+#include "./Effects.js"
+#include "./Transitions.js"
 
-var FX = new Effects();
+var fx = new Effects();
+var transitions = new Transitions();
 
 /**/
 function Renderer(folders, slide, compName, config) {
@@ -9,56 +11,21 @@ function Renderer(folders, slide, compName, config) {
     this.theme = config.theme;
     this.format = config.format;
     this.data = slide.data;
-
     this.type = this.data.slideType;
     this.template = this.data.slideTemplate;
-    // this.templateName = this.type + '_' + this.template.name;
-
-    this.characters = this.template.characters
 
     // Create a comp that fits the selected format (square or landscape)
     this.comp = UTILS.findCompByName(folders.comps, 'format_' + this.format).duplicate();
     this.comp.name = compName;
 
-    // Create a comp for the current slide type
-    // this.comp = UTILS.findCompByName(folders.comps, this.templateName).duplicate();
-    // this.comp.name = compName;
-
     // Create a comp for the current theme
     this.preComp = UTILS.findCompByName(UTILS.getFolderByName(this.type, folders.preComps), this.theme).duplicate();
     this.preComp.name = 'pre' + compName;
 
-
     this.transitionLayer = UTILS.findLayerByName(this.comp, 'transition');
-    // this.replacePreComp();
-    // this.addPreComp();
-
     this.duration = this.data.duration || UTILS.framesToSeconds(this.template.frames)
     this.render();
 }
-
-
-/**
- * Replace the existing pre-comp template with the duplicate version
- */
-/*
-Renderer.prototype.replacePreComp = function() {
-
-
-     // WE CAN REMOVE ALL COMPS, add images/video/etc directly to brand precomp.
-     // The only comps needed are format comps.  Add layer to brand precomp that can be used to "center" contents inside
-     // of the comp after it's cropped.
-
-
-    var comp = this.comp;
-    var precompTemplate = UTILS.findLayerByName(this.comp, this.theme)
-    var layer = comp.layers.add(this.preComp)
-    // layer.parent = this.transitionLayer;
-    // layer.position.setValue([0, 0]);
-    layer.moveBefore(precompTemplate);
-    precompTemplate.remove();
-};
-*/
 
 /**/
 Renderer.prototype.getLayer = function (name) {
@@ -79,10 +46,6 @@ Renderer.prototype.render = function () {
     this.adjustDuration(this.preComp);
     this.adjustDuration(this.comp);
 
-    // if (this.isSquare) {
-        // this.formatSquare();
-    // }
-
     switch (this.format) {
         case 'square':
             this.formatSquare();
@@ -91,10 +54,12 @@ Renderer.prototype.render = function () {
             break;
         default:
     }
-    // this.applyFormat(this.config.format);
 
-    this.addTransition();
-    // this.adjustTransition();
+    // Add precomp to formatted comp, and parent it inside of the transition layer
+    this.comp.layers.add(this.preComp).parent = this.transitionLayer;
+
+    // Apply programmed transition
+    transitions.apply(this);
 }
 
 /**/
@@ -112,30 +77,8 @@ Renderer.prototype.formatSquare = function() {
 }
 
 /**/
-// Renderer.prototype.addPreComp = function() {
-//     var layer = this.comp.layers.add(this.preComp);
-//     layer.parent = this.transitionLayer;
-// }
-
-/**/
-Renderer.prototype.addTransition = function() {
-    var compLayer = this.comp.layers.add(this.preComp)
-    var transitionLayer = this.transitionLayer;
-    var position = transitionLayer.position;
-    var transitionDuration = UTILS.framesToSeconds(10);
-    var basePosition = 1080 / 2;
-
-    compLayer.parent = transitionLayer;
-    position.setValueAtTime(0, [basePosition + 1080, basePosition]);
-    position.setValueAtTime(transitionDuration, [basePosition, basePosition]);
-    position.setValueAtTime(this.duration - transitionDuration, [basePosition, basePosition]);
-    position.setValueAtTime(this.duration, [basePosition * -1, basePosition]);
-};
-
-/**/
 Renderer.prototype.caption = function () {
     var caption = this.slide.caption;
-    //.substr(0, this.characters.caption);
     if (this.type === 'quotation') {
         caption = '"' + caption + '"';
     }
@@ -150,7 +93,6 @@ Renderer.prototype.credit = function () {
 /**/
 Renderer.prototype.title = function () {
     var title = this.slide.title;
-    // .substr(0, this.characters.title);
     if (this.type === 'quotation') {
         title = '- ' + title;
     }
@@ -177,7 +119,7 @@ Renderer.prototype.image = function () {
             //$.writeln(e);
         }
     }
-    // FX.applyEffect(this.data.image.effect || 0, layer, this.duration);
+    fx.apply(this.data.image.effect || 0, layer, this.duration);
 }
 
 /**
@@ -199,34 +141,6 @@ Renderer.prototype.adjustDuration = function(comp) {
         }
     }
 }
-
-/**/
-/*
-Renderer.prototype.adjustTransition = function() {
-    var layer = this.transitionLayer
-    var duration = this.duration;
-    var inDuration = this.template.frames['in'] / fps;
-    var outDuration = this.template.frames['out'] / fps;
-    var position = layer.position;
-    var keyValues = [];
-
-    // Collect templated key values
-    for (var i = 0, max = position.numKeys; i < max; i++) {
-        keyValues.push([position.keyTime(i + 1), position.keyValue(i + 1)]);
-    };
-    // Remove templated keys (in reverse)
-    for (var i = keyValues.length; i > 0; i--) {
-        position.removeKey(i);
-    }
-    if (keyValues.length) {
-        // Add adjusted keys
-        position.setValueAtTime(0, keyValues[0][1]);
-        position.setValueAtTime(0 + inDuration, keyValues[1][1]);
-        position.setValueAtTime(duration - outDuration, keyValues[2][1]);
-        position.setValueAtTime(duration, keyValues[3][1]);
-    }
-}
-*/
 
 /**/
 Renderer.prototype.video = function () {

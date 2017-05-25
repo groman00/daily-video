@@ -24,13 +24,6 @@
                 </option>
             </select>
         </div>
-        <!-- <div class="form-control">
-            <select v-model="slide.data.slideTemplate" @change="itemUpdated">
-                <option v-for="template in templates" :value="template">
-                    {{ template.title }}
-                </option>
-            </select>
-        </div> -->
         <div v-if="fields.includes('image')" class="form-control">
             <select v-model="slide.data.image.effect" @change="itemUpdated">
                 <option disabled :value="undefined">Select Effect</option>
