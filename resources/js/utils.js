@@ -112,7 +112,7 @@ var UTILS = {
             layer = watermark.layer(1);
             watermark.width = (config.format === 'square') ? 1080 : 1920;
             watermark.duration = duration;
-            layer.position.setValue([watermark.width - 50, 55])
+            layer.position.setValue([watermark.width - 50, 50])
             layer.outPoint = duration;
             comp.layers.add(watermark);
             watermark.duration = duration;
