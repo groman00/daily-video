@@ -37,7 +37,7 @@ function DailyVideo(id) {
 
         // Create child comps and add to master comp as layers
         this.addChildCompsToMaster(this.generateChildComps());
-        // UTILS.applyWatermark(this.masterComp, config.theme, config.videoDuration);
+        UTILS.applyWatermark(this.masterComp, config);
         this.addNarrationTrack();
         this.addAudioTrack();
 
@@ -138,7 +138,7 @@ DailyVideo.prototype = {
         if (this.config.format === 'square') {
             dimensions[0] = 1080;
         }
-        this.masterComp = project.items.addComp('Master_' + id, dimensions[1], dimensions[0], 1.0, this.config.videoDuration, fps);
+        this.masterComp = project.items.addComp('Master_' + id, dimensions[0], dimensions[1], 1.0, this.config.videoDuration, fps);
         this.masterComp.parentFolder = this.videoFolder;
     }
 };

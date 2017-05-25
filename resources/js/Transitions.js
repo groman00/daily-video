@@ -36,7 +36,10 @@ Transitions.prototype.apply = function (renderer) {
             'position': renderer.transitionLayer.position,
             'duration': renderer.duration,
             'width': renderer.comp.width,
-            'anchorPoint': (renderer.comp.width / 2)
+            'anchorPoint': {
+                x: (renderer.comp.width / 2),
+                y: 540
+            }
         }
     ]))
 
@@ -55,8 +58,8 @@ Transitions.prototype.noop = function () {
  */
 Transitions.prototype.slideIn = function(data) {
     var anchorPoint = data.anchorPoint;
-    data.position.setValueAtTime(0, [anchorPoint + data.width, anchorPoint]);
-    data.position.setValueAtTime(this.td, [anchorPoint, anchorPoint]);
+    data.position.setValueAtTime(0, [anchorPoint.x + data.width, anchorPoint.y]);
+    data.position.setValueAtTime(this.td, [anchorPoint.x, anchorPoint.y]);
     return [this.td, 0];
 }
 
@@ -67,8 +70,8 @@ Transitions.prototype.slideIn = function(data) {
 Transitions.prototype.slideOut = function(data) {
     var anchorPoint = data.anchorPoint;
     var slideDuration = data.duration;
-    data.position.setValueAtTime(slideDuration - this.td, [anchorPoint, anchorPoint]);
-    data.position.setValueAtTime(slideDuration, [-1 * anchorPoint, anchorPoint]);
+    data.position.setValueAtTime(slideDuration - this.td, [anchorPoint.x, anchorPoint.y]);
+    data.position.setValueAtTime(slideDuration, [-1 * anchorPoint.x, anchorPoint.y]);
     return [0, this.td];
 }
 

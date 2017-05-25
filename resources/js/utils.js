@@ -99,17 +99,21 @@ var UTILS = {
     },
 
     /**
-     * For brands with watermarks, apply the watermark comp to the final video comp.
+     * For themes with watermarks, apply the watermark comp to the final video comp.
      * @param  {CompItem} comp
-     * @param  {String} brand
-     * @param  {Number} duration
+     * @param  {Object} config
      */
-    applyWatermark: function (comp, brand, duration) {
+    applyWatermark: function (comp, config) {
+        var duration = comp.duration;
         var watermarkFolder = this.getFolderByName('watermark', this.getFolderByName('Precomps'));
-        var watermark = this.findCompByName(watermarkFolder, brand)
+        var watermark = this.findCompByName(watermarkFolder, config.theme)
+        var layer;
         if (watermark) {
+            layer = watermark.layer(1);
+            watermark.width = (config.format === 'square') ? 1080 : 1920;
             watermark.duration = duration;
-            watermark.layer(1).outPoint = duration;
+            layer.position.setValue([watermark.width - 50, 55])
+            layer.outPoint = duration;
             comp.layers.add(watermark);
             watermark.duration = duration;
         }

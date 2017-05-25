@@ -51,6 +51,7 @@ Renderer.prototype.render = function () {
             this.formatSquare();
             break;
         case 'landscape':
+            // do nothing
             break;
         default:
     }
