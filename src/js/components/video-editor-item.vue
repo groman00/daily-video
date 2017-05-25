@@ -17,6 +17,13 @@
                 </option>
             </select>
         </div>
+        <div class="form-control">
+            <select v-model="slide.data.transition">
+                <option v-for="(transition, id) in transitions" :value="id">
+                    {{ transition }}
+                </option>
+            </select>
+        </div>
         <!-- <div class="form-control">
             <select v-model="slide.data.slideTemplate" @change="itemUpdated">
                 <option v-for="template in templates" :value="template">
@@ -27,9 +34,9 @@
         <div v-if="fields.includes('image')" class="form-control">
             <select v-model="slide.data.image.effect" @change="itemUpdated">
                 <option disabled :value="undefined">Select Effect</option>
-                <option value="0">None</option>
-                <option value="1">Pan/Zoom IN</option>
-                <option value="2">Pan/Zoom OUT</option>
+                <option v-for="(effect, id) in effects" :value="id">
+                    {{ effect }}
+                </option>
             </select>
         </div>
         <div v-if="fields.includes('title')" class="form-control">
@@ -61,7 +68,16 @@
     import { framesToSeconds } from '../lib/helpers';
 
     export default {
-        props: ['slide', 'slideshowId', 'slideTypes', 'slideIndex', 'slideCount', 'theme'],
+        props: [
+            'slide',
+            'slideshowId',
+            'slideTypes',
+            'slideIndex',
+            'slideCount',
+            'theme',
+            'effects',
+            'transitions'
+        ],
         data() {
             return {
                 // templates: {},

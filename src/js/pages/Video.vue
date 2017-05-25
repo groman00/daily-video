@@ -5,14 +5,14 @@
         <div v-if="slideshow" class="flex-columns flex-grow-1">
             <div class="panels-top flex-rows flex-grow-1">
                 <div class="panel-left">
-                    <video-editor :slideshowId="slideshow.id" :slides="slides" :slideTypes="slideTypes" :theme="theme"></video-editor>
+                    <video-editor :slideshowId="slideshow.id" :slides="slides" :config="config" :theme="theme"></video-editor>
                 </div>
                 <div class="panel-right">
                     <slide-preview></slide-preview>
                 </div>
             </div>
             <div class="panels-bottom flex-shrink-1">
-                <video-toolbar ref="videoToolbar" :onSubmit="renderProject" :onSave="saveProject" :slideshow="slideshow" :themes="themes" :audioTracks="audioTracks" @formatUpdated="formatUpdated" @themeUpdated="themeUpdated"></video-toolbar>
+                <video-toolbar ref="videoToolbar" :onSubmit="renderProject" :onSave="saveProject" :slideshow="slideshow" :themes="config.themes" :audioTracks="config.audioTracks" @formatUpdated="formatUpdated" @themeUpdated="themeUpdated"></video-toolbar>
             </div>
         </div>
         <loading-indicator v-else></loading-indicator>
@@ -25,13 +25,10 @@
     export default {
         data() {
             return {
+                config: {},
                 format: 'square',
                 theme: '',
-                themes: [],
-                audioTracks: [],
                 slides: [],
-                fps: 0,
-                slideTypes: {},
                 slideshow: {}
             }
         },
@@ -54,6 +51,7 @@
                 this.saveSlideshow();
             },
             themeUpdated(theme) {
+                // Should we set a cookie or localStorage for this?
                 this.theme = theme;
             },
             formatUpdated(format) {
@@ -65,10 +63,7 @@
                 this.$http.get(api.route('slideshow', { id: this.$route.params.id }))
                     .then((response) => {
                         body = response.body;
-                        this.slideTypes = body.config.slideTypes;
-                        this.themes = body.config.themes;
-                        this.audioTracks = body.config.audioTracks;
-                        this.fps = body.config.fps;
+                        this.config = body.config;
                         this.slideshow = this.parseSlideshow(body.slideshow);
                         this.slides = this.slideshow.slides;
                     }, (response) => {
@@ -76,19 +71,12 @@
                     });
             },
             parseSlideshow(slideshow) {
-                let data;
-                let type;
-                let template;
                 // Merge template config into slide data
-                return slideshow;
-                slideshow.slides.forEach((slide) => {
-                    if (slide.data.slideTemplate) {
-                        data = slide.data;
-                        type = data.slideType;
-                        template = data.slideTemplate.name;
-                        slide.data.slideTemplate = this.slideTypes[type].templates[template];
-                    }
-                });
+                // slideshow.slides.forEach((slide) => {
+                //     if (slide.data.slideTemplate) {
+                //         slide.data.slideTemplate = this.config.slideTypes[slide.data.slideType];
+                //     }
+                // });
                 return slideshow;
             },
             addSlide(slide) {
@@ -136,7 +124,7 @@
                 formData.append('slideshowId', this.$route.params.id);
                 formData.append('title', this.slideshow.title);
                 formData.append('socket_id', this.$root.socket_id);
-                formData.append('fps', this.fps);
+                formData.append('fps', this.config.fps);
                 formData.append('slides', JSON.stringify(this.slides));
                 formData.append('videoDuration', videoDuration);
                 formData.append('preview', settings.isPreview);

@@ -3,7 +3,7 @@
     <div class="video-editor">
         <div class="grid grid-small">
             <div class="cell-m-4" v-for="(slide, index) in slides" :key="slide.id">
-                <video-editor-item :slideshowId="slideshowId" :slide="slide" :slideTypes="slideTypes" :slideIndex="index" :slideCount="slides.length" :theme="theme"></video-editor-item>
+                <video-editor-item :slideshowId="slideshowId" :slide="slide" :slideTypes="config.slideTypes" :effects="config.effects" :transitions="config.transitions" :slideIndex="index" :slideCount="slides.length" :theme="theme"></video-editor-item>
             </div>
             <slide-new :slideshowId="slideshowId"></slide-new>
         </div>
@@ -11,6 +11,6 @@
 </template>
 <script>
     export default {
-        props: ['slideshowId', 'slides', 'slideTypes', 'theme']
+        props: ['slideshowId', 'slides', 'config', 'theme']
     }
 </script>
