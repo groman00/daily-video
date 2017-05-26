@@ -77,6 +77,26 @@ Renderer.prototype.formatSquare = function() {
     layer.position.setValue([-420, 540]);
 }
 
+/**
+ * Adjust all layer durations to match slide duration, unless the layer name starts with an underscore
+ * @param  {[type]} comp [description]
+ * @return {[type]}      [description]
+ */
+Renderer.prototype.adjustDuration = function(comp) {
+    var duration = this.duration;
+    var count = comp.numLayers;
+    var i;
+    var layer;
+    comp.duration = duration;
+    for (i = 1; i <= count; i ++) {
+        layer = comp.layer(i);
+        if (layer.name.charAt(0) !== '_') {
+            layer.inPoint = 0;
+            layer.outPoint = duration;
+        }
+    }
+}
+
 /**/
 Renderer.prototype.caption = function () {
     var caption = this.slide.caption;
@@ -123,26 +143,6 @@ Renderer.prototype.image = function () {
     fx.apply(this.data.image.effect || 0, layer, this.duration);
 }
 
-/**
- * Adjust all layer durations to match slide duration, unless the layer name starts with an underscore
- * @param  {[type]} comp [description]
- * @return {[type]}      [description]
- */
-Renderer.prototype.adjustDuration = function(comp) {
-    var duration = this.duration;
-    var count = comp.numLayers;
-    var i;
-    var layer;
-    comp.duration = duration;
-    for (i = 1; i <= count; i ++) {
-        layer = comp.layer(i);
-        if (layer.name.charAt(0) !== '_') {
-            layer.inPoint = 0;
-            layer.outPoint = duration;
-        }
-    }
-}
-
 /**/
 Renderer.prototype.video = function () {
     var layer = this.getLayer('video');
@@ -160,3 +160,9 @@ Renderer.prototype.video = function () {
     layer.outPoint = outPoint;
     layer.startTime = layer.startTime - inPoint;
 }
+
+/**/
+Renderer.prototype.bumper = function () {
+    this.getLayer('bumper_' + this.data.bumper).enabled = true;
+}
+

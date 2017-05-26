@@ -32,6 +32,13 @@
                 </option>
             </select>
         </div>
+        <div v-if="fields.includes('bumper')" class="form-control">
+            <select v-model="slide.data.bumper">
+                <option v-for="bumper in bumpers" :value="bumper">
+                    {{ 'Bumper ' + (bumper + 1) }}
+                </option>
+            </select>
+        </div>
         <div v-if="fields.includes('title')" class="form-control">
             <input v-model="slide.title" placeholder="Add a title" :value="slide.title" type="text" @change="itemUpdated">
         </div>
@@ -70,7 +77,8 @@
             'theme',
             'effects',
             'transitions',
-            'format'
+            'format',
+            'bumpers'
         ],
         data() {
             return {

@@ -56,8 +56,8 @@
                         <div class="pull-left" style="width:48%;">
                             <label>Theme</label>
                             <select v-model="theme" style="margin-top:6px;" @change="themeUpdated($event.target.value)">
-                                <option v-for="t in themes" :value="t">
-                                    {{ t }}
+                                <option v-for="(val, key) in themes" :value="key">
+                                    {{ key }}
                                 </option>
                             </select>
                         </div>
@@ -132,8 +132,8 @@
             this.eventHub.$off('render-complete', this.renderComplete);
         },
         watch: {
-            themes(themeArray) {
-                this.theme = themeArray[0];
+            themes(themesObj) {
+                this.theme = Object.keys(themesObj)[0];
                 this.themeUpdated(this.theme);
             },
             audioTrack() {
