@@ -95,7 +95,6 @@
             }
         },
         created() {
-            // this.loadSlideTemplates();
             this.initSlide();
             this.eventHub.$on('fetching-preview', this.setDisabled);
             this.$root.socket.on('preview-ready', this.previewReady);
@@ -108,12 +107,9 @@
         },
         watch: {
             slide() {
-                // this.itemUpdated();
+                this.itemUpdated();
             },
             'slide.data.slideType'(type) {
-                // this.templates = Object.assign({}, this.slideTypes[type].templates);
-                // this.setDefaultSlideTemplate(this.templates);
-                // this.itemUpdated();
                 this.slide.data.slideTemplate = this.slideTypes[type];
             },
             'slide.data.slideTemplate'(template) {
@@ -132,43 +128,16 @@
                 const slideTypes = this.slideTypes;
                 const slideData = this.slide.data;
                 const slideType = slideData.slideType;
-                // const slideTemplate = slideData.slideTemplate;
                 let template;
-
                 if (!slideTypes.hasOwnProperty(slideData.slideType)) {
                     this.slide.data.slideType = 'image';
                 }
-
-                // template = slideTypes[this.slide.data.slideType];
                 this.slide.data.slideTemplate = slideTypes[this.slide.data.slideType];
-
-
-                // this.fields = template.fields;
-
-
                 this.setDuration();
 
-            },
-            loadSlideTemplates() {
-                /*
-                const slideData = this.slide.data;
-                const slideType = slideData.slideType;
-                const slideTemplate = slideData.slideTemplate;
-                const templates = this.slideTypes[slideType].templates
-                this.templates = Object.assign({}, templates);
-                if (!slideTemplate) {
-                    this.setDefaultSlideTemplate(templates);
-                }
-                this.fields = this.slide.data.slideTemplate.fields;
-                this.setDuration();
-                */
             },
             setDuration() {
                 this.duration = this.slide.data.duration || Math.floor(framesToSeconds(this.slide.data.slideTemplate.frames));
-            },
-            setDefaultSlideTemplate(templates) {
-                // default to first template in this type
-                this.slide.data.slideTemplate = templates[Object.keys(templates)[0]];
             },
             fetchPreview(slide) {
                 if (this.hasPreview) {
@@ -216,12 +185,12 @@
             },
             saveSlide() {
                 console.log('saving slide: ' + this.slide.id);
-                /*this.isSaving = true;
+                this.isSaving = true;
                 this.$http.post(api.route('slideshows-save-slide'), this.slide)
                     .then((response) => {
                         console.log(response);
                         this.isSaving = false;
-                    });*/
+                    });
             },
             deleteSlide() {
                 this.isDisabled = true;
