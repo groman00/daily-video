@@ -33,7 +33,7 @@
             </select>
         </div>
         <div v-if="fields.includes('bumper')" class="form-control">
-            <select v-model="slide.data.bumper">
+            <select v-model="slide.data.bumper" @change="itemUpdated">
                 <option v-for="bumper in bumpers" :value="bumper">
                     {{ 'Bumper ' + (bumper + 1) }}
                 </option>

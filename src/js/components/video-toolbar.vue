@@ -114,7 +114,6 @@
         data() {
             return {
                 theme: '',
-                // format: 'square',
                 formats: ['square', 'landscape'],
                 isPreview: true,
                 isPlayingAudio: false,
