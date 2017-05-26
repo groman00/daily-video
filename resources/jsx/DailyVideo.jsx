@@ -40,12 +40,9 @@ function DailyVideo(id) {
         UTILS.applyWatermark(this.masterComp, config);
         this.addNarrationTrack();
         this.addAudioTrack();
-
-
     } catch(e) {
         // alert(e.fileName + ' (Line ' + e.line + '): ' + e.message);
     }
-
     project.close(CloseOptions.SAVE_CHANGES);
 }
 
@@ -126,7 +123,7 @@ DailyVideo.prototype = {
             layer.startTime = currentPosition;
             currentPosition = currentPosition + (duration - transitionOut);
         }
-        this.masterComp.workAreaDuration = currentPosition;
+        this.masterComp.workAreaDuration = currentPosition + UTILS.framesToSeconds(1); // AE seems to chop a frame off.  Add it back.
     },
 
     /**
