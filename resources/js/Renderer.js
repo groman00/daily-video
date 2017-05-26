@@ -91,7 +91,7 @@ Renderer.prototype.adjustDuration = function(comp) {
     for (i = 1; i <= count; i ++) {
         layer = comp.layer(i);
         if (layer.name.charAt(0) !== '_') {
-            layer.inPoint = 0;
+            // layer.inPoint = 0;
             layer.outPoint = duration;
         }
     }
