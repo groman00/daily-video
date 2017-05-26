@@ -11,14 +11,14 @@
             <input v-model="slide.credit" placeholder="Image Credit" :value="slide.credit" type="text" @change="itemUpdated">
         </div>
         <div class="form-control">
-            <select v-model="slide.data.slideType">
+            <select v-model="slide.data.slideType" @change="itemUpdated">
                 <option v-for="(obj, type) in slideTypes" :value="type">
                     {{ type }}
                 </option>
             </select>
         </div>
         <div class="form-control">
-            <select v-model="slide.data.transition">
+            <select v-model="slide.data.transition" @change="itemUpdated">
                 <option v-for="(transition, id) in transitions" :value="id">
                     {{ transition }}
                 </option>
@@ -69,7 +69,8 @@
             'slideCount',
             'theme',
             'effects',
-            'transitions'
+            'transitions',
+            'format'
         ],
         data() {
             return {
@@ -110,6 +111,12 @@
             'slide.data.slideTemplate'(template) {
                 this.fields = template.fields;
                 this.setDuration();
+            },
+            format() {
+                this.itemUpdated(false);
+            },
+            theme() {
+                this.itemUpdated(false);
             }
         },
         methods: {
@@ -164,6 +171,7 @@
                 this.$http.post(api.route('preview-slide'), {
                     'theme': this.theme,
                     'slide': slide,
+                    'format': this.format,
                     'socket_id': this.$root.socket_id
                 })
                 .then((response) => {
@@ -184,9 +192,11 @@
             setDisabled() {
                 this.isDisabled = true;
             },
-            itemUpdated() {
+            itemUpdated(save = true) {
                 this.hasPreview = false;
-                this.saveSlide();
+                if (save) {
+                    this.saveSlide();
+                }
             },
             durationUpdated() {
                 this.eventHub.$emit('slide-updated', Object.assign(

@@ -5,10 +5,10 @@
         <div v-if="slideshow" class="flex-columns flex-grow-1">
             <div class="panels-top flex-rows flex-grow-1">
                 <div class="panel-left">
-                    <video-editor :slideshowId="slideshow.id" :slides="slides" :config="config" :theme="theme"></video-editor>
+                    <video-editor :slideshowId="slideshow.id" :slides="slides" :config="config" :theme="theme" :format="format"></video-editor>
                 </div>
                 <div class="panel-right">
-                    <slide-preview></slide-preview>
+                    <slide-preview :format="format"></slide-preview>
                 </div>
             </div>
             <div class="panels-bottom flex-shrink-1">

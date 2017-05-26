@@ -12,6 +12,7 @@
     var win = window;
 
     export default {
+        props: ['format'],
         data() {
             return {
                 loading: false,
@@ -92,7 +93,7 @@
                 const canvas = this.$refs.previewCanvas;
                 const width = this.$refs.preview.offsetWidth;
                 canvas.width = width;
-                canvas.height = width * this.aspectRatio;
+                canvas.height = this.format === 'square' ? width : (width * this.aspectRatio);
             },
             getCanvasRect() {
                 return [0, 0, this.$refs.previewCanvas.width, this.$refs.previewCanvas.height]
