@@ -20,9 +20,10 @@ app.io.on('connection', function(socket){
     socket
         // Send socket id to client
         .emit('register', socket.id)
-        // allow the client to register to a room
-        .on('room', (room) => {
-            socket.join(room);
+
+        // store the render server socket id
+        .on('registerRenderServer', (socketId) => {
+            helpers.setRenderSocketId(socketId);
         })
 
         // proxy progress and completion data back to the client
