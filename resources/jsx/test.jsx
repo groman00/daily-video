@@ -11,7 +11,7 @@ var alignment = new Alignment();
 var comp = app.project.activeItem;
 var layer = comp.layer(2);
 
-alignment.apply(5, comp, layer);
+alignment.apply(8, comp, layer);
 
 
 /*
