@@ -4,7 +4,17 @@
 // main('592d6acb1cdbc3640990a7a3', '/Library/WebServer/Documents/alpha/daily-video/');
 
 #include "../js/json2.js"
+#include "../js/Alignment.js"
 
+var alignment = new Alignment();
+
+var comp = app.project.activeItem;
+var layer = comp.layer(2);
+
+alignment.apply(5, comp, layer);
+
+
+/*
 var alignments = {
     0: "top-left",
     1: "top-center",
@@ -70,7 +80,7 @@ switch (alignment) {
 
 layer.transform.anchorPoint.setValue(anchorPoint);
 layer.transform.position.setValue(position);
-
+*/
 
 
 
