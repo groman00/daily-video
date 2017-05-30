@@ -25,7 +25,7 @@ function TextAlignment() {
          */
         top: function () {
             return [
-                (rect.top - padding),
+                (rect.top - (padding * 2.5)), // Give extra padding to avoid watermark
                 0
             ];
         },
