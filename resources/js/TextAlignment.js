@@ -1,4 +1,4 @@
-function Alignment() {
+function TextAlignment() {
     var comp;
     var rect;
     var padding = 50;
@@ -56,7 +56,7 @@ function Alignment() {
         },
         right: function () {
             return [
-                (rect.width + rect.left),
+                (rect.width + rect.left) + padding,
                 comp.width
             ];
         }
@@ -69,12 +69,13 @@ function Alignment() {
  * @param  {CompItem} comp
  * @param  {AVItem} layer
  */
-Alignment.prototype.apply = function (alignmentId, comp, layer) {
+TextAlignment.prototype.apply = function (alignmentId, comp, layer) {
     var keys = this.dictionary[alignmentId];
     var alignment;
     if (!keys) {
         return;
     }
+    layer.parent = null; // The layer's transform is based on the comp, so remove it from it's current parent.
     this.setComp(comp);
     this.setRect(layer.sourceRectAtTime(0, false));
     alignment = [

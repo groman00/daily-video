@@ -47,6 +47,14 @@
                 {{ slide.caption }}
             </textarea>
         </div>
+        <div v-if="fields.includes('image') || fields.includes('video')" class="form-control">
+            <select v-model="slide.data.textAlignment" @change="itemUpdated">
+                <option disabled :value="undefined">Select Text Alignment</option>
+                <option v-for="(alignment, id) in textAlignments" :value="id">
+                    {{ alignment }}
+                </option>
+            </select>
+        </div>
         <div v-if="['image', 'title'].indexOf(slide.data.slideType) > -1" class="form-control">
             <label class="label">Duration in seconds:</label>
             <input v-model="duration" type="number" min="1" max="20" step=".1" @blur="durationUpdated">
@@ -77,6 +85,7 @@
             'theme',
             'effects',
             'transitions',
+            'textAlignments',
             'format',
             'bumpers'
         ],
