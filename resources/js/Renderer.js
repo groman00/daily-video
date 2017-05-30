@@ -109,14 +109,20 @@ Renderer.prototype.caption = function () {
     layer.sourceText.setValue(caption);
 
     // Do text alignment
-    if (this.type === 'image' || this.type === 'video') {
-        textAlignment.apply(this.data.textAlignment, this.comp, layer);
+    // Force title slides to "Middle Left" alignment
+    if (['image', 'video', 'title'].indexOf(this.type) > -1) {
+        textAlignment.apply((this.type === 'title' ? 3 : this.data.textAlignment), this.comp, layer);
     }
 }
 
 /**/
 Renderer.prototype.credit = function () {
-    this.getLayer('credit').sourceText.setValue(this.slide.credit);
+    var layer = this.getLayer('credit');
+    if (!this.slide.image) {
+        layer.enabled = false;
+        return false;
+    }
+    layer.sourceText.setValue(this.slide.credit);
 }
 
 /**/
@@ -130,8 +136,13 @@ Renderer.prototype.title = function () {
 
 /**/
 Renderer.prototype.image = function () {
-    var image = project.importFile(new ImportOptions(File(this.slide.image)));
+    var image;
     var layer = this.getLayer('image');
+    if (!this.slide.image) {
+        layer.enabled = false;
+        return false;
+    }
+    image = project.importFile(new ImportOptions(File(this.slide.image)));
     image.parentFolder = this.folder;
     layer.replaceSource(image, true); // Set image source
     // GIF Handling
@@ -148,16 +159,24 @@ Renderer.prototype.image = function () {
             //$.writeln(e);
         }
     }
-    fx.apply(this.data.image.effect || 0, layer, this.duration);
+    // Apply effects to image slides only
+    if (this.type === 'image') {
+        fx.apply(this.data.image.effect || 0, layer, this.duration);
+    }
 }
 
 /**/
 Renderer.prototype.video = function () {
     var layer = this.getLayer('video');
-    var video = project.importFile(new ImportOptions(File(this.slide.video)));
-    var videoData = this.data.video;
-    var inPoint = videoData.inPoint;
-    var outPoint = videoData.outPoint;
+    var video, videoData, inPoint, outPoint;
+    if (!this.slide.video) {
+        layer.enabled = false;
+        return false;
+    }
+    video = project.importFile(new ImportOptions(File(this.slide.video)));
+    videoData = this.data.video;
+    inPoint = videoData.inPoint;
+    outPoint = videoData.outPoint;
 
     layer.replaceSource(video, false);
     this.comp.duration = this.data.video.duration;
