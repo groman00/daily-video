@@ -3,6 +3,7 @@
     <div class="image-cropper">
         <div class="thumbnail">
             <img class="thumbnail-image" :src="imageSrc" @click="triggerFileUpload">
+            <button class="reset-button button button-small button-danger" @click="resetImage">&times;</button>
         </div>
         <overlay :open="isCropping" class="image-cropper-overlay">
             <template slot="overlay-heading">
@@ -24,6 +25,8 @@
 <script>
     import Cropper from 'cropperjs';
     import api from '../routers/api';
+
+    const defaultImage = 'https://s3.amazonaws.com/alpha-global-origin/daily-video/pixel.jpg';
 
     export default {
         props: ['slide'],
@@ -98,10 +101,33 @@
                         this.eventHub.$emit('slide-updated', Object.assign(
                             this.slide,
                             response.body.images,
-                            { data: Object.assign(this.slide.data, { crop: response.body.crop, 'image_type': file.type.split('/')[1] }) }
+                            {
+                                data: Object.assign(this.slide.data, {
+                                    crop: response.body.crop,
+                                    image_type: file.type.split('/')[1]
+                                })
+                            }
                         ));
                         this.cropReset();
                     });
+            },
+            resetImage() {
+                if (window.confirm('Are you sure you want to remove this image?')) {
+                    this.eventHub.$emit('slide-updated', Object.assign(
+                        this.slide,
+                        {
+                            image: defaultImage,
+                            image_url_large: defaultImage,
+                            image_url_thumb: defaultImage
+                        },
+                        {
+                            data: Object.assign(this.slide.data, {
+                                crop: null,
+                                image_type: null
+                            })
+                        }
+                    ));
+                }
             }
         }
     }
