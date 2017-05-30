@@ -82,15 +82,17 @@
                 this.$nextTick(() => {
                     this.eventHub.$emit('slide-updated', Object.assign(
                         this.slide,
-                        Object.assign(this.slide.data, {
-                            duration: outPoint - inPoint,
-                            video: {
-                                source: this.src,
-                                duration: this.duration,
-                                inPoint: inPoint,
-                                outPoint: outPoint
-                            }
-                        })
+                        { data:
+                            Object.assign(this.slide.data, {
+                                duration: outPoint - inPoint,
+                                video: {
+                                    source: this.src,
+                                    duration: this.duration,
+                                    inPoint: inPoint,
+                                    outPoint: outPoint
+                                }
+                            })
+                        }
                     ));
                 });
             },
