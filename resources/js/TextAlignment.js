@@ -1,8 +1,7 @@
 function TextAlignment() {
     var comp;
     var rect;
-    var padding = 50;
-    var margin = 0;
+    var padding = 100;
     this.dictionary = {
         0: ['left', 'top'],
         1: ['center', 'top'],
@@ -38,7 +37,7 @@ function TextAlignment() {
         },
         bottom: function () {
             return [
-                ((rect.height + rect.top) + padding),
+                ((rect.height + rect.top) + (padding * 2)), // Give extra padding to avoid the image credit
                 comp.height
             ];
         },
