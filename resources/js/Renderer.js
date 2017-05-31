@@ -110,7 +110,8 @@ Renderer.prototype.caption = function () {
 
     // Do text alignment
     // Force title slides to "Middle Left" alignment
-    if (['image', 'video', 'title'].indexOf(this.type) > -1) {
+    // if (['image', 'video', 'title'].indexOf(this.type) > -1) {
+    if (/image$|video$|title$/.test(this.type)) {
         textAlignment.apply((this.type === 'title' ? 3 : this.data.textAlignment), this.comp, layer);
     }
 }
