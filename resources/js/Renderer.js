@@ -180,6 +180,7 @@ Renderer.prototype.video = function () {
     outPoint = videoData.outPoint;
 
     layer.replaceSource(video, false);
+    layer.audioEnabled = !videoData.muted;
     this.comp.duration = this.data.video.duration;
     UTILS.fitLayerToComp(this.comp, layer, video);
 
