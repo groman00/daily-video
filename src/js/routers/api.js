@@ -11,6 +11,7 @@ function Api() {
             { path: host + '/slideshows', name: 'slideshows' },
             { path: host + '/slideshows/create', name: 'create-project' },
             { path: host + '/slideshows/save', name: 'slideshows-save' },
+            { path: host + '/slideshows/dims-image', name: 'slideshows-dims-image' },
             { path: host + '/slideshows/slide/add', name: 'slideshows-add-slide' },
             { path: host + '/slideshows/slide/save', name: 'slideshows-save-slide' },
             { path: host + '/slideshows/slide/delete', name: 'slideshows-delete-slide' },

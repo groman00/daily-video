@@ -24,7 +24,7 @@
                 </option>
             </select>
         </div>
-        <div v-if="hasFields('image')" class="form-control">
+        <div v-if="isSlideOfType('image')" class="form-control">
             <select v-model="slide.data.image.effect" @change="itemUpdated">
                 <option disabled :value="undefined">Select Effect</option>
                 <option v-for="(effect, id) in effects" :value="id">

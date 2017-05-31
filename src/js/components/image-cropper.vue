@@ -113,20 +113,22 @@
             },
             resetImage() {
                 if (window.confirm('Are you sure you want to remove this image?')) {
-                    this.eventHub.$emit('slide-updated', Object.assign(
-                        this.slide,
-                        {
+                    this.$http.post(api.route('slideshows-dims-image'), {
                             image: defaultImage,
-                            image_url_large: defaultImage,
-                            image_url_thumb: defaultImage
-                        },
-                        {
-                            data: Object.assign(this.slide.data, {
-                                crop: null,
-                                image_type: null
-                            })
-                        }
-                    ));
+                            type: 'jpg'
+                        })
+                        .then((response) => {
+                            this.eventHub.$emit('slide-updated', Object.assign(
+                                this.slide,
+                                response.body,
+                                {
+                                    data: Object.assign(this.slide.data, {
+                                        crop: null,
+                                        image_type: null
+                                    })
+                                }
+                            ));
+                        });
                 }
             }
         }

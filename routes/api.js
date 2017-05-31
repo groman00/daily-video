@@ -45,6 +45,13 @@ router.post('/slideshows/save', [amp.authenticate], (req, res, next) => {
 });
 
 /**
+ * POST: Save a slideshow
+ */
+router.post('/slideshows/dims-image', (req, res, next) => {
+  res.send(slideshowController.getImagesFromDims(req.body.image, req.body.type));
+});
+
+/**
  * POST: Create a new slide
  */
 router.post('/slideshows/slide/add', [amp.authenticate], (req, res, next) => {
