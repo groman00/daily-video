@@ -6,7 +6,7 @@
         </div>
         <template v-if="downloadLink">
             <a class="button button-blue download-link pull-right" style="margin-left: 12px;" @click="uploadVideo">Upload Video</a>
-            <a class="button button-blue download-link pull-right" :href="downloadLink">Save Video</a>
+            <a class="button button-blue download-link pull-right" :href="downloadLink" target="_blank">Save Video</a>
         </template>
         <h3 class="progress-bar-label">{{ label }}</h3>
         <overlay :open="uploadOverlayVisible">
