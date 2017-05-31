@@ -74,7 +74,7 @@
                 });
                 const data = {
                     name: this.title + ' ' + Date.now(),
-                    file: this.downloadLink.split('/').pop()
+                    file: this.downloadLink
                 };
                 this.$http.post(api.route('vidible-upload'), data)
                     .then((response) => {
