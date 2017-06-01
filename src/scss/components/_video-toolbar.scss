@@ -1,13 +1,12 @@
 .video-toolbar {
+    position: relative;
     color: $white;
     display: flex;
     flex-flow: row wrap;
     align-items: stretch;
     height: 100%;
 
-    .section {
-
-    }
+    // .section {}
 
     .section-header {
         height: 40px;
@@ -44,12 +43,24 @@
     }
 
     .control-header {
-        /* Music: */
         font-weight: $font-weight-semibold;
         font-size: $font-size-larger;
         margin-bottom: $gutter-narrow;
     }
     .control-body {
         padding: 50px 32px;
+    }
+
+    .video-total-time {
+        position: absolute;
+        top: -40px;
+        right: 0;
+        background-color: rgba(0, 0, 0, .5);
+        height: 40px;
+        line-height: 40px;
+        font-size: $font-size-smallest;
+        font-weight: $font-weight-semibold;
+        color: rgba(255, 255, 255, .85);
+        padding: 0 32px;
     }
 }

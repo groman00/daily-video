@@ -5,14 +5,14 @@
         <div v-if="slideshow" class="flex-columns flex-grow-1">
             <div class="panels-top flex-rows flex-grow-1">
                 <div class="panel-left">
-                    <video-editor :slideshowId="slideshow.id" :slides="slides" :config="config" :theme="theme" :format="format"></video-editor>
+                    <video-editor :slideshowId="slideshow.id" :slides="slides" :config="config" :theme="theme" :format="format" @durationUpdated="durationUpdated"></video-editor>
                 </div>
                 <div class="panel-right">
                     <slide-preview :format="format"></slide-preview>
                 </div>
             </div>
             <div class="panels-bottom flex-shrink-1">
-                <video-toolbar ref="videoToolbar" :onSubmit="renderProject" :onSave="saveProject" :slideshow="slideshow" :themes="config.themes" :audioTracks="config.audioTracks" @formatUpdated="formatUpdated" @themeUpdated="themeUpdated"></video-toolbar>
+                <video-toolbar ref="videoToolbar" :onSubmit="renderProject" :onSave="saveProject" :slideshow="slideshow" :themes="config.themes" :audioTracks="config.audioTracks" :videoDuration="videoDuration" @formatUpdated="formatUpdated" @themeUpdated="themeUpdated"></video-toolbar>
             </div>
         </div>
         <loading-indicator v-else></loading-indicator>
@@ -20,7 +20,6 @@
 </template>
 <script>
     import api from '../routers/api';
-    import { framesToSeconds } from '../lib/helpers';
 
     export default {
         data() {
@@ -29,7 +28,8 @@
                 format: 'square',
                 theme: '',
                 slides: [],
-                slideshow: {}
+                slideshow: {},
+                videoDuration: 0
             }
         },
         created() {
@@ -56,6 +56,9 @@
             },
             formatUpdated(format) {
                 this.format = format;
+            },
+            durationUpdated(duration) {
+                this.videoDuration = duration;
             },
             fetchData() {
                 let body;
@@ -109,17 +112,13 @@
                 const formData = new FormData();
                 const narrationTrack = settings.narrationTrack;
                 const audioTrack = settings.audioTrack;
-                // Accumulate all of the slide durations
-                const videoDuration = this.slides.reduce(function (acc, slide) {
-                    return acc + parseFloat(slide.data.duration || framesToSeconds(slide.data.slideTemplate.frames))
-                }, 0);
 
                 formData.append('slideshowId', this.$route.params.id);
                 formData.append('title', this.slideshow.title);
                 formData.append('socket_id', this.$root.socket_id);
                 formData.append('fps', this.config.fps);
                 formData.append('slides', JSON.stringify(this.slides));
-                formData.append('videoDuration', videoDuration);
+                formData.append('videoDuration', this.videoDuration);
                 formData.append('preview', settings.isPreview);
                 formData.append('audioTrack', settings.audioTrack);
                 formData.append('audioTrackLevel', settings.audioTrackLevel);

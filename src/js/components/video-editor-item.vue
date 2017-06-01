@@ -11,7 +11,7 @@
             <input v-model="slide.credit" placeholder="Source Credit" :value="slide.credit" type="text" @change="itemUpdated">
         </div>
         <div class="form-control">
-            <select v-model="slide.data.slideType" @change="itemUpdated">
+            <select v-model="slide.data.slideType" @change="slideTypeUpdated">
                 <option v-for="(obj, type) in slideTypes" :value="type">
                     {{ type }}
                 </option>
@@ -55,9 +55,9 @@
                 </option>
             </select>
         </div>
-        <div v-if="isSlideOfType('image', 'title')" class="form-control">
+        <div v-if="hasCustomDuration()" class="form-control">
             <label class="label">Duration in seconds:</label>
-            <input v-model="duration" type="number" min="1" max="20" step=".1" @blur="durationUpdated">
+            <input v-model="slide.data.duration" type="number" min="1" max="20" step=".1" @blur="durationUpdated">
         </div>
         <div class="form-control">
             <div class="button-bar">
@@ -91,12 +91,10 @@
         ],
         data() {
             return {
-                // templates: {},
                 fields: [],
                 hasPreview: false,
                 isDisabled: false,
                 isSaving: false,
-                duration: 0,
                 preview: {
                     previewId: 0,
                     files: []
@@ -116,6 +114,7 @@
         },
         watch: {
             slide() {
+                console.log('slide changed');
                 this.itemUpdated();
             },
             'slide.data.slideType'(type) {
@@ -123,7 +122,12 @@
             },
             'slide.data.slideTemplate'(template) {
                 this.fields = template.fields;
-                this.setDuration();
+            },
+            'slide.data.duration'(duration) {
+                if (duration < 1) {
+                    this.slide.data.duration = 1;
+                    return;
+                }
             },
             format() {
                 this.itemUpdated(false);
@@ -143,7 +147,6 @@
                 }
                 this.slide.data.slideTemplate = slideTypes[this.slide.data.slideType];
                 this.setDuration();
-
             },
             /**
              * Return true if any of the provided fields exist in the templates field array
@@ -161,8 +164,20 @@
             isSlideOfType(...types) {
                 return types.indexOf(this.slide.data.slideType) > -1;
             },
+            hasCustomDuration() {
+                return this.isSlideOfType('image', 'title');
+            },
             setDuration() {
-                this.duration = this.slide.data.duration || Math.floor(framesToSeconds(this.slide.data.slideTemplate.frames));
+                if (!this.slide.data.duration) {
+                    this.slide.data.duration = this.getDefaultDuration();
+                }
+            },
+            durationUpdated() {
+                this.$emit('durationUpdated');
+                this.itemUpdated();
+            },
+            getDefaultDuration() {
+                return Math.floor(framesToSeconds(this.slide.data.slideTemplate.frames));
             },
             fetchPreview(slide) {
                 if (this.hasPreview) {
@@ -200,11 +215,11 @@
                     this.saveSlide();
                 }
             },
-            durationUpdated() {
-                this.eventHub.$emit('slide-updated', Object.assign(
-                    this.slide,
-                    { data: Object.assign(this.slide.data, { duration: this.duration }) }
-                ));
+            slideTypeUpdated() {
+                this.$nextTick(() => {
+                    this.slide.data.duration = this.getDefaultDuration();
+                    this.durationUpdated();
+                });
             },
             saveSlide() {
                 console.log('saving slide: ' + this.slide.id);

@@ -15,7 +15,7 @@
         </div>
         <div v-show="hasVideo" class="form-control">
             <label>
-                <input type="checkbox" v-model="isMuted"> Muted
+                <input type="checkbox" v-model="isMuted" @change="save"> Muted
             </label>
         </div>
         <div class="form-control text-center">
@@ -68,7 +68,6 @@
         watch: {
             isMuted(bool) {
                 this.$refs.video.muted = bool;
-                this.save();
             }
         },
         created() {
