@@ -1,11 +1,7 @@
 <style scoped></style>
 <template>
     <div class="video-editor-item">
-        <div class="drag-handle" style="background:red;height:50px;width:50px;"></div>
-        <!-- <div class="move-buttons clearfix">
-            <button v-if="slideIndex !== 0" class="button button-small button-default pull-left" @click="moveSlide(-1)">&lt;</button>
-            <button v-if="slideIndex < (slideCount - 1)" class="button button-small button-default pull-right" @click="moveSlide(1)">&gt;</button>
-        </div> -->
+        <div class="drag-handle"></div>
         <image-cropper v-if="hasFields('image')" :slide="slide"></image-cropper>
         <video-uploader v-if="hasFields('video')" :slide="slide"></video-uploader>
         <div v-if="hasFields('credit')" class="form-control">
@@ -238,16 +234,6 @@
                         this.eventHub.$emit('slide-removed', this.slide);
                         this.isDisabled = false;
                     });
-            },
-            moveSlide(direction) {
-                const to = this.slideIndex + direction;
-                const from = this.slideIndex;
-                this.eventHub.$emit('slide-moved', from, to);
-                this.$http.post(api.route('slideshows-move-slide'), {
-                    slideshowId: this.slideshowId,
-                    slideId: this.slide.id,
-                    index: (to + 1) // index is 1 based, not 0
-                });
             }
         }
     }

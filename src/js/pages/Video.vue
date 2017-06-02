@@ -90,9 +90,6 @@
                     return slide.id != removedSlide.id;
                 });
             },
-            moveSlide(from, to) {
-                this.slides.splice(to, 0, this.slides.splice(from, 1)[0] );
-            },
             updateSlide(updatedSlide) {
                 const index = this.slides.findIndex((slide) => {
                     return slide.id === updatedSlide.id;

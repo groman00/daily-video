@@ -4,7 +4,7 @@
         <!-- <div > -->
 
 
-            <draggable v-model="slides" class="grid grid-small" :options="{ handle: '.drag-handle' }">
+            <draggable v-model="slides" class="grid grid-small" :options="{ handle: '.drag-handle' }" @end="dragEnd">
                 <div class="cell-m-4" v-for="(slide, index) in slides" :key="slide.id">
                     <video-editor-item :slideshowId="slideshowId" :slide="slide" :slideTypes="config.slideTypes" :effects="config.effects" :transitions="config.transitions" :textAlignments="config.textAlignments" :format="format" :slideIndex="index" :slideCount="slides.length" :theme="theme" :bumpers="getBumpers" @durationUpdated="durationUpdated"></video-editor-item>
                 </div>
@@ -19,6 +19,7 @@
     </div>
 </template>
 <script>
+    import api from '../routers/api';
     import { framesToSeconds, fillIndexedArray } from '../lib/helpers';
 
     export default {
@@ -54,6 +55,19 @@
                     }
                     return acc + parseFloat(customDuration || framesToSeconds(data.slideTemplate.frames));
                 }, 0));
+            },
+            dragEnd(e) {
+                const oldIndex = e.oldIndex;
+                const newIndex = e.newIndex;
+                const slide = this.slides[newIndex];
+                if (oldIndex === newIndex) {
+                    return;
+                }
+                this.$http.post(api.route('slideshows-move-slide'), {
+                    slideshowId: this.slideshowId,
+                    slideId: slide.id,
+                    index: (newIndex + 1) // index is 1 based, not 0
+                });
             }
         }
     }
