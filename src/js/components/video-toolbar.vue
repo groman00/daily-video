@@ -49,7 +49,10 @@
             </div>
         </section>
         <section class="section section-export">
-            <div class="section-header">export</div>
+            <div class="section-header">
+                export
+                <span class="pull-right text-transform-none">Approx Duration: {{ formattedVideoDuration }}s</span>
+            </div>
             <div class="control">
                 <div class="control-body">
                     <div class="form-control clearfix">
@@ -82,9 +85,9 @@
                 </div>
             </div>
         </section>
-        <div class="video-total-time">
+        <!-- <div class="video-total-time">
             Approx Duration: {{ formattedVideoDuration }}s
-        </div>
+        </div> -->
     </div>
 </template>
 <script>
