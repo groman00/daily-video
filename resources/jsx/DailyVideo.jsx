@@ -126,8 +126,8 @@ DailyVideo.prototype = {
         }
 
         // Add Solid BG
-        bgLayer = masterComp.layers.addSolid([0,0,0], 'bg', masterComp.width, masterComp.height, 1.0, this.config.videoDuration);
-        bgLayer.moveToEnd();
+        // bgLayer = masterComp.layers.addSolid([0,0,0], 'bg', masterComp.width, masterComp.height, 1.0, this.config.videoDuration);
+        // bgLayer.moveToEnd();
 
         // Adjust work area
         masterComp.workAreaDuration = currentPosition + UTILS.framesToSeconds(1); // AE seems to chop a frame off.  Add it back.
