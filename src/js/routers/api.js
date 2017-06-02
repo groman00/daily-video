@@ -8,7 +8,7 @@ function Api() {
     this.router = new VueRouter({
         routes: [
             // todo: eventually rename all "slideshow" endpoints to "project"
-            { path: host + '/slideshows', name: 'slideshows' },
+            { path: host + '/slideshows/page/:page', name: 'slideshows' },
             { path: host + '/slideshows/create', name: 'create-project' },
             { path: host + '/slideshows/save', name: 'slideshows-save' },
             { path: host + '/slideshows/dims-image', name: 'slideshows-dims-image' },

@@ -2,9 +2,9 @@
 <template>
     <div class="home-page page-wrapper">
         <app-bar :config="{ title: 'Projects' }"></app-bar>
-        <div v-if="slideshows.length" class="flex-grow-1 flex-overflow">
+        <div class="flex-grow-1 flex-overflow">
             <div class="grid">
-                <div class="media media-bordered cell-m-12">
+                <div class="media cell-m-12">
                     <div class="media-left">
                         <a href="#" @click.prevent="createNew">
                             <img src="https://s3.amazonaws.com/alpha-global-origin/daily-video/add-new.png" class="media-image"/>
@@ -16,6 +16,16 @@
                         </a>
                     </div>
                 </div>
+                <div class="cell-m-12">
+                    <div class="pagination">
+                        Pages:
+                        <span class="pagination-link" v-for="index in pages" key="index">
+                            <router-link v-if="index === 1" :to="{ name: 'home'}" exact>{{ index }}</router-link>
+                            <router-link v-else key="index" :to="{ name: 'home-paginated', params: { page: index } }" exact>{{ index }}</router-link>
+                        </span>
+                    </div>
+                </div>
+                <template v-if="slideshows.length">
                 <div class="media cell-m-6" v-for="slideshow in slideshows" key="slideshow.id">
                     <div class="media-left">
                         <router-link v-if="slideshow" :to="{ name: 'video', params: { id: slideshow.id } }" exact>
@@ -28,9 +38,12 @@
                         </router-link>
                     </div>
                 </div>
+                </template>
+                <template v-else>
+                    <loading-indicator></loading-indicator>
+                </template>
             </div>
         </div>
-        <loading-indicator v-else></loading-indicator>
         <overlay :open="isCreatingNew">
             <template slot="overlay-content">
                 <br><br>
@@ -42,24 +55,44 @@
 <script>
     import api from '../routers/api';
 
+    import { fillIndexedArray } from '../lib/helpers';
+
     export default {
         data() {
             return {
+                page: null,
+                pages: [],
                 slideshows: [],
                 isCreatingNew: false
             }
         },
         created() {
-            this.fetchData();
+            this.page = this.$route.params.page || 1
+        },
+        watch: {
+            '$route' (to, from) {
+                this.page = to.params.page || 1;
+            },
+            page(value) {
+                this.fetchData();
+            }
         },
         methods: {
             fetchData() {
-                this.$http.get(api.route('slideshows'))
+                this.slideshows = [];
+                this.$http.get(api.route('slideshows', { page: this.page }))
                     .then((response) => {
                         this.slideshows = response.body.results;
+                        this.setPages(response.body.total_pages);
                     }, (response) => {
                         // console.log('error', response);
                     });
+            },
+            setPages(total) {
+                let pages = fillIndexedArray(total + 1);
+                pages.shift();
+                console.log(pages);
+                this.pages = pages;
             },
             createNew() {
                 this.isCreatingNew = true;

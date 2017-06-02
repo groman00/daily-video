@@ -7,3 +7,7 @@ export function framesToSeconds(frames) {
 export function formatSeconds(seconds) {
     return (new Date(seconds * 1000)).toISOString().substr(14, 5);
 }
+
+export function fillIndexedArray(length) {
+    return [...Array(length).keys()];
+}

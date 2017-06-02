@@ -26,7 +26,7 @@ const upload = multer({
 /**
  * GET: List available slideshows
  */
-router.get('/slideshows', (req, res, next) => {
+router.get('/slideshows/page/:page', (req, res, next) => {
   slideshowController.all(req, res, next);
 });
 

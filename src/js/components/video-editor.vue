@@ -10,7 +10,7 @@
     </div>
 </template>
 <script>
-    import { framesToSeconds } from '../lib/helpers';
+    import { framesToSeconds, fillIndexedArray } from '../lib/helpers';
 
     export default {
         props: ['slideshowId', 'slides', 'config', 'theme', 'format'],
@@ -22,7 +22,7 @@
                 if (!this.theme) {
                     return [];
                 }
-                return [...Array(this.config.themes[this.theme].bumpers).keys()];
+                return fillIndexedArray(this.config.themes[this.theme].bumpers);
             }
         },
         watch: {
