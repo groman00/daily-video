@@ -5,6 +5,7 @@ import VueResource from 'vue-resource';
 import router from './routers/app';
 
 // Components
+import draggable from 'vuedraggable';
 import vueSlider from 'vue-slider-component';
 import appBar from './components/app-bar.vue';
 import thumbnail from './components/thumbnail.vue';
@@ -35,6 +36,7 @@ Vue.component('slide-new', slideNew);
 Vue.component('image-cropper', imageCropper);
 Vue.component('video-uploader', videoUploader);
 Vue.component('vue-slider', vueSlider);
+Vue.component('draggable', draggable);
 
 Vue.use(VueResource);
 

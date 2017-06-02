@@ -110,7 +110,7 @@
                 required: true
             },
             themes: {
-                type: Array,
+                type: Object,
                 required: true
             },
             audioTracks: {

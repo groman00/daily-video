@@ -1,10 +1,11 @@
 <style scoped></style>
 <template>
     <div class="video-editor-item">
-        <div class="move-buttons clearfix">
+        <div class="drag-handle" style="background:red;height:50px;width:50px;"></div>
+        <!-- <div class="move-buttons clearfix">
             <button v-if="slideIndex !== 0" class="button button-small button-default pull-left" @click="moveSlide(-1)">&lt;</button>
             <button v-if="slideIndex < (slideCount - 1)" class="button button-small button-default pull-right" @click="moveSlide(1)">&gt;</button>
-        </div>
+        </div> -->
         <image-cropper v-if="hasFields('image')" :slide="slide"></image-cropper>
         <video-uploader v-if="hasFields('video')" :slide="slide"></video-uploader>
         <div v-if="hasFields('credit')" class="form-control">

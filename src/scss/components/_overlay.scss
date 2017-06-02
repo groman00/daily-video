@@ -4,10 +4,12 @@
     z-index: 100;
     overflow-y: auto;
     transform: translate3d(0, 100%, 0);
-    transition: transform 300ms ease-in-out;
+    transition: transform 300ms ease-in-out, opacity 300ms linear;
+    opacity: 0;
 
     &.open {
         transform: translate3d(0, 0, 0);
+        opacity: 1;
     }
 
     .overlay-heading {
