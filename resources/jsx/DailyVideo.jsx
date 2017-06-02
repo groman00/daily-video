@@ -110,20 +110,27 @@ DailyVideo.prototype = {
      * @param {[type]} comps [description]
      */
     addChildCompsToMaster: function (comps) {
+        var masterComp = this.masterComp;
         var slides = this.config.slides;
         var currentPosition = 0;
-        var slideData, layer, duration, transitionOut;
+        var slideData, layer, duration, transitionOut, bgLayer;
 
         for(var i = 0, max = comps.length; i < max; i++){
             slideData = slides[i].data
             duration = parseFloat(slideData.duration);
             transitionOut = (i === max - 1) ? 0 : slideData.transition.out; // ignore transitionOut on the last slide
-            layer = this.masterComp.layers.add(comps[i], duration);
+            layer = masterComp.layers.add(comps[i], duration);
             layer.moveToEnd();
             layer.startTime = currentPosition;
             currentPosition = currentPosition + (duration - transitionOut);
         }
-        this.masterComp.workAreaDuration = currentPosition + UTILS.framesToSeconds(1); // AE seems to chop a frame off.  Add it back.
+
+        // Add Solid BG
+        bgLayer = masterComp.layers.addSolid([0,0,0], 'bg', masterComp.width, masterComp.height, 1.0, this.config.videoDuration);
+        bgLayer.moveToEnd();
+
+        // Adjust work area
+        masterComp.workAreaDuration = currentPosition + UTILS.framesToSeconds(1); // AE seems to chop a frame off.  Add it back.
     },
 
     /**
