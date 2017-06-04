@@ -1,24 +1,12 @@
 <style scoped></style>
 <template>
     <div class="video-editor">
-        <!-- <div > -->
-
-
-            <draggable v-model="slides" class="grid grid-small" :options="{ handle: '.drag-handle' }" @end="dragEnd">
-                <div class="cell-m-4" v-for="(slide, index) in slides" :key="slide.id">
-                    <video-editor-item :slideshowId="slideshowId" :slide="slide" :slideTypes="config.slideTypes" :effects="config.effects" :transitions="config.transitions" :textAlignments="config.textAlignments" :format="format" :slideIndex="index" :slideCount="slides.length" :theme="theme" :bumpers="getBumpers" @durationUpdated="durationUpdated"></video-editor-item>
-                </div>
-            </draggable>
-            <slide-new :slideshowId="slideshowId"></slide-new>
-
-
-            <!--
+        <draggable v-model="slides" class="grid grid-small" :options="{ handle: '.drag-handle' }" @end="dragEnd">
             <div class="cell-m-4" v-for="(slide, index) in slides" :key="slide.id">
                 <video-editor-item :slideshowId="slideshowId" :slide="slide" :slideTypes="config.slideTypes" :effects="config.effects" :transitions="config.transitions" :textAlignments="config.textAlignments" :format="format" :slideIndex="index" :slideCount="slides.length" :theme="theme" :bumpers="getBumpers" @durationUpdated="durationUpdated"></video-editor-item>
             </div>
-            <slide-new :slideshowId="slideshowId"></slide-new>
-            -->
-        <!-- </div> -->
+        </draggable>
+        <slide-new :slideshowId="slideshowId"></slide-new>
     </div>
 </template>
 <script>

@@ -50,6 +50,13 @@
             opacity: 1;
         }
     }
+
+    &.new {
+        padding-top: 18px;
+        margin: 0 $gutter-narrow;
+        height: auto;
+        overflow: hidden;
+    }
 }
 
 .sortable-chosen .overlay {
