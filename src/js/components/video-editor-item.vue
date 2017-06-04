@@ -1,7 +1,7 @@
 <style scoped></style>
 <template>
-    <div class="video-editor-item">
-        <div class="drag-handle"></div>
+    <div class="video-editor-item" :class="{ 'has-drag-intent': hasDragIntent }">
+        <div class="drag-handle" @mouseover="hasDragIntent = true" @mouseout="hasDragIntent = false"></div>
         <image-cropper v-if="hasFields('image')" :slide="slide"></image-cropper>
         <video-uploader v-if="hasFields('video')" :slide="slide"></video-uploader>
         <div v-if="hasFields('credit')" class="form-control">
@@ -88,6 +88,7 @@
         ],
         data() {
             return {
+                hasDragIntent: false,
                 fields: [],
                 hasPreview: false,
                 isDisabled: false,
