@@ -37,13 +37,11 @@
             this.eventHub.$on('slide-added', this.addSlide);
             this.eventHub.$on('slide-removed', this.removeSlide);
             this.eventHub.$on('slide-updated', this.updateSlide);
-            this.eventHub.$on('slide-moved', this.moveSlide);
         },
         beforeDestroy() {
             this.eventHub.$off('slide-added', this.addSlide);
             this.eventHub.$off('slide-removed', this.removeSlide);
             this.eventHub.$off('slide-updated', this.updateSlide);
-            this.eventHub.$off('slide-moved', this.moveSlide);
         },
         methods: {
             titleUpdated(title) {
