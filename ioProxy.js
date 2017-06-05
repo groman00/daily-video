@@ -7,7 +7,7 @@ class ioProxy {
 
     emit(...data) {
         data[0] = data[0] + 'Proxy';
-        data[1]["socketId"] = this.socketId;
+        data[1]['socketId'] = this.socketId;
         this.io.emit(...data);
     }
 }
