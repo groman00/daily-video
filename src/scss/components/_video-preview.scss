@@ -1,13 +1,3 @@
-.video-preview {
-    background: $black;
-    position: relative;
-
-    .video {
-        height: 100%;
-        width: 100%;
-    }
-}
-
 .slide-preview {
     background: $black;
     position: relative;
@@ -17,9 +7,8 @@
         height: 100%;
     }
 
-    .slide-preview-canvas {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
+    .video {
+        height: 100%;
+        width: 100%;
     }
 }
