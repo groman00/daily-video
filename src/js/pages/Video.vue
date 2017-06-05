@@ -8,7 +8,7 @@
                     <video-editor :slideshowId="slideshow.id" :slides="slides" :config="config" :theme="theme" :format="format" @durationUpdated="durationUpdated"></video-editor>
                 </div>
                 <div class="panel-right">
-                    <slide-preview :format="format"></slide-preview>
+                    <slide-preview></slide-preview>
                 </div>
             </div>
             <div class="panels-bottom flex-shrink-1">

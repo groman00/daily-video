@@ -44,13 +44,11 @@ function Preview(id) {
             'Quality': 'Draft',
             'Resolution': 'Quarter'
         });
-        renderQueueItem.outputModule(1).applyTemplate('Preview_Sequence');
+        renderQueueItem.outputModule(1).applyTemplate('Quicktime_H264');
         renderQueueItem.outputModule(1).setSettings({
             'Output File Info': {
-                // 'Full Flat Path': DIR.exports + 'preview_' + config._id
                 'Base Path': DIR.exports,
-                'Subfolder Path': 'preview_' + config._id,
-                'File Name': '[#####].jpg'
+                'File Name': 'Preview_' + config._id + '.mov'
             }
         });
         renderQueue.render();

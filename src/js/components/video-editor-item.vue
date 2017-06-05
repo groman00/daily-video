@@ -95,7 +95,7 @@
                 isSaving: false,
                 preview: {
                     previewId: 0,
-                    files: []
+                    file: ''
                 }
             }
         },
@@ -195,7 +195,7 @@
                 });
             },
             previewReady(preview) {
-                if (preview.previewId === this.preview.previewId && preview.files) {
+                if (preview.previewId === this.preview.previewId && preview.file) {
                     this.preview = Object.assign({}, preview);
                     this.dispatchPreview();
                 }
