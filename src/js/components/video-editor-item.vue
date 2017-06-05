@@ -1,48 +1,60 @@
 <style scoped></style>
 <template>
-    <div class="video-editor-item">
-        <div class="move-buttons clearfix">
-            <button v-if="slideIndex !== 0" class="button button-small button-default pull-left" @click="moveSlide(-1)">&lt;</button>
-            <button v-if="slideIndex < (slideCount - 1)" class="button button-small button-default pull-right" @click="moveSlide(1)">&gt;</button>
-        </div>
-        <image-cropper v-if="this.fields.includes('image')" :slide="slide"></image-cropper>
-        <video-uploader v-if="this.fields.includes('video')" :slide="slide"></video-uploader>
-        <div v-if="fields.includes('image')" class="form-control">
-            <input v-model="slide.credit" placeholder="Image Credit" :value="slide.credit" type="text" @change="itemUpdated">
+    <div class="video-editor-item" :class="{ 'has-drag-intent': hasDragIntent }">
+        <div class="drag-handle" @mouseover="hasDragIntent = true" @mouseout="hasDragIntent = false"></div>
+        <image-cropper v-if="hasFields('image')" :slide="slide"></image-cropper>
+        <video-uploader v-if="hasFields('video')" :slide="slide"></video-uploader>
+        <div v-if="hasFields('credit')" class="form-control">
+            <input v-model="slide.credit" placeholder="Source Credit" :value="slide.credit" type="text" @change="itemUpdated">
         </div>
         <div class="form-control">
-            <select v-model="slide.data.slideType">
+            <select v-model="slide.data.slideType" @change="slideTypeUpdated">
                 <option v-for="(obj, type) in slideTypes" :value="type">
                     {{ type }}
                 </option>
             </select>
         </div>
         <div class="form-control">
-            <select v-model="slide.data.slideTemplate" @change="itemUpdated">
-                <option v-for="template in templates" :value="template">
-                    {{ template.title }}
+            <select v-model="slide.data.transition" @change="itemUpdated">
+                <option v-for="(transition, id) in transitions" :value="id">
+                    {{ transition }}
                 </option>
             </select>
         </div>
-        <div v-if="fields.includes('image')" class="form-control">
+        <div v-if="isSlideOfType('image')" class="form-control">
             <select v-model="slide.data.image.effect" @change="itemUpdated">
                 <option disabled :value="undefined">Select Effect</option>
-                <option value="0">None</option>
-                <option value="1">Pan/Zoom IN</option>
-                <option value="2">Pan/Zoom OUT</option>
+                <option v-for="(effect, id) in effects" :value="id">
+                    {{ effect }}
+                </option>
             </select>
         </div>
-        <div v-if="fields.includes('title')" class="form-control">
+        <div v-if="hasFields('bumper')" class="form-control">
+            <select v-model="slide.data.bumper" @change="itemUpdated">
+                <option v-for="bumper in bumpers" :value="bumper">
+                    {{ 'Bumper ' + (bumper + 1) }}
+                </option>
+            </select>
+        </div>
+        <div v-if="hasFields('title')" class="form-control">
             <input v-model="slide.title" placeholder="Add a title" :value="slide.title" type="text" @change="itemUpdated">
         </div>
-        <div v-if="fields.includes('caption')" class="form-control">
+        <div v-if="hasFields('caption')" class="form-control">
             <textarea v-model="slide.caption" placeholder="Add a caption" @change="itemUpdated">
                 {{ slide.caption }}
             </textarea>
         </div>
-        <div v-if="['image', 'title'].indexOf(slide.data.slideType) > -1" class="form-control">
+        <div v-if="isSlideOfType('image', 'video')" class="form-control">
+            <select v-model="slide.data.textAlignment" @change="itemUpdated">
+                <option disabled :value="undefined">Select Text Alignment</option>
+                <option v-for="(alignment, id) in textAlignments" :value="id">
+                    {{ alignment }}
+                </option>
+            </select>
+        </div>
+        <div v-if="hasCustomDuration()" class="form-control">
             <label class="label">Duration in seconds:</label>
-            <input v-model="duration" type="number" min="1" max="20" step=".1" @blur="durationUpdated">
+            <input v-model="slide.data.duration" type="number" min="1" max="20" step=".1" @blur="durationUpdated">
         </div>
         <div class="form-control">
             <div class="button-bar">
@@ -61,15 +73,26 @@
     import { framesToSeconds } from '../lib/helpers';
 
     export default {
-        props: ['slide', 'slideshowId', 'slideTypes', 'slideIndex', 'slideCount', 'theme'],
+        props: [
+            'slide',
+            'slideshowId',
+            'slideTypes',
+            'slideIndex',
+            'slideCount',
+            'theme',
+            'effects',
+            'transitions',
+            'textAlignments',
+            'format',
+            'bumpers'
+        ],
         data() {
             return {
-                templates: {},
+                hasDragIntent: false,
                 fields: [],
                 hasPreview: false,
                 isDisabled: false,
                 isSaving: false,
-                duration: 0,
                 preview: {
                     previewId: 0,
                     files: []
@@ -77,7 +100,7 @@
             }
         },
         created() {
-            this.loadSlideTemplates();
+            this.initSlide();
             this.eventHub.$on('fetching-preview', this.setDisabled);
             this.$root.socket.on('preview-ready', this.previewReady);
             this.$root.socket.on('preview-error', this.setEnabled);
@@ -89,37 +112,70 @@
         },
         watch: {
             slide() {
+                console.log('slide changed');
                 this.itemUpdated();
             },
             'slide.data.slideType'(type) {
-                this.templates = Object.assign({}, this.slideTypes[type].templates);
-                this.setDefaultSlideTemplate(this.templates);
-                this.itemUpdated();
+                this.slide.data.slideTemplate = this.slideTypes[type];
             },
             'slide.data.slideTemplate'(template) {
                 this.fields = template.fields;
-                this.setDuration();
+            },
+            'slide.data.duration'(duration) {
+                if (duration < 1) {
+                    this.slide.data.duration = 1;
+                    return;
+                }
+            },
+            format() {
+                this.itemUpdated(false);
+            },
+            theme() {
+                this.itemUpdated(false);
             }
         },
         methods: {
-            loadSlideTemplates() {
+            initSlide() {
+                const slideTypes = this.slideTypes;
                 const slideData = this.slide.data;
                 const slideType = slideData.slideType;
-                const slideTemplate = slideData.slideTemplate;
-                const templates = this.slideTypes[slideType].templates
-                this.templates = Object.assign({}, templates);
-                if (!slideTemplate) {
-                    this.setDefaultSlideTemplate(templates);
+                let template;
+                if (!slideTypes.hasOwnProperty(slideData.slideType)) {
+                    this.slide.data.slideType = 'image';
                 }
-                this.fields = this.slide.data.slideTemplate.fields;
+                this.slide.data.slideTemplate = slideTypes[this.slide.data.slideType];
                 this.setDuration();
             },
-            setDuration() {
-                this.duration = this.slide.data.duration || Math.floor(framesToSeconds(this.slide.data.slideTemplate.frames.total));
+            /**
+             * Return true if any of the provided fields exist in the templates field array
+             * @param  {...[String]} fields
+             * @return {Boolean}
+             */
+            hasFields(...fields) {
+                return fields.some((field) => this.fields.indexOf(field) > -1);
             },
-            setDefaultSlideTemplate(templates) {
-                // default to first template in this type
-                this.slide.data.slideTemplate = templates[Object.keys(templates)[0]];
+            /**
+             * Return true if this slide type matches a provided slide type
+             * @param  {...[String]} types
+             * @return {Boolean}
+             */
+            isSlideOfType(...types) {
+                return types.indexOf(this.slide.data.slideType) > -1;
+            },
+            hasCustomDuration() {
+                return this.isSlideOfType('image', 'title');
+            },
+            setDuration() {
+                if (!this.slide.data.duration) {
+                    this.slide.data.duration = this.getDefaultDuration();
+                }
+            },
+            durationUpdated() {
+                this.$emit('durationUpdated');
+                this.itemUpdated();
+            },
+            getDefaultDuration() {
+                return Math.floor(framesToSeconds(this.slide.data.slideTemplate.frames));
             },
             fetchPreview(slide) {
                 if (this.hasPreview) {
@@ -130,6 +186,7 @@
                 this.$http.post(api.route('preview-slide'), {
                     'theme': this.theme,
                     'slide': slide,
+                    'format': this.format,
                     'socket_id': this.$root.socket_id
                 })
                 .then((response) => {
@@ -150,17 +207,17 @@
             setDisabled() {
                 this.isDisabled = true;
             },
-            itemUpdated() {
+            itemUpdated(save = true) {
                 this.hasPreview = false;
-                this.saveSlide();
+                if (save) {
+                    this.saveSlide();
+                }
             },
-            durationUpdated() {
-                this.eventHub.$emit('slide-updated', Object.assign(
-                    this.slide,
-                    Object.assign(this.slide.data, {
-                        duration: this.duration
-                    })
-                ));
+            slideTypeUpdated() {
+                this.$nextTick(() => {
+                    this.slide.data.duration = this.getDefaultDuration();
+                    this.durationUpdated();
+                });
             },
             saveSlide() {
                 console.log('saving slide: ' + this.slide.id);
@@ -178,16 +235,6 @@
                         this.eventHub.$emit('slide-removed', this.slide);
                         this.isDisabled = false;
                     });
-            },
-            moveSlide(direction) {
-                const to = this.slideIndex + direction;
-                const from = this.slideIndex;
-                this.eventHub.$emit('slide-moved', from, to);
-                this.$http.post(api.route('slideshows-move-slide'), {
-                    slideshowId: this.slideshowId,
-                    slideId: this.slide.id,
-                    index: (to + 1) // index is 1 based, not 0
-                });
             }
         }
     }

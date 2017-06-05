@@ -79,7 +79,18 @@ body,
     }
 }
 
+.pagination {
+    border-color: $grey;
+    border-width: 1px 0;
+    border-style: solid;
+    padding: $gutter-narrow 0;
+    font-size: $font-size-larger;
 
+    .pagination-link {
+        margin: 0 6px;
 
-/* TESTING */
-/*  */
+        a.active {
+            color: $grey;
+        }
+    }
+}

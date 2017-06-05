@@ -1,6 +1,6 @@
 #include "../js/json2.js"
-#include "../js/Renderer.js"
 #include "../js/utils.js"
+#include "../js/Renderer.js"
 
 var project;
 var DIR;
@@ -34,7 +34,7 @@ function Preview(id) {
             video: this.videoFolder,
             comps: UTILS.getFolderByName('Comps'),
             preComps: UTILS.getFolderByName('Precomps')
-        }, slide, 'Comp_0', config.theme);
+        }, slide, 'Comp_0', config);
         comp = renderer.comp;
         comp.parentFolder = this.videoFolder;
 

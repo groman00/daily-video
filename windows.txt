@@ -1,0 +1,13 @@
+// http://woshub.com/port-forwarding-in-windows/
+
+// Forward Port 80 to 3000
+netsh interface portproxy add v4tov4 listenport=80 listenaddress=0.0.0.0 connectport=3000 connectaddress=127.0.0.1
+
+// Remove Forwarding
+netsh interface portproxy delete v4tov4 listenport=80 listenaddress=0.0.0.0
+
+// Show all rules
+netsh interface portproxy show all
+
+// How to allow port 80 through Windows Firewall
+https://www.youtube.com/watch?v=oxY81uM3yzs

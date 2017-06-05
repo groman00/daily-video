@@ -28,17 +28,6 @@ var UTILS = {
     },
 
     /**
-     * Create new comp and add it to top level of the project
-     * @param {String} name
-     * @param {Number} duration
-     * @return {CompItem}
-     */
-    addComp: function (project, name, duration) {
-        // (name, width, height, pixelAspect, duration, frameRate)
-        return project.items.addComp(name, 1920, 1080, 1.0, duration, fps);
-    },
-
-    /**
      * Find comp within parent by name
      * @param  {FolderItem|CompItem} parent
      * @param  {String} name
@@ -110,17 +99,21 @@ var UTILS = {
     },
 
     /**
-     * For brands with watermarks, apply the watermark comp to the final video comp.
+     * For themes with watermarks, apply the watermark comp to the final video comp.
      * @param  {CompItem} comp
-     * @param  {String} brand
-     * @param  {Number} duration
+     * @param  {Object} config
      */
-    applyWatermark: function (comp, brand, duration) {
+    applyWatermark: function (comp, config) {
+        var duration = comp.duration;
         var watermarkFolder = this.getFolderByName('watermark', this.getFolderByName('Precomps'));
-        var watermark = this.findCompByName(watermarkFolder, brand)
+        var watermark = this.findCompByName(watermarkFolder, config.theme)
+        var layer;
         if (watermark) {
+            layer = watermark.layer(1);
+            watermark.width = (config.format === 'square') ? 1080 : 1920;
             watermark.duration = duration;
-            watermark.layer(1).outPoint = duration;
+            layer.position.setValue([watermark.width - 50, 50])
+            layer.outPoint = duration;
             comp.layers.add(watermark);
             watermark.duration = duration;
         }

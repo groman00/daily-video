@@ -26,7 +26,7 @@ const upload = multer({
 /**
  * GET: List available slideshows
  */
-router.get('/slideshows', (req, res, next) => {
+router.get('/slideshows/page/:page', (req, res, next) => {
   slideshowController.all(req, res, next);
 });
 
@@ -42,6 +42,13 @@ router.post('/slideshows/create', [amp.authenticate], (req, res, next) => {
  */
 router.post('/slideshows/save', [amp.authenticate], (req, res, next) => {
   slideshowController.save(req, res, next);
+});
+
+/**
+ * POST: Save a slideshow
+ */
+router.post('/slideshows/dims-image', (req, res, next) => {
+  res.send(slideshowController.getImagesFromDims(req.body.image, req.body.type));
 });
 
 /**

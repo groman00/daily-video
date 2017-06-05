@@ -13,6 +13,11 @@
         <div v-show="hasVideo" class="form-control">
             <vue-slider v-model="range" :tooltip-dir="['top', 'bottom']" :interval=".1" :min="0" :max="rangeMax" :formatter="timeFormat" @callback="sliderCallback" @drag-end="sliderDragEnd"></vue-slider>
         </div>
+        <div v-show="hasVideo" class="form-control">
+            <label>
+                <input type="checkbox" v-model="isMuted" @change="save"> Muted
+            </label>
+        </div>
         <div class="form-control text-center">
             <button class="button button-blue" :disabled="isLoading" @click="openVideoOverlay">Add Video</button>
         </div>
@@ -51,12 +56,18 @@
             return {
                 isLoading: false,
                 hasVideo: false,
+                isMuted: false,
                 src: '',
                 newSrc: '',
                 isSelecting: false,
                 range: defaultRange,
                 rangeMax: defaultRange[1],
                 duration: 0
+            }
+        },
+        watch: {
+            isMuted(bool) {
+                this.$refs.video.muted = bool;
             }
         },
         created() {
@@ -66,6 +77,7 @@
                 this.rangeMax = videoData.duration;
                 this.duration = videoData.duration;
                 this.src = videoData.source;
+                this.isMuted = videoData.muted || false;
                 this.hasVideo = true;
             }
         },
@@ -82,15 +94,18 @@
                 this.$nextTick(() => {
                     this.eventHub.$emit('slide-updated', Object.assign(
                         this.slide,
-                        Object.assign(this.slide.data, {
-                            duration: outPoint - inPoint,
-                            video: {
-                                source: this.src,
-                                duration: this.duration,
-                                inPoint: inPoint,
-                                outPoint: outPoint
-                            }
-                        })
+                        { data:
+                            Object.assign(this.slide.data, {
+                                duration: outPoint - inPoint,
+                                video: {
+                                    source: this.src,
+                                    duration: this.duration,
+                                    inPoint: inPoint,
+                                    outPoint: outPoint,
+                                    muted: this.isMuted
+                                }
+                            })
+                        }
                     ));
                 });
             },

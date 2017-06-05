@@ -1,13 +1,12 @@
 .video-toolbar {
+    position: relative;
     color: $white;
     display: flex;
     flex-flow: row wrap;
     align-items: stretch;
     height: 100%;
 
-    .section {
-
-    }
+    // .section {}
 
     .section-header {
         height: 40px;
@@ -44,7 +43,6 @@
     }
 
     .control-header {
-        /* Music: */
         font-weight: $font-weight-semibold;
         font-size: $font-size-larger;
         margin-bottom: $gutter-narrow;

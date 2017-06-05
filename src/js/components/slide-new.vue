@@ -1,10 +1,7 @@
 <style scoped></style>
 <template>
-    <div class="cell-m-4">
-        <div class="video-editor-item">
-            <loading-indicator v-if="loading"></loading-indicator>
-            <button v-else class="button button-blue" @click="addNew">+ Add Slide</button>
-        </div>
+    <div class="video-editor-item new text-center">
+        <button :disabled="loading" class="button button-blue" @click="addNew">+ Add Slide</button>
     </div>
 </template>
 <script>

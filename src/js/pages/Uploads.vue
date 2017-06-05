@@ -15,7 +15,7 @@
                         <h3>Renditions</h3>
                     </div>
                     <div class="list-group-item" v-for="rendition in video.encodedVariants" key="rendition.videoUrl">
-                        <a :href="rendition.videoUrl" target="_blank">{{ rendition.videoUrl }}</a>
+                        <a href="#" @click.prevent="shareLink(rendition.videoUrl)">{{ linkName(rendition) }}</a>
                     </div>
                 </div>
             </div>
@@ -25,6 +25,8 @@
 </template>
 <script>
     import api from '../routers/api';
+
+    const dummyAnchor = document.createElement('A');
 
     export default {
         data() {
@@ -41,10 +43,16 @@
                     .then((response) => {
                         console.log(response);
                         this.videos = response.body.data;
-                        //this.slideshows = response.body.results;
                     }, (response) => {
                         // console.log('error', response);
                     });
+            },
+            linkName(video) {
+                dummyAnchor.href = video.videoUrl;
+                return `${video.width}x${video.height} ${dummyAnchor.pathname.split('.').pop().toUpperCase()}`;
+            },
+            shareLink(url) {
+                window.prompt("Copy link to share", url);
             }
         }
     }

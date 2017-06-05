@@ -5,14 +5,14 @@
         <div v-if="slideshow" class="flex-columns flex-grow-1">
             <div class="panels-top flex-rows flex-grow-1">
                 <div class="panel-left">
-                    <video-editor :slideshowId="slideshow.id" :slides="slides" :slideTypes="slideTypes" :theme="theme"></video-editor>
+                    <video-editor :slideshowId="slideshow.id" :slides="slides" :config="config" :theme="theme" :format="format" @durationUpdated="durationUpdated"></video-editor>
                 </div>
                 <div class="panel-right">
-                    <slide-preview></slide-preview>
+                    <slide-preview :format="format"></slide-preview>
                 </div>
             </div>
             <div class="panels-bottom flex-shrink-1">
-                <video-toolbar ref="videoToolbar" :onSubmit="renderProject" :onSave="saveProject" :slideshow="slideshow" :themes="themes" @themeUpdated="themeUpdated"></video-toolbar>
+                <video-toolbar ref="videoToolbar" :onSubmit="renderProject" :onSave="saveProject" :slideshow="slideshow" :themes="config.themes" :audioTracks="config.audioTracks" :videoDuration="videoDuration" @formatUpdated="formatUpdated" @themeUpdated="themeUpdated"></video-toolbar>
             </div>
         </div>
         <loading-indicator v-else></loading-indicator>
@@ -20,17 +20,16 @@
 </template>
 <script>
     import api from '../routers/api';
-    import { framesToSeconds } from '../lib/helpers';
 
     export default {
         data() {
             return {
+                config: {},
+                format: 'square',
                 theme: '',
-                themes: ['AOL', 'AOLComms', 'HuffingtonPost', 'Moviefone', 'Alpha', 'Engadget'],
                 slides: [],
-                fps: 0,
-                slideTypes: {},
-                slideshow: {}
+                slideshow: {},
+                videoDuration: 0
             }
         },
         created() {
@@ -38,13 +37,11 @@
             this.eventHub.$on('slide-added', this.addSlide);
             this.eventHub.$on('slide-removed', this.removeSlide);
             this.eventHub.$on('slide-updated', this.updateSlide);
-            this.eventHub.$on('slide-moved', this.moveSlide);
         },
         beforeDestroy() {
             this.eventHub.$off('slide-added', this.addSlide);
             this.eventHub.$off('slide-removed', this.removeSlide);
             this.eventHub.$off('slide-updated', this.updateSlide);
-            this.eventHub.$off('slide-moved', this.moveSlide);
         },
         methods: {
             titleUpdated(title) {
@@ -52,8 +49,14 @@
                 this.saveSlideshow();
             },
             themeUpdated(theme) {
+                // Should we set a cookie or localStorage for this?
                 this.theme = theme;
-                console.log('theme updated', theme);
+            },
+            formatUpdated(format) {
+                this.format = format;
+            },
+            durationUpdated(duration) {
+                this.videoDuration = duration;
             },
             fetchData() {
                 let body;
@@ -61,8 +64,7 @@
                 this.$http.get(api.route('slideshow', { id: this.$route.params.id }))
                     .then((response) => {
                         body = response.body;
-                        this.slideTypes = body.config.slideTypes;
-                        this.fps = body.config.fps;
+                        this.config = body.config;
                         this.slideshow = this.parseSlideshow(body.slideshow);
                         this.slides = this.slideshow.slides;
                     }, (response) => {
@@ -70,18 +72,12 @@
                     });
             },
             parseSlideshow(slideshow) {
-                let data;
-                let type;
-                let template;
                 // Merge template config into slide data
-                slideshow.slides.forEach((slide) => {
-                    if (slide.data.slideTemplate) {
-                        data = slide.data;
-                        type = data.slideType;
-                        template = data.slideTemplate.name;
-                        slide.data.slideTemplate = this.slideTypes[type].templates[template];
-                    }
-                });
+                // slideshow.slides.forEach((slide) => {
+                //     if (slide.data.slideTemplate) {
+                //         slide.data.slideTemplate = this.config.slideTypes[slide.data.slideType];
+                //     }
+                // });
                 return slideshow;
             },
             addSlide(slide) {
@@ -91,9 +87,6 @@
                 this.slides = this.slides.filter((slide) => {
                     return slide.id != removedSlide.id;
                 });
-            },
-            moveSlide(from, to) {
-                this.slides.splice(to, 0, this.slides.splice(from, 1)[0] );
             },
             updateSlide(updatedSlide) {
                 const index = this.slides.findIndex((slide) => {
@@ -111,26 +104,22 @@
                     });
             },
             getFormData(settings) {
-                let frames;
                 const formData = new FormData();
                 const narrationTrack = settings.narrationTrack;
                 const audioTrack = settings.audioTrack;
-                const videoDuration = this.slides.reduce(function (acc, slide) {
-                    frames = slide.data.slideTemplate.frames;
-                    // Is this not including the duration of the last slide's transition out?
-                    return acc + ((slide.data.duration || framesToSeconds(frames.total)) - framesToSeconds(frames.out));
-                }, 0);
+
                 formData.append('slideshowId', this.$route.params.id);
                 formData.append('title', this.slideshow.title);
                 formData.append('socket_id', this.$root.socket_id);
-                formData.append('fps', this.fps);
+                formData.append('fps', this.config.fps);
                 formData.append('slides', JSON.stringify(this.slides));
-                formData.append('videoDuration', videoDuration);
+                formData.append('videoDuration', this.videoDuration);
                 formData.append('preview', settings.isPreview);
                 formData.append('audioTrack', settings.audioTrack);
                 formData.append('audioTrackLevel', settings.audioTrackLevel);
                 formData.append('narrationTrackLevel', settings.narrationTrackLevel);
                 formData.append('theme', this.theme);
+                formData.append('format', this.format);
                 if (narrationTrack){
                     formData.append('narrationTrack', narrationTrack, narrationTrack.name);
                 }
