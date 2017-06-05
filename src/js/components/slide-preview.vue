@@ -74,7 +74,8 @@
                 this.reset();
             },
             imageSource(file) {
-                return '/exports/preview_' + this.previewId + '/' + file;
+                //return '/exports/preview_' + this.previewId + '/' + file;
+                return file;
             },
             fetchingPreview() {
                 this.loading = true;
