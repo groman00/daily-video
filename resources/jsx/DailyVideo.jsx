@@ -130,7 +130,7 @@ DailyVideo.prototype = {
         // bgLayer.moveToEnd();
 
         // Adjust work area
-        masterComp.workAreaDuration = currentPosition + UTILS.framesToSeconds(1); // AE seems to chop a frame off.  Add it back.
+        // masterComp.workAreaDuration = currentPosition + UTILS.framesToSeconds(1); // AE seems to chop a frame off.  Add it back.
     },
 
     /**
