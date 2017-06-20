@@ -57,7 +57,7 @@
                 this.$http.post(api.route('slideshows-move-slide'), {
                     slideshowId: this.slideshowId,
                     slideId: slide.id,
-                    index: (newIndex + 1) // index is 1 based, not 0
+                    index: newIndex
                 });
             }
         }
