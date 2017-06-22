@@ -19,7 +19,7 @@
                 this.loading = true;
                 this.$http.post(api.route('slideshows-add-slide'), { slideshow_id: this.slideshowId })
                     .then((response) => {
-                        this.eventHub.$emit('slide-added', response.body);
+                        this.eventHub.$emit('slide-added', response.body.slideshow, response.body.slide);
                     }, (response) => {
                         // console.log('error', response);
                     })

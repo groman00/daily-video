@@ -5,7 +5,7 @@
         <div v-if="slideshow" class="flex-columns flex-grow-1">
             <div class="panels-top flex-rows flex-grow-1">
                 <div class="panel-left">
-                    <video-editor :slideshowId="slideshow.id" :slides="slides" :config="config" :theme="theme" :format="format" @durationUpdated="durationUpdated"></video-editor>
+                    <video-editor :slideshowId="slideshow.id" :slides="slides" :config="config" :theme="theme" :format="format" @durationUpdated="durationUpdated" @slideMoved="moveSlide"></video-editor>
                 </div>
                 <div class="panel-right">
                     <slide-preview></slide-preview>
@@ -65,7 +65,8 @@
                     .then((response) => {
                         body = response.body;
                         this.config = body.config;
-                        this.slideshow = this.parseSlideshow(body.slideshow);
+                        // this.slideshow = this.parseSlideshow(body.slideshow);
+                        this.slideshow = body.slideshow;
                         this.slides = this.slideshow.slides;
                     }, (response) => {
                         // console.log('error', response);
@@ -80,8 +81,17 @@
                 // });
                 return slideshow;
             },
-            addSlide(slide) {
-                this.slides.push(slide);
+            addSlide(slideshow, slide) {
+                // *WORKAROUND*
+                // Amp api sometimes adds slides in the wrong position
+                // Do some logic here to make sure the newly added slide is in the correct
+                // position on the front end.
+                this.slides.splice(slideshow.slides.findIndex((s) => {
+                    return s.id === slide.id;
+                }), 0, slide);
+            },
+            moveSlide(from, to) {
+                this.slides.splice(to, 0, this.slides.splice(from, 1)[0] );
             },
             removeSlide(removedSlide) {
                 this.slides = this.slides.filter((slide) => {
@@ -95,7 +105,6 @@
                 this.$set(this.slides, index, Object.assign({}, this.slides[index], updatedSlide));
             },
             saveSlideshow() {
-                console.log(this.slideshow);
                 this.$http.post(api.route('slideshows-save'), this.slideshow)
                     .then((response) => {
                         console.log(response);
