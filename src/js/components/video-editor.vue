@@ -54,16 +54,15 @@
                 if (oldIndex === newIndex) {
                     return;
                 }
+                // Update slides array in parent
+                // todo: fix this component to have it's own copy of slides.  Mutating props is bad.
+                this.$emit('slideMoved', oldIndex, newIndex);
                 this.$http.post(api.route('slideshows-move-slide'), {
                         slideshowId: this.slideshowId,
                         slideId: slide.id,
                         index: newIndex
                     })
-                    .then((response) => {
-                        // Update slides array in parent
-                        // todo: fix this component to have it's own copy of slides.  Mutating props is bad.
-                        this.$emit('slideMoved', oldIndex, newIndex);
-                    });
+                    // .then((response) => {});
             }
         }
     }
