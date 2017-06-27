@@ -51,11 +51,17 @@ DailyVideo.prototype = {
     /**/
     addNarrationTrack: function () {
         var config = this.config;
-        var narrationTrack = project.importFile(new ImportOptions(File(config.narrationTrack)));
-        var level = config.narrationTrackLevel;
-        narrationTrack.parentFolder = this.videoFolder;
-        layer = this.masterComp.layers.add(narrationTrack, this.masterComp.workAreaDuration);
-        layer.audioLevels.setValue([level, level]);
+        var file = config.narration.file;
+        var track;
+        var level;
+        var layer;
+        if (file) {
+            track = project.importFile(new ImportOptions(File(file)));
+            level = config.narration.level;
+            track.parentFolder = this.videoFolder;
+            layer = this.masterComp.layers.add(track, this.masterComp.workAreaDuration);
+            layer.audioLevels.setValue([level, level]);
+        }
     },
 
     /**/

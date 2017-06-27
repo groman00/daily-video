@@ -109,9 +109,7 @@
                 isPlayingAudio: false,
                 isDisabled: false,
                 audioTrack: '',
-                audioTrackLevel: '0',
-                // narrationTrackLevel: '0',
-                // narrationTrack: ''
+                audioTrackLevel: '0'
             }
         },
         created() {
@@ -163,23 +161,12 @@
                 return {
                     audioTrack: this.audioTrack,
                     audioTrackLevel: this.audioTrackLevel,
-                    // narrationTrack: this.narrationTrack,
-                    // narrationTrackLevel: this.narrationTrackLevel,
                     isPreview: this.isPreview
                 };
             },
             audioPreview() {
                 this.isPlayingAudio = this.$refs.audioTrackPreview.paused;
             },
-            // updateNarrationTrackName() {
-            //     console.log(this.$refs.audio.files[0]);
-            //     this.narrationTrack = this.$refs.audio.files[0];
-            // },
-            // clearNarrationTrack() {
-            //     this.narrationTrack = '';
-            //     this.narrationTrackLevel = 0;
-            //     this.$refs.audio.value = '';
-            // },
             renderComplete() {
                 this.isDisabled = false;
             }

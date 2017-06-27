@@ -120,11 +120,10 @@
             },
             getFormData(settings) {
                 const formData = new FormData();
-                // const narrationTrack = settings.narrationTrack;
                 const audioTrack = settings.audioTrack;
 
                 formData.append('slideshowId', this.$route.params.id);
-                formData.append('slideshowData', this.slideshow.data);
+                formData.append('slideshowData', JSON.stringify(this.slideshow.data));
                 formData.append('title', this.slideshow.title);
                 formData.append('socket_id', this.$root.socket_id);
                 formData.append('fps', this.config.fps);
@@ -133,12 +132,8 @@
                 formData.append('preview', settings.isPreview);
                 formData.append('audioTrack', settings.audioTrack);
                 formData.append('audioTrackLevel', settings.audioTrackLevel);
-                // formData.append('narrationTrackLevel', settings.narrationTrackLevel);
                 formData.append('theme', this.theme);
                 formData.append('format', this.format);
-                // if (narrationTrack){
-                //     formData.append('narrationTrack', narrationTrack, narrationTrack.name);
-                // }
                 return formData;
             },
             renderProject(settings) {
