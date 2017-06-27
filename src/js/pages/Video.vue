@@ -37,15 +37,21 @@
             this.eventHub.$on('slide-added', this.addSlide);
             this.eventHub.$on('slide-removed', this.removeSlide);
             this.eventHub.$on('slide-updated', this.updateSlide);
+            this.eventHub.$on('slideshow-data-updated', this.dataUpdated);
         },
         beforeDestroy() {
             this.eventHub.$off('slide-added', this.addSlide);
             this.eventHub.$off('slide-removed', this.removeSlide);
             this.eventHub.$off('slide-updated', this.updateSlide);
+            this.eventHub.$off('slideshow-data-updated', this.dataUpdated);
         },
         methods: {
             titleUpdated(title) {
                 this.slideshow.title = title;
+                this.saveSlideshow();
+            },
+            dataUpdated(data) {
+                this.slideshow.data = Object.assign({}, this.slideshow.data, data);
                 this.saveSlideshow();
             },
             themeUpdated(theme) {
@@ -114,10 +120,11 @@
             },
             getFormData(settings) {
                 const formData = new FormData();
-                const narrationTrack = settings.narrationTrack;
+                // const narrationTrack = settings.narrationTrack;
                 const audioTrack = settings.audioTrack;
 
                 formData.append('slideshowId', this.$route.params.id);
+                formData.append('slideshowData', this.slideshow.data);
                 formData.append('title', this.slideshow.title);
                 formData.append('socket_id', this.$root.socket_id);
                 formData.append('fps', this.config.fps);
@@ -126,12 +133,12 @@
                 formData.append('preview', settings.isPreview);
                 formData.append('audioTrack', settings.audioTrack);
                 formData.append('audioTrackLevel', settings.audioTrackLevel);
-                formData.append('narrationTrackLevel', settings.narrationTrackLevel);
+                // formData.append('narrationTrackLevel', settings.narrationTrackLevel);
                 formData.append('theme', this.theme);
                 formData.append('format', this.format);
-                if (narrationTrack){
-                    formData.append('narrationTrack', narrationTrack, narrationTrack.name);
-                }
+                // if (narrationTrack){
+                //     formData.append('narrationTrack', narrationTrack, narrationTrack.name);
+                // }
                 return formData;
             },
             renderProject(settings) {

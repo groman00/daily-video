@@ -27,7 +27,7 @@
                 </div>
             </div>
             <div class="control control-right">
-                <narration-input class="control-body"/>
+                <narration-input class="control-body" :narrationData="slideshow.data ? slideshow.data.narration : {}"/>
             </div>
         </section>
         <section class="section section-export">
@@ -67,9 +67,6 @@
                 </div>
             </div>
         </section>
-        <!-- <div class="video-total-time">
-            Approx Duration: {{ formattedVideoDuration }}s
-        </div> -->
     </div>
 </template>
 <script>
@@ -113,8 +110,8 @@
                 isDisabled: false,
                 audioTrack: '',
                 audioTrackLevel: '0',
-                narrationTrackLevel: '0',
-                narrationTrack: ''
+                // narrationTrackLevel: '0',
+                // narrationTrack: ''
             }
         },
         created() {
@@ -166,26 +163,23 @@
                 return {
                     audioTrack: this.audioTrack,
                     audioTrackLevel: this.audioTrackLevel,
-                    narrationTrack: this.narrationTrack,
-                    narrationTrackLevel: this.narrationTrackLevel,
+                    // narrationTrack: this.narrationTrack,
+                    // narrationTrackLevel: this.narrationTrackLevel,
                     isPreview: this.isPreview
                 };
             },
-            // disableSubmit() {
-            //     this.isDisabled = true;
-            // },
             audioPreview() {
                 this.isPlayingAudio = this.$refs.audioTrackPreview.paused;
             },
-            updateNarrationTrackName() {
-                console.log(this.$refs.audio.files[0]);
-                this.narrationTrack = this.$refs.audio.files[0];
-            },
-            clearNarrationTrack() {
-                this.narrationTrack = '';
-                this.narrationTrackLevel = 0;
-                this.$refs.audio.value = '';
-            },
+            // updateNarrationTrackName() {
+            //     console.log(this.$refs.audio.files[0]);
+            //     this.narrationTrack = this.$refs.audio.files[0];
+            // },
+            // clearNarrationTrack() {
+            //     this.narrationTrack = '';
+            //     this.narrationTrackLevel = 0;
+            //     this.$refs.audio.value = '';
+            // },
             renderComplete() {
                 this.isDisabled = false;
             }
