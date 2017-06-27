@@ -3,10 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
+    "start": "nodemon ./bin/www",
     "build": "webpack --progress",
     "watch": "webpack --progress --watch",
-    "deploy": "webpack --progress && npm run start"
+    "deploy": "webpack --progress && forever --sourceDir=./ forever.json"
   },
   "dependencies": {
     "async": "^2.1.5",
@@ -20,6 +20,7 @@
     "dotenv": "^4.0.0",
     "express": "~4.11.1",
     "fluent-ffmpeg": "^2.1.2",
+    "forever": "^0.15.3",
     "is-plain-object": "^2.0.3",
     "jade": "~1.9.1",
     "lodash.pick": "^4.4.0",

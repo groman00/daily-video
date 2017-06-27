@@ -1,0 +1,5 @@
+{
+    "script": "./bin/www",
+    "outFile": "./logs/out.log",
+    "errFile": "./logs/err.log"
+}
