@@ -1,8 +1,8 @@
 function Effects() {
     this.dictionary = {
         0: 'noop',
-        1: 'panZoomIn',
-        2: 'panZoomOut',
+        1: 'panZoomOut',
+        2: 'panZoomIn'
     };
 }
 
@@ -38,7 +38,7 @@ Effects.prototype.panZoom = function (layer, duration, direction) {
     var f = rulesOfThirdsPoints[rdIdx];
     var deltaZoomPoint =  [f[0] * layer.width, f[1] * layer.height] - [layer.width/2, layer.height/2];
     var keyTimes = [panZoomStart, panZoomEnd];
-    var keyValues = direction === 'in' ? [ [150, 150], [100, 100] ] : [ [100, 100], [150, 150] ];
+    var keyValues = direction === 'in' ? [ [100, 100], [150, 150] ] : [ [150, 150], [100, 100] ];
 
     layer.anchorPoint.setValue(layer.anchorPoint.value + deltaZoomPoint);
     layer.position.setValue(layer.position.value + deltaZoomPoint);
