@@ -1,42 +1,11 @@
 require('../scss/main.scss');
+require('./components');
 
 import Vue from 'vue';
 import VueResource from 'vue-resource';
 import router from './routers/app';
 
-// Components
-import draggable from 'vuedraggable';
-import vueSlider from 'vue-slider-component';
-import appBar from './components/app-bar.vue';
-import thumbnail from './components/thumbnail.vue';
-import loadingIndicator from './components/loading-indicator.vue';
-import progressBar from './components/progress-bar.vue';
-import slidePreview from './components/slide-preview.vue';
-import videoEditor from './components/video-editor.vue';
-import videoEditorItem from './components/video-editor-item.vue';
-import videoToolbar from './components/video-toolbar.vue';
-import overlay from './components/overlay.vue';
-import slideNew from './components/slide-new.vue';
-import imageCropper from './components/image-cropper.vue';
-import videoUploader from './components/video-uploader.vue';
-
 const eventHub = Vue.prototype.eventHub = new Vue(); // Create a new instance of Vue to use as an event hub.
-
-// Register Components
-Vue.component('app-bar', appBar);
-Vue.component('thumbnail', thumbnail);
-Vue.component('loading-indicator', loadingIndicator);
-Vue.component('progress-bar', progressBar);
-Vue.component('slide-preview', slidePreview);
-Vue.component('video-editor', videoEditor);
-Vue.component('video-editor-item', videoEditorItem);
-Vue.component('video-toolbar', videoToolbar);
-Vue.component('overlay', overlay);
-Vue.component('slide-new', slideNew);
-Vue.component('image-cropper', imageCropper);
-Vue.component('video-uploader', videoUploader);
-Vue.component('vue-slider', vueSlider);
-Vue.component('draggable', draggable);
 
 Vue.use(VueResource);
 

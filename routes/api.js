@@ -94,6 +94,13 @@ router.post('/slideshows/video/upload', upload.single('file'), (req, res, next) 
 });
 
 /**
+ * POST: Upload audio
+ */
+router.post('/slideshows/audio/upload', upload.single('file'), (req, res, next) => {
+  slideshowController.audioUpload(req, res, next);
+});
+
+/**
  * GET: slideshow by id
  */
 router.get('/slideshows/:id', (req, res, next) => {

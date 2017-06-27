@@ -49,5 +49,10 @@
     }
     .control-body {
         padding: 50px 32px;
+        position: relative;
+
+        .loading-indicator {
+            margin-top: 50px;
+        }
     }
 }

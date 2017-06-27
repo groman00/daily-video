@@ -27,25 +27,7 @@
                 </div>
             </div>
             <div class="control control-right">
-                <div class="control-body">
-                    <h4 class="control-header">Narration</h4>
-                    <div class="form-control">
-                        <button v-show="narrationTrack" class="button button-blue" @click="clearNarrationTrack">
-                            Clear
-                        </button>
-                        <label v-show="!narrationTrack" class="button button-blue button-input">
-                            <input ref="audio" type="file" accept=".mp3" @change="updateNarrationTrackName">
-                            Select File
-                        </label>
-                    </div>
-                    <div class="form-control">
-                        <input type="range" min="-30" max="30" step="1" v-model="narrationTrackLevel">
-                        <span class="form-control-hint">Track Level: {{ narrationTrackLevel }}</span>
-                    </div>
-                    <div class="form-control">
-                        {{ narrationTrack.name }}
-                    </div>
-                </div>
+                <narration-input class="control-body"/>
             </div>
         </section>
         <section class="section section-export">
