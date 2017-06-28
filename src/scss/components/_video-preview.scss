@@ -1,25 +1,23 @@
 // Theme fonts
 @font-face {
     font-family: 'guardian-text-sans-bold';
-    src: url(/fonts/GuardianTextSans-Bold.otf);
+    src: url(https://s3.amazonaws.com/alpha-global-origin/daily-video/fonts/GuardianTextSans-Bold.otf);
 }
 
 @font-face {
     font-family: 'avenir-black';
-    src: url(/fonts/Avenir-Black.ttf);
+    src: url(https://s3.amazonaws.com/alpha-global-origin/daily-video/fonts/Avenir-Black.ttf);
 }
 
 @font-face {
     font-family: 'gill-sans-bold';
-    src: url(/fonts/GillSans-Bold.ttf);
+    src: url(https://s3.amazonaws.com/alpha-global-origin/daily-video/fonts/GillSans-Bold.ttf);
 }
 
 @font-face {
     font-family: 'proxima-nova-extrabold';
-    src: url(/fonts/ProximaNova-Extrabold.otf);
+    src: url(https://s3.amazonaws.com/alpha-global-origin/daily-video/fonts/ProximaNova-Extrabold.otf);
 }
-//
-
 
 .slide-preview {
     background: $black;
@@ -46,11 +44,12 @@
     width: 1920px;
     height: 1080px;
 
+    &
     .caption {
         margin-top: 0;
         margin-bottom: 0;
         width: 100%;
-        white-space: normal;
+        white-space: pre-wrap;
         position: absolute;
         width: 920px;
         overflow: visible;
@@ -73,13 +72,13 @@
     font-size: 50px;
     text-transform: uppercase;
     line-height: 60px;
-    letter-spacing: 1.5px;
+    // letter-spacing: 1.5px;
 }
 
 .text-AOLComms {
     font-family: 'tk-niveau-grotesk-n5';
     font-size: 50px;
-    letter-spacing: .5px;
+    // letter-spacing: .5px;
 }
 
 .text-HuffingtonPost {
@@ -105,7 +104,7 @@
     font-family: 'tk-proxima-soft-n7';
     font-size: 60px;
     text-transform: uppercase;
-    letter-spacing: .5px;
+    // letter-spacing: .5px;
 }
 
 $padding: 100px;

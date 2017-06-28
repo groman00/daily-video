@@ -11,17 +11,15 @@
     </div>
 </template>
 <script>
-    var doc = document;
-    var win = window;
-
     export default {
         props: ['format', 'theme'],
         data() {
             return {
                 loading: false,
                 src: null,
-                isStatic: true,
+                isStatic: false,
                 textAlignment: 7,
+                slideType: 'image',
                 activeSlide: {}
             }
         },
@@ -41,9 +39,10 @@
         },
         computed: {
             staticStyle() {
-                if (this.activeSlide.id) {
+                const slide = this.activeSlide;
+                if (slide.id) {
                     return {
-                        backgroundImage: 'url(' + this.activeSlide.image_url_thumb + ')',
+                        backgroundImage: (this.slideType === 'image') ? 'url(' + slide.image_url_thumb + ')' : 'linear-gradient(45deg, #999, #000)',
                         transform: 'scale(' + this.getStaticPreviewScale() + ')'
                     };
                 }
@@ -58,17 +57,23 @@
                 this.loading = false;
             },
             playPreview(preview) {
-                const video = this.$refs.video;
+                this.isStatic = false;
                 this.src = preview.file;
                 this.loading = false;
                 this.$nextTick(() => {
-                    video.currentTime = 0;
-                    video.play();
+                    this.$refs.video.currentTime = 0;
+                    this.$refs.video.play();
                 });
             },
             updateStaticPreview(slide) {
-                this.activeSlide = slide;
-                this.textAlignment = slide.data.textAlignment;
+                if (['image', 'video'].indexOf(slide.data.slideType) > -1 && !this.loading) {
+                    this.isStatic = true;
+                    this.activeSlide = slide;
+                    this.textAlignment = slide.data.textAlignment;
+                    this.slideType = slide.data.slideType;
+                } else {
+                    this.isStatic = false;
+                }
             },
             getStaticPreviewScale() {
                 const container = this.$refs.container;

@@ -103,12 +103,14 @@
             this.eventHub.$on('fetching-preview', this.setDisabled);
             this.$root.socket.on('preview-ready', this.previewReady);
             this.$root.socket.on('preview-error', this.setEnabled);
+            this.$root.socket.on('jobError', this.setEnabled);
         },
         beforeDestroy() {
             this.eventHub.$off('fetching-preview', this.setDisabled);
             try {
                 this.$root.socket.off('preview-ready', this.previewReady);
                 this.$root.socket.off('preview-error', this.setEnabled);
+                this.$root.socket.off('jobError', this.setEnabled);
             } catch (e) {}
         },
         watch: {
@@ -213,6 +215,10 @@
             },
             setDisabled() {
                 this.isDisabled = true;
+            },
+            setEnabled() {
+                this.isDisabled = false;
+                this.hasPreview = false;
             },
             itemUpdated(save = true) {
                 this.hasPreview = false;
