@@ -1,3 +1,26 @@
+// Theme fonts
+@font-face {
+    font-family: 'guardian-text-sans-bold';
+    src: url(/fonts/GuardianTextSans-Bold.otf);
+}
+
+@font-face {
+    font-family: 'avenir-black';
+    src: url(/fonts/Avenir-Black.ttf);
+}
+
+@font-face {
+    font-family: 'gill-sans-bold';
+    src: url(/fonts/GillSans-Bold.ttf);
+}
+
+@font-face {
+    font-family: 'proxima-nova-extrabold';
+    src: url(/fonts/ProximaNova-Extrabold.otf);
+}
+//
+
+
 .slide-preview {
     background: $black;
     position: relative;
@@ -11,4 +34,114 @@
         height: 100%;
         width: 100%;
     }
+}
+
+.slide-preview-static {
+    // padding-bottom: 56.25%;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 1920px;
+    height: 1080px;
+
+    .caption {
+        margin-top: 0;
+        margin-bottom: 0;
+        width: 100%;
+        white-space: normal;
+        position: absolute;
+        width: 920px;
+        overflow: visible;
+        color: $white;
+        background-color: rgba(0, 0, 0, .65);
+    }
+}
+
+.slide-preview-square {
+
+    .slide-preview-static {
+        background-size: auto 100%;
+        // padding-bottom: 100%;
+        width: 1080px;
+    }
+}
+
+.text-AOL {
+    font-family: 'gill-sans-bold';
+    font-size: 50px;
+    text-transform: uppercase;
+    line-height: 60px;
+    letter-spacing: 1.5px;
+}
+
+.text-AOLComms {
+    font-family: 'tk-niveau-grotesk-n5';
+    font-size: 50px;
+    letter-spacing: .5px;
+}
+
+.text-HuffingtonPost {
+    font-family: 'proxima-nova-extrabold';
+    font-size: 50px;
+    text-transform: uppercase;
+}
+
+.text-Moviefone {
+    font-family: 'avenir-black';
+    font-size: 45px;
+    text-transform: uppercase;
+}
+
+.text-Engadget {
+    font-family: 'guardian-text-sans-bold';
+    font-size: 55px;
+    letter-spacing: 1.5px;
+    line-height: 80px;
+}
+
+.text-Alpha {
+    font-family: 'tk-proxima-soft-n7';
+    font-size: 60px;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+
+$padding: 100px;
+
+.text-alignment-0,
+.text-alignment-3,
+.text-alignment-6 {
+    left: $padding;
+}
+
+.text-alignment-1,
+.text-alignment-4,
+.text-alignment-7 {
+    left: 50%;
+    margin-left: -460px;
+}
+
+.text-alignment-2,
+.text-alignment-5,
+.text-alignment-8 {
+    right: $padding;
+}
+
+.text-alignment-0,
+.text-alignment-1,
+.text-alignment-2 {
+    top: $padding * 2.5;
+}
+
+.text-alignment-3,
+.text-alignment-4,
+.text-alignment-5 {
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.text-alignment-6,
+.text-alignment-7,
+.text-alignment-8 {
+    bottom: $padding * 2;
 }

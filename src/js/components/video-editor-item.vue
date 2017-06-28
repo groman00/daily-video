@@ -40,7 +40,7 @@
             <input v-model="slide.title" placeholder="Add a title" :value="slide.title" type="text" @change="itemUpdated">
         </div>
         <div v-if="hasFields('caption')" class="form-control">
-            <textarea v-model="slide.caption" placeholder="Add a caption" @change="itemUpdated">
+            <textarea v-model="slide.caption" placeholder="Add a caption" @change="itemUpdated" @focus="emitActiveSlideUpdated()">
                 {{ slide.caption }}
             </textarea>
         </div>
@@ -106,8 +106,10 @@
         },
         beforeDestroy() {
             this.eventHub.$off('fetching-preview', this.setDisabled);
-            this.$root.socket.off('preview-ready', this.previewReady);
-            this.$root.socket.off('preview-error', this.setEnabled);
+            try {
+                this.$root.socket.off('preview-ready', this.previewReady);
+                this.$root.socket.off('preview-error', this.setEnabled);
+            } catch (e) {}
         },
         watch: {
             slide() {
@@ -125,6 +127,12 @@
                     this.slide.data.duration = 1;
                     return;
                 }
+            },
+            'slide.caption'(caption) {
+                this.emitActiveSlideUpdated()
+            },
+            'slide.data.textAlignment'() {
+                this.emitActiveSlideUpdated()
             },
             format() {
                 this.itemUpdated(false);
@@ -234,6 +242,9 @@
                         this.eventHub.$emit('slide-removed', this.slide);
                         this.isDisabled = false;
                     });
+            },
+            emitActiveSlideUpdated() {
+                this.eventHub.$emit('active-slide-updated', this.slide);
             }
         }
     }

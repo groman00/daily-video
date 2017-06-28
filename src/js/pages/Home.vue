@@ -91,7 +91,6 @@
             setPages(total) {
                 let pages = fillIndexedArray(total + 1);
                 pages.shift();
-                console.log(pages);
                 this.pages = pages;
             },
             createNew() {

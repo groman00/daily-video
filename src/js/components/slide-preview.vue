@@ -1,9 +1,12 @@
 <style scoped></style>
 <template>
-    <div class="slide-preview">
+    <div class="slide-preview" :class="'slide-preview-' + format">
         <loading-indicator v-if="loading"></loading-indicator>
-        <div v-show="!loading && src" class="slide-preview-container">
-            <video class="video" ref="video" controls playsinline preload="none" :src="src"></video>
+        <div v-show="!loading" class="slide-preview-container">
+            <div v-if="isStatic" class="slide-preview-static" :style="staticStyle">
+                <pre class="caption" :class="['text-' + theme, 'text-alignment-' + textAlignment]">{{ activeSlide.caption }}</pre>
+            </div>
+            <video v-else class="video" ref="video" controls playsinline preload="none" :src="src"></video>
         </div>
     </div>
 </template>
@@ -12,21 +15,37 @@
     var win = window;
 
     export default {
+        props: ['format', 'theme'],
         data() {
             return {
                 loading: false,
-                src: null
+                src: null,
+                isStatic: true,
+                textAlignment: 7,
+                activeSlide: {}
             }
         },
         created() {
             this.eventHub.$on('fetching-preview', this.fetchingPreview);
             this.eventHub.$on('play-preview', this.playPreview);
+            this.eventHub.$on('active-slide-updated', this.updateStaticPreview);
             this.$root.socket.on('preview-error', this.previewError);
         },
         beforeDestroy() {
             this.eventHub.$off('fetching-preview', this.fetchingPreview);
             this.eventHub.$off('play-preview', this.playPreview);
-            this.$root.socket.off('preview-error', this.previewError);
+            this.eventHub.$off('active-slide-updated', this.updateStaticPreview);
+            try {
+                this.$root.socket.off('preview-error', this.previewError);
+            } catch (e) {}
+        },
+        computed: {
+            staticStyle() {
+                if (this.activeSlide.image_url_thumb) {
+                    return { backgroundImage: 'url(' + this.activeSlide.image_url_thumb + ')' };
+                }
+                return '';
+            }
         },
         methods: {
             fetchingPreview() {
@@ -43,6 +62,10 @@
                     video.currentTime = 0;
                     video.play();
                 });
+            },
+            updateStaticPreview(slide) {
+                this.activeSlide = slide;
+                this.textAlignment = slide.data.textAlignment;
             }
         }
     }
