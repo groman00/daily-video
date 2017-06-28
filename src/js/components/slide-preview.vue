@@ -2,7 +2,7 @@
 <template>
     <div class="slide-preview" :class="'slide-preview-' + format">
         <loading-indicator v-if="loading"></loading-indicator>
-        <div v-show="!loading" class="slide-preview-container">
+        <div v-show="!loading" class="slide-preview-container" ref="container">
             <div v-if="isStatic" class="slide-preview-static" :style="staticStyle">
                 <pre class="caption" :class="['text-' + theme, 'text-alignment-' + textAlignment]">{{ activeSlide.caption }}</pre>
             </div>
@@ -41,8 +41,11 @@
         },
         computed: {
             staticStyle() {
-                if (this.activeSlide.image_url_thumb) {
-                    return { backgroundImage: 'url(' + this.activeSlide.image_url_thumb + ')' };
+                if (this.activeSlide.id) {
+                    return {
+                        backgroundImage: 'url(' + this.activeSlide.image_url_thumb + ')',
+                        transform: 'scale(' + this.getStaticPreviewScale() + ')'
+                    };
                 }
                 return '';
             }
@@ -66,6 +69,15 @@
             updateStaticPreview(slide) {
                 this.activeSlide = slide;
                 this.textAlignment = slide.data.textAlignment;
+            },
+            getStaticPreviewScale() {
+                const container = this.$refs.container;
+                const height = container.offsetHeight;
+                const width = container.offsetWidth;
+                if (this.format === 'square') {
+                    return (width > height ? height : width) / 1080;
+                }
+                return width / 1920;
             }
         }
     }

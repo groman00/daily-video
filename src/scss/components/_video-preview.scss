@@ -38,9 +38,11 @@
 
 .slide-preview-static {
     // padding-bottom: 56.25%;
+    position: absolute;
     background-position: center;
     background-size: contain;
     background-repeat: no-repeat;
+    transform-origin: 0 0;
     width: 1920px;
     height: 1080px;
 
