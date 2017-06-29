@@ -56,6 +56,45 @@ $border_radius: 5px;
     }
 }
 
+.button-grey {
+    background-color: $grey-dark;
+    color: $white;
+
+    &:hover:enabled,
+    &:active:enabled,
+    &:focus:enabled {
+        background-color: $grey-darker;
+    }
+}
+
+.button-arrow-vertical {
+    background-color: $grey-dark;
+    color: $white;
+
+    &:hover:enabled,
+    &:active:enabled,
+    &:focus:enabled {
+        background-color: $grey-darker;
+    }
+
+    &:before {
+        content: '';
+        display: inline-block;
+        height: 0;
+        width: 0;
+        border-width: 8px;
+        border-style: solid;
+        border-color: transparent;
+        border-top-color: $hot-blue;
+        transition: transform .3s ease-in-out;
+        transform: rotate(0) translateY(50%);
+    }
+
+    &.up:before {
+        transform: rotate(180deg) translateY(0);
+    }
+}
+
 .button-danger {
     background-color: $danger;
     color: $white;
