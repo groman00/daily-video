@@ -133,9 +133,6 @@
             'slide.caption'(caption) {
                 this.emitActiveSlideUpdated()
             },
-            'slide.data.textAlignment'() {
-                this.emitActiveSlideUpdated()
-            },
             format() {
                 this.itemUpdated(false);
             },
@@ -224,6 +221,7 @@
                 this.hasPreview = false;
                 if (save) {
                     this.saveSlide();
+                    this.emitActiveSlideUpdated()
                 }
             },
             slideTypeUpdated() {
