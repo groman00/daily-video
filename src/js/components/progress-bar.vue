@@ -47,9 +47,11 @@
             this.$root.socket.on('jobError', this.showError);
         },
         beforeDestroy() {
-            this.$root.socket.off('progress', this.showProgress);
-            this.$root.socket.off('complete', this.showComplete);
-            this.$root.socket.off('jobError', this.showError);
+            try {
+                this.$root.socket.off('progress', this.showProgress);
+                this.$root.socket.off('complete', this.showComplete);
+                this.$root.socket.off('jobError', this.showError);
+            } catch (e) {}
         },
         methods: {
             showProgress(data) {

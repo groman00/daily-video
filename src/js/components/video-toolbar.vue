@@ -1,6 +1,6 @@
 <style scoped></style>
 <template>
-    <div class="video-toolbar">
+    <div class="video-toolbar" :class="{ 'minimized': isMinimized }">
         <section class="section section-sound clearfix">
             <div class="section-header">Sound</div>
             <div class="control control-left">
@@ -33,7 +33,8 @@
         <section class="section section-export">
             <div class="section-header">
                 export
-                <span class="pull-right text-transform-none">Approx Duration: {{ formattedVideoDuration }}s</span>
+                <button class="section-header-item pull-right button button-arrow-vertical" :class="{ 'up': isMinimized }" @click="toggleMinimize"></button>
+                <span class="section-header-item pull-right text-transform-none">Approx Duration: {{ formattedVideoDuration }}s</span>
             </div>
             <div class="control">
                 <div class="control-body">
@@ -109,7 +110,8 @@
                 isPlayingAudio: false,
                 isDisabled: false,
                 audioTrack: '',
-                audioTrackLevel: '0'
+                audioTrackLevel: '0',
+                isMinimized: false
             }
         },
         created() {
@@ -141,7 +143,8 @@
             slideshow() {
                 this.audioTrack = this.slideshow.audioTrack || '';
                 this.audioTrackLevel = this.slideshow.audioTrackLevel || '0';
-            }
+            },
+            isMinimized(bool) {}
         },
         methods: {
             themeUpdated(theme) {
@@ -169,6 +172,9 @@
             },
             renderComplete() {
                 this.isDisabled = false;
+            },
+            toggleMinimize() {
+                this.isMinimized = !this.isMinimized;
             }
         }
     }

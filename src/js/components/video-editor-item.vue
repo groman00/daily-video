@@ -40,7 +40,7 @@
             <input v-model="slide.title" placeholder="Add a title" :value="slide.title" type="text" @change="itemUpdated">
         </div>
         <div v-if="hasFields('caption')" class="form-control">
-            <textarea v-model="slide.caption" placeholder="Add a caption" @change="itemUpdated">
+            <textarea v-model="slide.caption" placeholder="Add a caption" @change="itemUpdated" @focus="emitActiveSlideUpdated()">
                 {{ slide.caption }}
             </textarea>
         </div>
@@ -103,11 +103,15 @@
             this.eventHub.$on('fetching-preview', this.setDisabled);
             this.$root.socket.on('preview-ready', this.previewReady);
             this.$root.socket.on('preview-error', this.setEnabled);
+            this.$root.socket.on('jobError', this.setEnabled);
         },
         beforeDestroy() {
             this.eventHub.$off('fetching-preview', this.setDisabled);
-            this.$root.socket.off('preview-ready', this.previewReady);
-            this.$root.socket.off('preview-error', this.setEnabled);
+            try {
+                this.$root.socket.off('preview-ready', this.previewReady);
+                this.$root.socket.off('preview-error', this.setEnabled);
+                this.$root.socket.off('jobError', this.setEnabled);
+            } catch (e) {}
         },
         watch: {
             slide() {
@@ -125,6 +129,9 @@
                     this.slide.data.duration = 1;
                     return;
                 }
+            },
+            'slide.caption'(caption) {
+                this.emitActiveSlideUpdated()
             },
             format() {
                 this.itemUpdated(false);
@@ -206,10 +213,15 @@
             setDisabled() {
                 this.isDisabled = true;
             },
+            setEnabled() {
+                this.isDisabled = false;
+                this.hasPreview = false;
+            },
             itemUpdated(save = true) {
                 this.hasPreview = false;
                 if (save) {
                     this.saveSlide();
+                    this.emitActiveSlideUpdated()
                 }
             },
             slideTypeUpdated() {
@@ -234,6 +246,9 @@
                         this.eventHub.$emit('slide-removed', this.slide);
                         this.isDisabled = false;
                     });
+            },
+            emitActiveSlideUpdated() {
+                this.eventHub.$emit('active-slide-updated', this.slide);
             }
         }
     }
