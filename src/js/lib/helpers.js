@@ -1,3 +1,5 @@
+import Cookie from 'js-cookie';
+
 const fps = 29.97;
 
 export function framesToSeconds(frames) {
@@ -10,4 +12,12 @@ export function formatSeconds(seconds) {
 
 export function fillIndexedArray(length) {
     return [...Array(length).keys()];
+}
+
+export function setCookie(name, value = '', expires = {}) {
+    Cookie.set(name, value, expires);
+}
+
+export function getCookie(name) {
+    return Cookie.get(name);
 }

@@ -49,7 +49,8 @@
                         </div>
                         <div class="pull-right" style="width:48%;">
                             <label>Format</label>
-                            <select style="margin-top:6px;" @change="formatUpdated($event.target.value)">
+                            <!-- <select style="margin-top:6px;" @change="formatUpdated($event.target.value)"> -->
+                            <select style="margin-top:6px;" v-model="format">
                                 <option v-for="f in formats" :value="f">
                                     {{ f }}
                                 </option>
@@ -71,7 +72,10 @@
     </div>
 </template>
 <script>
-    import { formatSeconds } from '../lib/helpers';
+    import { formatSeconds, getCookie, setCookie } from '../lib/helpers';
+
+    const themeCookie = 'video-theme';
+    const formatCookie = 'video-format';
 
     export default {
         props: {
@@ -106,6 +110,7 @@
             return {
                 theme: '',
                 formats: ['square', 'landscape'],
+                format: 'square',
                 isPreview: true,
                 isPlayingAudio: false,
                 isDisabled: false,
@@ -116,6 +121,7 @@
         },
         created() {
             this.eventHub.$on('render-complete', this.renderComplete);
+            this.format = getCookie(formatCookie) || this.format;
         },
         beforeDestroy() {
             this.eventHub.$off('render-complete', this.renderComplete);
@@ -127,7 +133,7 @@
         },
         watch: {
             themes(themesObj) {
-                this.theme = Object.keys(themesObj)[0];
+                this.theme = getCookie(themeCookie) || Object.keys(themesObj)[0];
                 this.themeUpdated(this.theme);
             },
             audioTrack() {
@@ -144,14 +150,15 @@
                 this.audioTrack = this.slideshow.audioTrack || '';
                 this.audioTrackLevel = this.slideshow.audioTrackLevel || '0';
             },
-            isMinimized(bool) {}
+            format(value) {
+                this.$emit('formatUpdated', value);
+                setCookie(formatCookie, value);
+            }
         },
         methods: {
             themeUpdated(theme) {
                 this.$emit('themeUpdated', theme);
-            },
-            formatUpdated(format) {
-                this.$emit('formatUpdated', format);
+                setCookie(themeCookie, theme);
             },
             submit() {
                 this.isDisabled = true;

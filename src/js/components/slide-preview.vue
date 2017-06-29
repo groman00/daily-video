@@ -6,7 +6,7 @@
             <div v-if="isStatic" class="slide-preview-static" :style="staticStyle">
                 <pre class="caption" :class="['text-' + theme, 'text-alignment-' + textAlignment]">{{ activeSlide.caption }}</pre>
             </div>
-            <video v-else class="video" ref="video" controls playsinline muted preload="none" :src="src"></video>
+            <video v-show="!isStatic" class="video" ref="video" controls playsinline muted preload="none" :src="src"></video>
         </div>
     </div>
 </template>
