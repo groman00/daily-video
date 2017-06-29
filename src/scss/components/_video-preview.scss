@@ -23,6 +23,8 @@
     background: $black;
     position: relative;
 
+    @include cover-parent(absolute);
+
     .slide-preview-container {
         position: relative;
         height: 100%;
@@ -35,7 +37,6 @@
 }
 
 .slide-preview-static {
-    // padding-bottom: 56.25%;
     position: absolute;
     background-position: center;
     background-size: contain;
@@ -62,7 +63,6 @@
 
     .slide-preview-static {
         background-size: auto 100%;
-        // padding-bottom: 100%;
         width: 1080px;
     }
 }
@@ -72,13 +72,11 @@
     font-size: 50px;
     text-transform: uppercase;
     line-height: 60px;
-    // letter-spacing: 1.5px;
 }
 
 .text-AOLComms {
     font-family: 'tk-niveau-grotesk-n5';
     font-size: 50px;
-    // letter-spacing: .5px;
 }
 
 .text-HuffingtonPost {
@@ -104,7 +102,6 @@
     font-family: 'tk-proxima-soft-n7';
     font-size: 60px;
     text-transform: uppercase;
-    // letter-spacing: .5px;
 }
 
 $padding: 100px;

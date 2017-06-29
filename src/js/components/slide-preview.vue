@@ -6,7 +6,7 @@
             <div v-if="isStatic" class="slide-preview-static" :style="staticStyle">
                 <pre class="caption" :class="['text-' + theme, 'text-alignment-' + textAlignment]">{{ activeSlide.caption }}</pre>
             </div>
-            <video v-else class="video" ref="video" controls playsinline preload="none" :src="src"></video>
+            <video v-else class="video" ref="video" controls playsinline muted preload="none" :src="src"></video>
         </div>
     </div>
 </template>
@@ -57,11 +57,14 @@
                 this.loading = false;
             },
             playPreview(preview) {
+                const video = this.$refs.video;
                 this.isStatic = false;
                 this.src = preview.file;
                 this.loading = false;
+                video.autoplay = false;
                 this.$nextTick(() => {
-                    this.$refs.video.currentTime = 0;
+                    video.currentTime = 0;
+                    video.autoplay = true; // Fixes safari not autoplaying
                     this.$refs.video.play();
                 });
             },

@@ -38,7 +38,7 @@ body,
 
 .flex-rows {
     display: flex;
-    flex-flow: row wrap;
+    flex-flow: row;
     align-items: stretch;
 }
 
@@ -64,8 +64,10 @@ body,
 
     .panel-left {
         flex: 0 0 55%;
+        overflow-y: auto;
     }
     .panel-right {
+        position: relative;
         flex: 0 0 45%;
     }
 
