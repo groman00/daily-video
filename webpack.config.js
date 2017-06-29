@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 // var OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const pkg = require('./package.json');
 
 const src = {
     js: './src/js'
@@ -31,6 +32,9 @@ module.exports = {
             filename: '../css/style.css',
             disable: false,
             allChunks: true
+        }),
+        new webpack.DefinePlugin({
+            __VERSION__: JSON.stringify(pkg.version)
         })
     ],
     resolve: {

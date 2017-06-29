@@ -13,8 +13,12 @@ Vue.use(VueResource);
     router,
     created() {
         this.socket = io();
-        this.socket.on('register', (id) => {
+        this.socket.on('register', (id, version) => {
             console.log('registering new socket id');
+            if (__VERSION__ !== version) {
+                alert('New Version Available!');
+                window.location.reload();
+            }
             this.socket_id = id;
         });
     }
