@@ -11,3 +11,6 @@ netsh interface portproxy show all
 
 // How to allow port 80 through Windows Firewall
 https://www.youtube.com/watch?v=oxY81uM3yzs
+
+// Kill nodejs processes windows
+taskkill /F /IM node.exe
