@@ -27,12 +27,14 @@
             this.eventHub.$on('fetching-preview', this.fetchingPreview);
             this.eventHub.$on('play-preview', this.playPreview);
             this.eventHub.$on('active-slide-updated', this.updateStaticPreview);
+            this.eventHub.$on('preview-error', this.previewError);
             this.$root.socket.on('preview-error', this.previewError);
         },
         beforeDestroy() {
             this.eventHub.$off('fetching-preview', this.fetchingPreview);
             this.eventHub.$off('play-preview', this.playPreview);
             this.eventHub.$off('active-slide-updated', this.updateStaticPreview);
+            this.eventHub.$off('preview-error', this.previewError);
             try {
                 this.$root.socket.off('preview-error', this.previewError);
             } catch (e) {}
@@ -55,6 +57,7 @@
             },
             previewError() {
                 this.loading = false;
+                alert('Error generating preview. Please try again.');
             },
             playPreview(preview) {
                 const video = this.$refs.video;
