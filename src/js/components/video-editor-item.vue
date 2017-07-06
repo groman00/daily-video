@@ -101,18 +101,18 @@
         created() {
             this.initSlide();
             this.eventHub.$on('fetching-preview', this.setDisabled);
-            this.eventHub.$on('preview-error', this.setEnabled);
+            // this.eventHub.$on('preview-error', this.setEnabled);
             this.$root.socket.on('preview-ready', this.previewReady);
-            this.$root.socket.on('preview-error', this.setEnabled);
-            this.$root.socket.on('jobError', this.setEnabled);
+            this.$root.socket.on('preview-error', this.previewError);
+            // this.$root.socket.on('jobError', this.setEnabled);
         },
         beforeDestroy() {
             this.eventHub.$off('fetching-preview', this.setDisabled);
-            this.eventHub.$off('preview-error', this.setEnabled);
+            // this.eventHub.$off('preview-error', this.setEnabled);
             try {
                 this.$root.socket.off('preview-ready', this.previewReady);
-                this.$root.socket.off('preview-error', this.setEnabled);
-                this.$root.socket.off('jobError', this.setEnabled);
+                this.$root.socket.off('preview-error', this.previewError);
+                // this.$root.socket.off('jobError', this.setEnabled);
             } catch (e) {}
         },
         watch: {
@@ -204,7 +204,7 @@
                         this.hasPreview = true;
                     })
                     .catch(e => {
-                        this.eventHub.$emit('preview-error');
+                        this.previewError();
                     });
             },
             previewReady(preview) {
@@ -220,9 +220,10 @@
             setDisabled() {
                 this.isDisabled = true;
             },
-            setEnabled() {
+            previewError() {
                 this.isDisabled = false;
                 this.hasPreview = false;
+                this.eventHub.$emit('preview-error');
             },
             itemUpdated(save = true) {
                 this.hasPreview = false;
