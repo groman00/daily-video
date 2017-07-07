@@ -121,10 +121,12 @@
         },
         created() {
             this.eventHub.$on('render-complete', this.renderComplete);
+            this.eventHub.$on('project-error', this.renderComplete);
             this.format = getCookie(formatCookie) || this.format;
         },
         beforeDestroy() {
             this.eventHub.$off('render-complete', this.renderComplete);
+            this.eventHub.$off('project-error', this.renderComplete);
         },
         computed: {
             formattedVideoDuration() {

@@ -26,126 +26,126 @@ const upload = multer({
 /**
  * GET: List available slideshows
  */
-router.get('/slideshows/page/:page', (req, res, next) => {
-  slideshowController.all(req, res, next);
+router.get('/slideshows/page/:page', (req, res) => {
+  slideshowController.all(req, res);
 });
 
 /**
  * POST: Create a new slideshow
  */
-router.post('/slideshows/create', [amp.authenticate], (req, res, next) => {
-  slideshowController.create(req, res, next);
+router.post('/slideshows/create', [amp.authenticate], (req, res) => {
+  slideshowController.create(req, res);
 });
 
 /**
  * POST: Save a slideshow
  */
-router.post('/slideshows/save', [amp.authenticate], (req, res, next) => {
-  slideshowController.save(req, res, next);
+router.post('/slideshows/save', [amp.authenticate], (req, res) => {
+  slideshowController.save(req, res);
 });
 
 /**
  * POST: Save a slideshow
  */
-router.post('/slideshows/dims-image', (req, res, next) => {
+router.post('/slideshows/dims-image', (req, res) => {
   res.send(slideshowController.getImagesFromDims(req.body.image, req.body.type));
 });
 
 /**
  * POST: Create a new slide
  */
-router.post('/slideshows/slide/add', [amp.authenticate], (req, res, next) => {
-  slideshowController.addSlide(req, res, next);
+router.post('/slideshows/slide/add', [amp.authenticate], (req, res) => {
+  slideshowController.addSlide(req, res);
 });
 
 /**
  * POST: Save a slide
  */
-router.post('/slideshows/slide/save', [amp.authenticate], (req, res, next) => {
-  slideshowController.saveSlide(req, res, next);
+router.post('/slideshows/slide/save', [amp.authenticate], (req, res) => {
+  slideshowController.saveSlide(req, res);
 });
 
 /**
  * POST: Delete a slide
  */
-router.post('/slideshows/slide/delete', [amp.authenticate], (req, res, next) => {
-  slideshowController.deleteSlide(req, res, next);
+router.post('/slideshows/slide/delete', [amp.authenticate], (req, res) => {
+  slideshowController.deleteSlide(req, res);
 });
 
 /**
  * POST: Move a slide
  */
-router.post('/slideshows/slide/move', [amp.authenticate], (req, res, next) => {
-  slideshowController.moveSlide(req, res, next);
+router.post('/slideshows/slide/move', [amp.authenticate], (req, res) => {
+  slideshowController.moveSlide(req, res);
 });
 
 /**
  * POST: Upload image and generate crop url
  */
-router.post('/slideshows/image/upload', upload.single('file'), (req, res, next) => {
-  slideshowController.imageUpload(req, res, next);
+router.post('/slideshows/image/upload', upload.single('file'), (req, res) => {
+  slideshowController.imageUpload(req, res);
 });
 
 /**
  * POST: Upload video
  */
-router.post('/slideshows/video/upload', upload.single('file'), (req, res, next) => {
-  slideshowController.videoUpload(req, res, next);
+router.post('/slideshows/video/upload', upload.single('file'), (req, res) => {
+  slideshowController.videoUpload(req, res);
 });
 
 /**
  * POST: Upload audio
  */
-router.post('/slideshows/audio/upload', upload.single('file'), (req, res, next) => {
-  slideshowController.audioUpload(req, res, next);
+router.post('/slideshows/audio/upload', upload.single('file'), (req, res) => {
+  slideshowController.audioUpload(req, res);
 });
 
 /**
  * GET: slideshow by id
  */
-router.get('/slideshows/:id', (req, res, next) => {
-  slideshowController.one(req, res, next);
+router.get('/slideshows/:id', (req, res) => {
+  slideshowController.one(req, res);
 });
 
 /**
  * POST: Generate preview from slide data
  */
-router.post('/preview-slide', (req, res, next) => {
-  previewController.render(req, res, next);
+router.post('/preview-slide', (req, res) => {
+  previewController.render(req, res);
 });
 
 /**
  * POST: Render project to video
  */
-router.post('/render-project', upload.single('narrationTrack'), (req, res, next) => {
-  projectController.render(req, res, next);
+router.post('/render-project', upload.single('narrationTrack'), (req, res) => {
+  projectController.render(req, res);
 });
 
 /**
  * POST: Save project data
  */
-router.post('/save-project', upload.single('narrationTrack'), (req, res, next) => {
-  projectController.save(req, res, next);
+router.post('/save-project', upload.single('narrationTrack'), (req, res) => {
+  projectController.save(req, res);
 });
 
 /**
  * POST: Upload video to Vidible
  */
-router.post('/vidible-upload', (req, res, next) => {
-  vidibleController.upload(req, res, next);
+router.post('/vidible-upload', (req, res) => {
+  vidibleController.upload(req, res);
 });
 
 /**
  * GET: List company videos from Vidible
  */
-router.get('/vidible-uploads', (req, res, next) => {
-  vidibleController.search(req, res, next);
+router.get('/vidible-uploads', (req, res) => {
+  vidibleController.search(req, res);
 });
 
 /**
  * Catchall
  */
-router.get('/*', (req, res, next) => {
+router.get('/*', (req, res) => {
   res.send({
     error: 'service not found'
   });

@@ -2,7 +2,15 @@
 <template>
     <div class="video-page page-wrapper">
         <app-bar :config="{ buttonLeft: 'back', dynamicTitle: true, title: slideshow.title }" @titleUpdated="titleUpdated"></app-bar>
-        <div v-if="slideshow" class="flex-columns flex-grow-1">
+        <div v-if="hasError" class="grid text-center">
+            <div class="cell-m-12">
+                <h1>An Error Occurred</h1>
+            </div>
+            <div class="cell-m-12">
+                <button class="button button-blue" :disabled="isFetching" @click="fetchData">Try Again</button>
+            </div>
+        </div>
+        <div v-else-if="slideshow" class="flex-columns flex-grow-1">
             <div class="panels-top flex-rows flex-grow-1">
                 <div class="panel-left">
                     <video-editor :slideshowId="slideshow.id" :slides="slides" :config="config" :theme="theme" :format="format" @durationUpdated="durationUpdated" @slideMoved="moveSlide"></video-editor>
@@ -29,7 +37,9 @@
                 theme: '',
                 slides: [],
                 slideshow: {},
-                videoDuration: 0
+                videoDuration: 0,
+                hasError: false,
+                isFetching: false
             }
         },
         created() {
@@ -67,15 +77,20 @@
             fetchData() {
                 let body;
                 let slides;
+                this.hasError = false;
+                this.isFetching = true;
                 this.$http.get(api.route('slideshow', { id: this.$route.params.id }))
-                    .then((response) => {
+                    .then(response => {
                         body = response.body;
                         this.config = body.config;
                         // this.slideshow = this.parseSlideshow(body.slideshow);
                         this.slideshow = body.slideshow;
                         this.slides = this.slideshow.slides;
-                    }, (response) => {
-                        // console.log('error', response);
+                    }, response => {
+                        this.hasError = true;
+                    })
+                    .then(() => {
+                        this.isFetching = false;
                     });
             },
             parseSlideshow(slideshow) {
@@ -142,6 +157,8 @@
                         console.log(response);
                     }, (response) => {
                         console.log('error', response);
+                        this.eventHub.$emit('project-error');
+                        alert('Error generating video. Please try again.');
                     });
                 return false;
             },
