@@ -1,9 +1,12 @@
+require('dotenv').config();
+
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const WebpackManifestPlugin = require('webpack-manifest-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const S3Plugin = require('webpack-s3-plugin');
 const pkg = require('./package.json');
 const env = process.env.NODE_ENV;
 const src = {
@@ -21,7 +24,9 @@ let plugins = [
         `${dist.public}${dist.js}`,
         `${dist.public}${dist.css}`,
     ]),
-    new WebpackManifestPlugin(),
+    new WebpackManifestPlugin({
+        publicPath: env === 'production' ? 'https://s3.amazonaws.com/alpha-global-origin/daily-video/assets' : ''
+    }),
     new webpack.EnvironmentPlugin({
         NODE_ENV: env
     }),
@@ -32,6 +37,7 @@ let plugins = [
 const config = {
     entry: `${src.js}/${src.filename}`,
     output: {
+        filename: `${dist.js}/${dist.filename}${(env === 'production' ? '.[chunkhash]' : '')}.js`,
         path: path.join(__dirname, dist.public)
     },
     resolve: {
@@ -64,7 +70,6 @@ const config = {
 
 if (env === 'production') {
     // Configure Prod
-    config.output.filename = `${dist.js}/${dist.filename}.[chunkhash].js`;
     plugins.push(
         new webpack.optimize.UglifyJsPlugin({
             compress: {
@@ -76,11 +81,22 @@ if (env === 'production') {
         }),
         new ExtractTextPlugin({
             filename: `${dist.css}/${dist.filename}.[chunkhash].css`
+        }),
+        new S3Plugin({
+            include: /.*\.(css|js$)/,
+            basePath: 'daily-video/assets/',
+            directory: path.join(__dirname, dist.public),
+            s3Options: {
+                accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+                secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+            },
+            s3UploadOptions: {
+                Bucket: 'alpha-global-origin'
+            }
         })
     );
 } else {
     // Configure Dev
-    config.output.filename = `${dist.js}/${dist.filename}.js`;
     plugins.push(
         new ExtractTextPlugin({
             filename: `${dist.css}/${dist.filename}.css`
