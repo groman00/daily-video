@@ -101,16 +101,18 @@
         created() {
             this.initSlide();
             this.eventHub.$on('fetching-preview', this.setDisabled);
+            // this.eventHub.$on('preview-error', this.setEnabled);
             this.$root.socket.on('preview-ready', this.previewReady);
-            this.$root.socket.on('preview-error', this.setEnabled);
-            this.$root.socket.on('jobError', this.setEnabled);
+            this.$root.socket.on('preview-error', this.previewError);
+            // this.$root.socket.on('jobError', this.setEnabled);
         },
         beforeDestroy() {
             this.eventHub.$off('fetching-preview', this.setDisabled);
+            // this.eventHub.$off('preview-error', this.setEnabled);
             try {
                 this.$root.socket.off('preview-ready', this.previewReady);
-                this.$root.socket.off('preview-error', this.setEnabled);
-                this.$root.socket.off('jobError', this.setEnabled);
+                this.$root.socket.off('preview-error', this.previewError);
+                // this.$root.socket.off('jobError', this.setEnabled);
             } catch (e) {}
         },
         watch: {
@@ -184,21 +186,26 @@
                 return Math.floor(framesToSeconds(this.slide.data.slideTemplate.frames));
             },
             fetchPreview(slide) {
+                let previewData;
                 if (this.hasPreview) {
                     this.dispatchPreview();
                     return false;
                 }
-                this.eventHub.$emit('fetching-preview');
-                this.$http.post(api.route('preview-slide'), {
+                previewData = {
                     'theme': this.theme,
                     'slide': slide,
                     'format': this.format,
                     'socket_id': this.$root.socket_id
-                })
-                .then((response) => {
-                    this.preview = Object.assign({}, { previewId: response.body.previewId });
-                    this.hasPreview = true;
-                });
+                };
+                this.eventHub.$emit('fetching-preview');
+                this.$http.post(api.route('preview-slide'), previewData)
+                    .then(response => {
+                        this.preview = Object.assign({}, { previewId: response.body.previewId });
+                        this.hasPreview = true;
+                    })
+                    .catch(e => {
+                        this.previewError();
+                    });
             },
             previewReady(preview) {
                 if (preview.previewId === this.preview.previewId && preview.file) {
@@ -213,9 +220,12 @@
             setDisabled() {
                 this.isDisabled = true;
             },
-            setEnabled() {
+            previewError(preview) {
+                if (!preview || preview.previewId === this.preview.previewId) {
+                    this.hasPreview = false;
+                    this.eventHub.$emit('preview-error');
+                }
                 this.isDisabled = false;
-                this.hasPreview = false;
             },
             itemUpdated(save = true) {
                 this.hasPreview = false;

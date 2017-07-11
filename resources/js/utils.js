@@ -28,6 +28,31 @@ var UTILS = {
     },
 
     /**
+     * Write message to file
+     * @param {String} dest
+     * @param {String} msg
+     * @return {void}
+     */
+    // https://forums.adobe.com/thread/1166944#access_token=eyJ4NXUiOiJpbXNfbmExLWtleS0xLmNlciIsImFsZyI6IlJTMjU2In0.eyJmZyI6IlJTSjZJWURXN0pQUUNBQUFBQUFBQUFBQVk0PT09PT09IiwiYXMiOiJpbXMtbmExIiwiYyI6InFtZXlYR3ovVnZQb05NMXBvZERBYnc9PSIsInVzZXJfaWQiOiI3NjI3RDM2QjU0NEVBQTgyMEE0Qzk4QTdAQWRvYmVJRCIsIm1vaSI6ImI1YzU1OGZkIiwic2NvcGUiOiJBZG9iZUlELG9wZW5pZCxhZGRpdGlvbmFsX2luZm8uc2NyZWVuX25hbWUsdXBkYXRlX3Byb2ZpbGUuc2NyZWVuX25hbWUiLCJjcmVhdGVkX2F0IjoiMTQ5OTQ1ODgyMDAxMiIsImlkIjoiMTQ5OTQ1ODgyMDAxMi1iMTlkMWQ3Ni04NzM0LTQ4NmQtOTk3Ny1lNmJjNTczMzQxOWQiLCJzdGF0ZSI6IiIsInR5cGUiOiJhY2Nlc3NfdG9rZW4iLCJleHBpcmVzX2luIjoiODY0MDAwMDAiLCJjbGllbnRfaWQiOiJmb3J1bXMyIn0.iAQWdIt_NbaoONHRJrw0AHgmAe1_Fo6_iOAhP0HwCJPhwx0i79XQ8vTGKKavg0DrZLzGPgsgXWsRXzx8k3J6lsmyy_C2bZGsfFnl8dcjSxDmkzgy-ZcnKpIOu-syRfj1mhNc8jSpF2NF-OUv_F9TAVLC79wBFduxgkr_obQi5LRpytVWEN6UxQ6n0ufozRth6ePTRAgHW01JkLxFNqOS-obSnl47mu_84B5ubqeV2UXWeEuJLP__oLqjF8RZyy882fBOHS9aNJtYAWIHSHOj9eVE8YuYpGwP1meyEKWx29MOf2-1LkQ_hSjInToF-z77AwvofIAtX4IAlXin6OWX8g&token_type=bearer&expires_in=86399976
+    writeFile: function (dest, msg) {
+        var file = new File(dest);
+        file.open("e", "TEXT", "????");
+        file.writeln(msg);
+        file.close();
+    },
+
+    /**
+     * Write Error message to file
+     * @param  {Error} e
+     * @return {void}
+     */
+    handleError: function (e) {
+        var error = e.fileName + ' (Line ' + e.line + '): ' + e.message;
+        // alert(error);
+        this.writeFile(DIR.temp + '/error.txt', error);
+    },
+
+    /**
      * Find comp within parent by name
      * @param  {FolderItem|CompItem} parent
      * @param  {String} name
