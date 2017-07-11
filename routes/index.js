@@ -1,8 +1,12 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const manifest = require('../public/manifest.json');
+const router = express.Router();
 
 router.get('/', function(req, res, next) {
-  res.render('index');
+    res.render('index', {
+        script: manifest['main.js'],
+        stylesheet: manifest['main.css']
+    });
 });
 
 module.exports = router;
