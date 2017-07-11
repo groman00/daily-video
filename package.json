@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www",
-    "build": "webpack --progress",
+    "dev": "NODE_ENV=development webpack --progress",
+    "prod": "NODE_ENV=production webpack --progress",
     "watch": "webpack --progress --watch",
-    "deploy": "webpack --progress && forever --sourceDir=./ forever.json"
+    "deploy": "npm run prod && forever --sourceDir=./ forever.json"
   },
   "dependencies": {
     "async": "^2.1.5",
@@ -46,6 +47,7 @@
     "babel-loader": "^6.4.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-es2015": "^6.24.0",
+    "clean-webpack-plugin": "^0.1.16",
     "css-loader": "^0.27.3",
     "eslint": "^3.17.1",
     "eslint-config-airbnb-base": "^11.1.1",
