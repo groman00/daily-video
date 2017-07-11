@@ -15,17 +15,17 @@ const src = {
 };
 const dist = {
     public: './public',
-    js: '/js',
-    css: '/css',
+    js: 'js',
+    css: 'css',
     filename: 'bundle'
 };
 let plugins = [
     new CleanWebpackPlugin([
-        `${dist.public}${dist.js}`,
-        `${dist.public}${dist.css}`,
+        `${dist.public}/${dist.js}`,
+        `${dist.public}/${dist.css}`,
     ]),
     new WebpackManifestPlugin({
-        publicPath: env === 'production' ? 'https://s3.amazonaws.com/alpha-global-origin/daily-video/assets' : ''
+        publicPath: env === 'production' ? 'https://s3.amazonaws.com/alpha-global-origin/daily-video/assets/' : '/'
     }),
     new webpack.EnvironmentPlugin({
         NODE_ENV: env

@@ -7,7 +7,8 @@
     "dev": "cross-env NODE_ENV=development webpack --progress",
     "prod": "cross-env NODE_ENV=production webpack --progress",
     "watch": "cross-env NODE_ENV=development webpack --progress --watch",
-    "deploy": "npm run prod && forever --sourceDir=./ forever.json"
+    "deploy": "npm run prod && forever start -d --sourceDir=./ forever.json",
+    "stop": "forever stopall"
   },
   "dependencies": {
     "async": "^2.1.5",
