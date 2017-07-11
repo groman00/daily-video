@@ -22,6 +22,9 @@ function Preview(id) {
         app.open(new File(DIR.resources + "aep/MASTER.aep"));
         project = app.project;
 
+        throw 'WTF';
+        return;
+
         // Clone Project in temp folder
         project.save(new File(DIR.temp + '/aep/DailyVideo.aep'));
 
@@ -53,7 +56,11 @@ function Preview(id) {
         });
         renderQueue.render();
     } catch(e) {
-        // alert(e.fileName + ' (Line ' + e.line + '): ' + e.message);
+        var error = e.fileName + ' (Line ' + e.line + '): ' + e.message;
+        // alert(error);
+        // WHY IS THIS TRIGGERING PREVIEW ERROR 6 Times
+        UTILS.writeFile(DIR.temp + '/error.txt', error);
+        // alert(error);
     }
     project.close(CloseOptions.SAVE_CHANGES);
 }

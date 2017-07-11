@@ -34,18 +34,18 @@
                     </div>
                 </div>
                 <template v-if="slideshows.length">
-                <div class="media cell-m-6" v-for="slideshow in slideshows" key="slideshow.id">
-                    <div class="media-left">
-                        <router-link v-if="slideshow" :to="{ name: 'video', params: { id: slideshow.id } }" exact>
-                            <img :src="slideshow.image_url_thumb" class="media-image"/>
-                        </router-link>
+                    <div class="media cell-m-6" v-for="slideshow in slideshows" key="slideshow.id">
+                        <div class="media-left">
+                            <router-link v-if="slideshow" :to="{ name: 'video', params: { id: slideshow.id } }" exact>
+                                <img :src="slideshow.image_url_thumb" class="media-image"/>
+                            </router-link>
+                        </div>
+                        <div class="media-body">
+                            <router-link v-if="slideshow" :to="{ name: 'video', params: { id: slideshow.id } }" exact>
+                                {{ slideshow.title }}
+                            </router-link>
+                        </div>
                     </div>
-                    <div class="media-body">
-                        <router-link v-if="slideshow" :to="{ name: 'video', params: { id: slideshow.id } }" exact>
-                            {{ slideshow.title }}
-                        </router-link>
-                    </div>
-                </div>
                 </template>
                 <template v-else>
                     <loading-indicator></loading-indicator>

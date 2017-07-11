@@ -220,10 +220,12 @@
             setDisabled() {
                 this.isDisabled = true;
             },
-            previewError() {
+            previewError(preview) {
+                if (!preview || preview.previewId === this.preview.previewId) {
+                    this.hasPreview = false;
+                    this.eventHub.$emit('preview-error');
+                }
                 this.isDisabled = false;
-                this.hasPreview = false;
-                this.eventHub.$emit('preview-error');
             },
             itemUpdated(save = true) {
                 this.hasPreview = false;

@@ -67,7 +67,7 @@
                 this.eventHub.$emit('render-complete');
             },
             showError(error) {
-                this.label = error;
+                this.label = error.message;
                 this.progress = 0;
                 this.eventHub.$emit('render-complete');
             },
