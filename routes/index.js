@@ -1,8 +1,7 @@
 const express = require('express');
-const manifest = require('../public/js/manifest.json');
+const manifest = require('../public/manifest.json');
 const router = express.Router();
 
-console.log(manifest);
 router.get('/', function(req, res, next) {
     res.render('index', {
         script: manifest['main.js'],
