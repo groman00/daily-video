@@ -42,6 +42,17 @@ var UTILS = {
     },
 
     /**
+     * Write Error message to file
+     * @param  {Error} e
+     * @return {void}
+     */
+    handleError: function (e) {
+        var error = e.fileName + ' (Line ' + e.line + '): ' + e.message;
+        // alert(error);
+        this.writeFile(DIR.temp + '/error.txt', error);
+    },
+
+    /**
      * Find comp within parent by name
      * @param  {FolderItem|CompItem} parent
      * @param  {String} name

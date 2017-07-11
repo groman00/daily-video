@@ -9,6 +9,10 @@ function Preview(id) {
     var config, slide, comp, renderer;
 
     try {
+        app.saveProjectOnCrash = false;
+        app.onError = function (errString) {};
+        app.open(new File(DIR.resources + "aep/MASTER.aep"));
+        project = app.project;
         DIR.temp = DIR.temp + id;
         config = UTILS.getJSON(DIR.temp + '/json/config.json');
 
@@ -16,14 +20,6 @@ function Preview(id) {
             // Config JSON not found, exit job.
             project.close(CloseOptions.DO_NOT_SAVE_CHANGES);
         }
-
-        app.saveProjectOnCrash = false;
-        app.onError = function (errString) {};
-        app.open(new File(DIR.resources + "aep/MASTER.aep"));
-        project = app.project;
-
-        throw 'WTF';
-        return;
 
         // Clone Project in temp folder
         project.save(new File(DIR.temp + '/aep/DailyVideo.aep'));
@@ -56,11 +52,7 @@ function Preview(id) {
         });
         renderQueue.render();
     } catch(e) {
-        var error = e.fileName + ' (Line ' + e.line + '): ' + e.message;
-        // alert(error);
-        // WHY IS THIS TRIGGERING PREVIEW ERROR 6 Times
-        UTILS.writeFile(DIR.temp + '/error.txt', error);
-        // alert(error);
+        UTILS.handleError(e);
     }
     project.close(CloseOptions.SAVE_CHANGES);
 }

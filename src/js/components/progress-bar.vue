@@ -43,14 +43,14 @@
         },
         created() {
             this.$root.socket.on('progress', this.showProgress);
-            this.$root.socket.on('complete', this.showComplete);
+            this.$root.socket.on('project-ready', this.showComplete);
             this.$root.socket.on('preview-error', this.showError);
             this.$root.socket.on('project-error', this.showError);
         },
         beforeDestroy() {
             try {
                 this.$root.socket.off('progress', this.showProgress);
-                this.$root.socket.off('complete', this.showComplete);
+                this.$root.socket.off('project-ready', this.showComplete);
                 this.$root.socket.off('preview-error', this.showError);
                 this.$root.socket.off('project-error', this.showError);
             } catch (e) {}
