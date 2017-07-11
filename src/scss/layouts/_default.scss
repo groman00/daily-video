@@ -14,6 +14,7 @@ body,
 }
 
 .page-wrapper {
+    color: $white;
     display: flex;
     flex-direction: column;
 }
@@ -51,7 +52,6 @@ body,
 }
 
 .home-page {
-    color: $white;
     background-color: $grey-darker;
 }
 

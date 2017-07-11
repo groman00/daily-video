@@ -3,7 +3,15 @@
     <div class="home-page page-wrapper">
         <app-bar :config="{ title: 'Projects' }"></app-bar>
         <div class="flex-grow-1 flex-overflow">
-            <div class="grid">
+            <div v-if="hasError" class="grid text-center">
+                <div class="cell-m-12">
+                    <h1>An Error Occurred</h1>
+                </div>
+                <div class="cell-m-12">
+                    <button class="button button-blue" :disabled="isFetching" @click="fetchData">Try Again</button>
+                </div>
+            </div>
+            <div v-else class="grid">
                 <div class="media cell-m-12">
                     <div class="media-left">
                         <a href="#" @click.prevent="createNew">
@@ -26,25 +34,25 @@
                     </div>
                 </div>
                 <template v-if="slideshows.length">
-                <div class="media cell-m-6" v-for="slideshow in slideshows" key="slideshow.id">
-                    <div class="media-left">
-                        <router-link v-if="slideshow" :to="{ name: 'video', params: { id: slideshow.id } }" exact>
-                            <img :src="slideshow.image_url_thumb" class="media-image"/>
-                        </router-link>
+                    <div class="media cell-m-6" v-for="slideshow in slideshows" key="slideshow.id">
+                        <div class="media-left">
+                            <router-link v-if="slideshow" :to="{ name: 'video', params: { id: slideshow.id } }" exact>
+                                <img :src="slideshow.image_url_thumb" class="media-image"/>
+                            </router-link>
+                        </div>
+                        <div class="media-body">
+                            <router-link v-if="slideshow" :to="{ name: 'video', params: { id: slideshow.id } }" exact>
+                                {{ slideshow.title }}
+                            </router-link>
+                        </div>
                     </div>
-                    <div class="media-body">
-                        <router-link v-if="slideshow" :to="{ name: 'video', params: { id: slideshow.id } }" exact>
-                            {{ slideshow.title }}
-                        </router-link>
-                    </div>
-                </div>
                 </template>
                 <template v-else>
                     <loading-indicator></loading-indicator>
                 </template>
             </div>
         </div>
-        <overlay :open="isCreatingNew">
+        <overlay v-show="!hasError" :open="isCreatingNew">
             <template slot="overlay-content">
                 <br><br>
                 <h2 class="text-center">Creating New Project</h2>
@@ -63,7 +71,9 @@
                 page: null,
                 pages: [],
                 slideshows: [],
-                isCreatingNew: false
+                isCreatingNew: false,
+                hasError: false,
+                isFetching: false
             }
         },
         created() {
@@ -79,13 +89,18 @@
         },
         methods: {
             fetchData() {
+                this.isFetching = true;
+                this.hasError = false;
                 this.slideshows = [];
                 this.$http.get(api.route('slideshows', { page: this.page }))
                     .then((response) => {
                         this.slideshows = response.body.results;
                         this.setPages(response.body.total_pages);
-                    }, (response) => {
-                        // console.log('error', response);
+                    }, error => {
+                        this.hasError = true;
+                    })
+                    .then(() => {
+                        this.isFetching = false;
                     });
             },
             setPages(total) {
@@ -94,12 +109,18 @@
                 this.pages = pages;
             },
             createNew() {
+                this.isFetching = true;
+                this.hasError = false;
                 this.isCreatingNew = true;
                 this.$http.post(api.route('create-project'))
                     .then((response) => {
                          this.$router.push({ name: 'video', params: { id: response.body.id }});
-                    }, (error) => {
-                        alert('Something went wrong.  Please refresh and try again.');
+                    }, error => {
+                        this.hasError = true;
+                    })
+                    .then(() => {
+                        this.isCreatingNew = false;
+                        this.isFetching = false;
                     });
             }
         }
