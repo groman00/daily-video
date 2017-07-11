@@ -6,7 +6,7 @@
     "start": "nodemon ./bin/www",
     "dev": "NODE_ENV=development webpack --progress",
     "prod": "NODE_ENV=production webpack --progress",
-    "watch": "webpack --progress --watch",
+    "watch": "NODE_ENV=development webpack --progress --watch",
     "deploy": "npm run prod && forever --sourceDir=./ forever.json"
   },
   "dependencies": {
