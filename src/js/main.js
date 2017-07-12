@@ -15,9 +15,12 @@ Vue.use(VueResource);
         this.socket = io();
         this.socket.on('register', (id, version) => {
             console.log('registering new socket id');
-            if (__VERSION__ !== version) {
-                alert('New Version Available!');
-                window.location.reload();
+            if (__VERSION__ !== version && process.env.NODE_ENV === 'production') {
+                if (window.confirm('New Version Available')) {
+                    window.location.reload();
+                    return;
+                }
+                this.$destroy();
             }
             this.socket_id = id;
         });
