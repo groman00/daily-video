@@ -65,6 +65,7 @@
                 this.progress = 0;
                 this.downloadLink = data.file;
                 this.eventHub.$emit('render-complete');
+                this.eventHub.$emit('play-preview', data);
             },
             showError(error) {
                 this.label = error.message;
