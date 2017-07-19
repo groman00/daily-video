@@ -19,6 +19,11 @@
     src: url(https://s3.amazonaws.com/alpha-global-origin/daily-video/fonts/ProximaNova-Extrabold.otf);
 }
 
+@font-face {
+    font-family: 'neue-haas-grotesk';
+    src: url(https://s3.amazonaws.com/alpha-global-origin/daily-video/fonts/NHaasGroteskTXStd-75Bd.otf);
+}
+
 .slide-preview {
     background: $black;
     position: relative;
@@ -80,7 +85,7 @@
 }
 
 .text-AllIn {
-    font-family: 'tk-niveau-grotesk-n5';
+    font-family: 'neue-haas-grotesk';
     font-size: 50px;
 }
 
