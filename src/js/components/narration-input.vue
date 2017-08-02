@@ -14,6 +14,12 @@
                     <span class="form-control-hint">Track Level: {{ level }}</span>
                 </div>
                 <div class="form-control">
+                    <label>
+                        <input type="checkbox" v-model="fade" @change="updated">
+                        Fade
+                    </label>
+                </div>
+                <div class="form-control">
                     {{ name }}
                 </div>
             </template>
@@ -36,7 +42,8 @@
                 isLoading: false,
                 level: 0,
                 name: null,
-                file: null
+                file: null,
+                fade: false
             };
         },
         watch: {
@@ -74,7 +81,8 @@
                     narration: {
                         file: this.file,
                         name: this.name,
-                        level: this.level
+                        level: this.level,
+                        fade: this.fade
                     }
                 });
             }

@@ -171,7 +171,7 @@
                 return types.indexOf(this.slide.data.slideType) > -1;
             },
             hasCustomDuration() {
-                return this.isSlideOfType('image', 'title');
+                return this.isSlideOfType('image', 'title', 'date');
             },
             setDuration() {
                 if (!this.slide.data.duration) {

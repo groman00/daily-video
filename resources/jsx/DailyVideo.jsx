@@ -51,15 +51,23 @@ DailyVideo.prototype = {
     addNarrationTrack: function () {
         var config = this.config;
         var file = config.narration.file;
+        var duration = this.masterComp.workAreaDuration;
         var track;
         var level;
         var layer;
+        var audioLevels
         if (file) {
             track = project.importFile(new ImportOptions(File(file)));
             level = config.narration.level;
             track.parentFolder = this.videoFolder;
-            layer = this.masterComp.layers.add(track, this.masterComp.workAreaDuration);
-            layer.audioLevels.setValue([level, level]);
+            layer = this.masterComp.layers.add(track, duration);
+            audioLevels = layer.audioLevels;
+            audioLevels.setValue([level, level]);
+            // Apply fade if configured
+            if (config.narration.fade) {
+                audioLevels.setValueAtTime(duration - 3, [level, level]);
+                audioLevels.setValueAtTime(duration, [-50, -50]);
+            }
         }
     },
 
@@ -76,9 +84,9 @@ DailyVideo.prototype = {
             audioTrack = project.importFile(new ImportOptions(File(DIR.fixtures + config.audioTrack)));
             audioTrack.parentFolder = this.videoFolder;
             layer = this.masterComp.layers.add(audioTrack, duration);
-            layer.audioLevels.setValue([level, level]);
-            // Fade out audio track
             audioLevels = layer.audioLevels;
+            audioLevels.setValue([level, level]);
+            // Fade out audio track
             audioLevels.setValueAtTime(duration - 3, [level, level]);
             audioLevels.setValueAtTime(duration, [-50, -50]);
         }
